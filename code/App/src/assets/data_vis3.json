@@ -1,0 +1,323 @@
+[
+    {
+        "Player": "Sam Adekugbe",
+        "Img": "https://fbref.com/req/202005121/images/headshots/7f2309be_2018.jpg",
+        "Pos": "DF,MF",
+        "Squad": "Canada",
+        "MP": 16,
+        "Gls": 1,
+        "Ast": 2,
+        "Index": 0
+    },
+    {
+        "Player": "Milan Borjan",
+        "Img": "https://fbref.com/req/202005121/images/headshots/5e8936be_2018.jpg",
+        "Pos": "GK",
+        "Squad": "Canada",
+        "MP": 12,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 1
+
+    },
+    {
+        "Player": "Zachary Brault-Guillard",
+        "Img": "https://fbref.com/req/202005121/images/headshots/948a58c2_2018.jpg",
+        "Pos": "DF,MF",
+        "Squad": "Canada",
+        "MP": 2,
+        "Gls": 1,
+        "Ast": 0,
+        "Index": 2
+    },
+    {
+        "Player": "Charles-Andréas Brym",
+        "Img": "https://fbref.com/req/202005121/images/headshots/be76f15c_2018.jpg",
+        "Pos": "FW",
+        "Squad": "Canada",
+        "MP": 3,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 3
+    },
+    {
+        "Player": "Tajon Buchanan",
+        "Img": "https://fbref.com/req/202005121/images/headshots/3aca6420_2018.jpg",
+        "Pos": "MF,FW",
+        "Squad": "Canada",
+        "MP": 14,
+        "Gls": 2,
+        "Ast": 3,
+        "Index": 4
+    },
+    {
+        "Player": "Lucas Cavallini",
+        "Img": "https://fbref.com/req/202005121/images/headshots/dd8de641_2018.jpg",
+        "Pos": "FW",
+        "Squad": "Canada",
+        "MP": 8,
+        "Gls": 5,
+        "Ast": 0,
+        "Index": 5
+    },
+    {
+        "Player": "Theo Corbeanu",
+        "Img": "https://fbref.com/req/202005121/images/headshots/25b82f9a_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 3,
+        "Gls": 1,
+        "Ast": 0,
+        "Index": 6
+    },
+    {
+        "Player": "Derek Cornelius",
+        "Img": "https://fbref.com/req/202005121/images/headshots/577744b8_2018.jpg",
+        "Pos": "DF,FW",
+        "Squad": "Canada",
+        "MP": 1,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 7
+    },
+    {
+        "Player": "Maxime Crépeau",
+        "Img": "https://fbref.com/req/202005121/images/headshots/ea42e480_2018.jpg",
+        "Pos": "GK",
+        "Squad": "Canada",
+        "MP": 4,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 8
+    },
+    {
+        "Player": "Jonathan David",
+        "Img": "https://fbref.com/req/202005121/images/headshots/ce50fd99_2018.jpg",
+        "Pos": "FW,MF",
+        "Squad": "Canada",
+        "MP": 15,
+        "Gls": 9,
+        "Ast": 3,
+        "Index": 9
+    },
+    {
+        "Player": "Alphonso Davies",
+        "Img": "https://fbref.com/req/202005121/images/headshots/d781d855_2018.jpg",
+        "Pos": "FW,MF",
+        "Squad": "Canada",
+        "MP": 13,
+        "Gls": 4,
+        "Ast": 8,
+        "Index": 10
+    },
+    {
+        "Player": "Stephen Eustáquio",
+        "Img": "https://fbref.com/req/202005121/images/headshots/577efaec_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 14,
+        "Gls": 0,
+        "Ast": 1,
+        "Index": 11
+    },
+    {
+        "Player": "Ricardo Ferreira",
+        "Img": "https://fbref.com/req/202005121/images/headshots/b073f5ea_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 1,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 12
+    },
+    {
+        "Player": "Liam Fraser",
+        "Img": "https://fbref.com/req/202005121/images/headshots/d784062b_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 4,
+        "Gls": 0,
+        "Ast": 1,
+        "Index": 13
+    },
+    {
+        "Player": "Doneil Henry",
+        "Img": "https://fbref.com/req/202005121/images/headshots/22636117_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 7,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 14
+    },
+    {
+        "Player": "Junior Hoilett",
+        "Img": "https://fbref.com/req/202005121/images/headshots/33af5b9e_2018.jpg",
+        "Pos": "MF,FW",
+        "Squad": "Canada",
+        "MP": 10,
+        "Gls": 2,
+        "Ast": 1,
+        "Index": 15
+    },
+    {
+        "Player": "Atiba Hutchinson",
+        "Img": "https://fbref.com/req/202005121/images/headshots/f1b55719_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 8,
+        "Gls": 2,
+        "Ast": 0,
+        "Index": 16
+    },
+    {
+        "Player": "Alistair Johnston",
+        "Img": "https://fbref.com/req/202005121/images/headshots/4fb17e20_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 16,
+        "Gls": 1,
+        "Ast": 1,
+        "Index": 17
+    },
+    {
+        "Player": "Mark-Anthony Kaye",
+        "Img": "https://fbref.com/req/202005121/images/headshots/36a38acd_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 13,
+        "Gls": 2,
+        "Ast": 3,
+        "Index": 18
+    },
+    {
+        "Player": "Scott Kennedy",
+        "Img": "https://fbref.com/req/202005121/images/headshots/17fd7a8c_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 7,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 19
+    },
+    {
+        "Player": "Cyle Larin",
+        "Img": "https://fbref.com/req/202005121/images/headshots/e7af9060_2018.jpg",
+        "Pos": "FW,MF",
+        "Squad": "Canada",
+        "MP": 13,
+        "Gls": 12,
+        "Ast": 0,
+        "Index": 20
+    },
+    {
+        "Player": "Richie Laryea",
+        "Img": "https://fbref.com/req/202005121/images/headshots/276fdbe4_2018.jpg",
+        "Pos": "MF,DF",
+        "Squad": "Canada",
+        "MP": 13,
+        "Gls": 1,
+        "Ast": 2,
+        "Index": 21
+    },
+    {
+        "Player": "Liam Millar",
+        "Img": "https://fbref.com/req/202005121/images/headshots/983515f8_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 7,
+        "Gls": 0,
+        "Ast": 1,
+        "Index": 22
+    },
+    {
+        "Player": "Kamal Miller",
+        "Img": "https://fbref.com/req/202005121/images/headshots/0646bd8a_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 10,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 23
+    },
+    {
+        "Player": "Jonathan Osorio",
+        "Img": "https://fbref.com/req/202005121/images/headshots/70106ff6_2018.jpg",
+        "Pos": "MF,FW",
+        "Squad": "Canada",
+        "MP": 13,
+        "Gls": 1,
+        "Ast": 1,
+        "Index": 24
+    },
+    {
+        "Player": "Samuel Piette",
+        "Img": "https://fbref.com/req/202005121/images/headshots/bc33c73b_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 8,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 25
+    },
+    {
+        "Player": "Jacob Shaffelburg",
+        "Img": "https://fbref.com/req/202005121/images/headshots/339a2561_2018.jpg",
+        "Pos": "FW",
+        "Squad": "Canada",
+        "MP": 2,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 26
+    },
+    {
+        "Player": "Dayne St. Clair",
+        "Img": "https://fbref.com/req/202005121/images/headshots/3f41d25f_2018.jpg",
+        "Pos": "GK",
+        "Squad": "Canada",
+        "MP": 1,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 27
+    },
+    {
+        "Player": "Frank Sturing",
+        "Img": "https://fbref.com/req/202005121/images/headshots/20fbc877_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 2,
+        "Gls": 1,
+        "Ast": 0,
+        "Index": 28
+    },
+    {
+        "Player": "Ike Ugbo",
+        "Img": "https://fbref.com/req/202005121/images/headshots/8a53d24b_2018.jpg",
+        "Pos": "FW",
+        "Squad": "Canada",
+        "MP": 2,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 29
+    },
+    {
+        "Player": "Steven Vitória",
+        "Img": "https://fbref.com/req/202005121/images/headshots/9bc450e6_2018.jpg",
+        "Pos": "DF",
+        "Squad": "Canada",
+        "MP": 12,
+        "Gls": 0,
+        "Ast": 0,
+        "Index": 30
+    },
+    {
+        "Player": "David Wotherspoon",
+        "Img": "https://fbref.com/req/202005121/images/headshots/e9a9b1fa_2018.jpg",
+        "Pos": "MF",
+        "Squad": "Canada",
+        "MP": 8,
+        "Gls": 1,
+        "Ast": 3,
+        "Index": 31
+    }
+]
