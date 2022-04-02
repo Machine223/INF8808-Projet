@@ -1,0 +1,226 @@
+[
+   {
+      "Player": "Sam Adekugbe",
+      "Img": "https://fbref.com/req/202005121/images/headshots/7f2309be_2018.jpg",
+      "Pos": "DF,MF",
+      "Age": 27,
+      "salary": 1170000
+   },
+   {
+      "Player": "Milan Borjan",
+      "Img": "https://fbref.com/req/202005121/images/headshots/5e8936be_2018.jpg",
+      "Pos": "GK",
+      "Age": 34,
+      "salary": 1600000
+   },
+   {
+      "Player": "Zachary Brault-Guillard",
+      "Img": "https://fbref.com/req/202005121/images/headshots/948a58c2_2018.jpg",
+      "Pos": "DF,MF",
+      "Age": 23,
+      "salary": 72000
+   },
+   {
+      "Player": "Charles-Andréas Brym",
+      "Img": "https://fbref.com/req/202005121/images/headshots/be76f15c_2018.jpg",
+      "Pos": "FW",
+      "Age": 23,
+      "salary": 248000
+   },
+   {
+      "Player": "Tajon Buchanan",
+      "Img": "https://fbref.com/req/202005121/images/headshots/3aca6420_2018.jpg",
+      "Pos": "MF,FW",
+      "Age": 23,
+      "salary": 9350000
+   },
+   {
+      "Player": "Lucas Cavallini",
+      "Img": "https://fbref.com/req/202005121/images/headshots/dd8de641_2018.jpg",
+      "Pos": "FW",
+      "Age": 29,
+      "salary": 1620000
+   },
+   {
+      "Player": "Theo Corbeanu",
+      "Img": "https://fbref.com/req/202005121/images/headshots/25b82f9a_2018.jpg",
+      "Pos": "MF",
+      "Age": 19,
+      "salary": 1100000
+   },
+   {
+      "Player": "Derek Cornelius",
+      "Img": "https://fbref.com/req/202005121/images/headshots/577744b8_2018.jpg",
+      "Pos": "DF,FW",
+      "Age": 24,
+      "salary": 12700
+   },
+   {
+      "Player": "Maxime Crépeau",
+      "Img": "https://fbref.com/req/202005121/images/headshots/ea42e480_2018.jpg",
+      "Pos": "GK",
+      "Age": 27,
+      "salary": 2770000
+   },
+   {
+      "Player": "Jonathan David",
+      "Img": "https://fbref.com/req/202005121/images/headshots/ce50fd99_2018.jpg",
+      "Pos": "FW,MF",
+      "Age": 22,
+      "salary": 30000000
+   },
+   {
+      "Player": "Alphonso Davies",
+      "Img": "https://fbref.com/req/202005121/images/headshots/d781d855_2018.jpg",
+      "Pos": "FW,MF",
+      "Age": 21,
+      "salary": 5000000
+   },
+   {
+      "Player": "Stephen Eustáquio",
+      "Img": "https://fbref.com/req/202005121/images/headshots/577efaec_2018.jpg",
+      "Pos": "MF",
+      "Age": 25,
+      "salary": 655000
+   },
+   {
+      "Player": "Ricardo Ferreira",
+      "Img": "https://fbref.com/req/202005121/images/headshots/b073f5ea_2018.jpg",
+      "Pos": "DF",
+      "Age": 29,
+      "salary": 121964
+   },
+   {
+      "Player": "Liam Fraser",
+      "Img": "https://fbref.com/req/202005121/images/headshots/d784062b_2018.jpg",
+      "Pos": "DF",
+      "Age": 24,
+      "salary": 89513
+   },
+   {
+      "Player": "Doneil Henry",
+      "Img": "https://fbref.com/req/202005121/images/headshots/22636117_2018.jpg",
+      "Pos": "DF",
+      "Age": 28,
+      "salary": 44110
+   },
+   {
+      "Player": "Junior Hoilett",
+      "Img": "https://fbref.com/req/202005121/images/headshots/33af5b9e_2018.jpg",
+      "Pos": "MF,FW",
+      "Age": 31,
+      "salary": 2600000
+   },
+   {
+      "Player": "Atiba Hutchinson",
+      "Img": "https://fbref.com/req/202005121/images/headshots/f1b55719_2018.jpg",
+      "Pos": "MF",
+      "Age": 39,
+      "salary": 750000
+   },
+   {
+      "Player": "Alistair Johnston",
+      "Img": "https://fbref.com/req/202005121/images/headshots/4fb17e20_2018.jpg",
+      "Pos": "DF",
+      "Age": 23,
+      "salary": 73079
+   },
+   {
+      "Player": "Mark-Anthony Kaye",
+      "Img": "https://fbref.com/req/202005121/images/headshots/36a38acd_2018.jpg",
+      "Pos": "MF",
+      "Age": 27,
+      "salary": 1000000
+   },
+   {
+      "Player": "Scott Kennedy",
+      "Img": "https://fbref.com/req/202005121/images/headshots/17fd7a8c_2018.jpg",
+      "Pos": "DF",
+      "Age": 24,
+      "salary": 660000
+   },
+   {
+      "Player": "Cyle Larin",
+      "Img": "https://fbref.com/req/202005121/images/headshots/e7af9060_2018.jpg",
+      "Pos": "FW,MF",
+      "Age": 26,
+      "salary": 192000
+   },
+   {
+      "Player": "Richie Laryea",
+      "Img": "https://fbref.com/req/202005121/images/headshots/276fdbe4_2018.jpg",
+      "Pos": "MF,DF",
+      "Age": 27,
+      "salary": 925000
+   },
+   {
+      "Player": "Liam Millar",
+      "Img": "https://fbref.com/req/202005121/images/headshots/983515f8_2018.jpg",
+      "Pos": "MF",
+      "Age": 22,
+      "salary": 364000
+   },
+   {
+      "Player": "Kamal Miller",
+      "Img": "https://fbref.com/req/202005121/images/headshots/0646bd8a_2018.jpg",
+      "Pos": "DF",
+      "Age": 24,
+      "salary": 225000
+   },
+   {
+      "Player": "Jonathan Osorio",
+      "Img": "https://fbref.com/req/202005121/images/headshots/70106ff6_2018.jpg",
+      "Pos": "MF,FW",
+      "Age": 29,
+      "salary": 4700000
+   },
+   {
+      "Player": "Samuel Piette",
+      "Img": "https://fbref.com/req/202005121/images/headshots/bc33c73b_2018.jpg",
+      "Pos": "MF",
+      "Age": 27,
+      "salary": 135000
+   },
+   {
+      "Player": "Jacob Shaffelburg",
+      "Img": "https://fbref.com/req/202005121/images/headshots/339a2561_2018.jpg",
+      "Pos": "FW",
+      "Age": 22,
+      "salary": 63547
+   },
+   {
+      "Player": "Dayne St. Clair",
+      "Img": "https://fbref.com/req/202005121/images/headshots/3f41d25f_2018.jpg",
+      "Pos": "GK",
+      "Age": 24,
+      "salary": 99520
+   },
+   {
+      "Player": "Frank Sturing",
+      "Img": "https://fbref.com/req/202005121/images/headshots/20fbc877_2018.jpg",
+      "Pos": "DF",
+      "Age": 24,
+      "salary": 220000
+   },
+   {
+      "Player": "Ike Ugbo",
+      "Img": "https://fbref.com/req/202005121/images/headshots/8a53d24b_2018.jpg",
+      "Pos": "FW",
+      "Age": 23,
+      "salary": 410000
+   },
+   {
+      "Player": "Steven Vitória",
+      "Img": "https://fbref.com/req/202005121/images/headshots/9bc450e6_2018.jpg",
+      "Pos": "DF",
+      "Age": 35,
+      "salary": 400000
+   },
+    {
+      "Player": "David Wotherspoon",
+      "Img": "https://fbref.com/req/202005121/images/headshots/e9a9b1fa_2018.jpg",
+      "Pos": "MF",
+      "Age": 32,
+      "salary": 72800
+   }
+]
