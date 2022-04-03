@@ -1,24 +1,13 @@
 <div id="vis3">
 <p>data-viz3 works!</p>
-<!-- <mat-form-field appearance="fill">
-    <mat-label>Ordering</mat-label>
-    <mat-select [(ngModel)]="selectedValue" name="cat">
-        <mat-option *ngFor="let cat of categories" [value]="cat.value">
-            {{cat.viewValue}}
-        </mat-option>
-    </mat-select>
-</mat-form-field> -->
 <mat-form-field appearance="fill">
-    <mat-label>Ordering</mat-label>
-    <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect()">
+    <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect()" [placeholder]="selectedCategory">
         <mat-option *ngFor="let cat of categories" [value]="cat.value">
             {{cat.viewValue}}
         </mat-option>
     </mat-select>
 </mat-form-field>
 <br/>
-<br />
-<br />
 
 </div>
 <script src="./data-viz3.component.ts"></script>
