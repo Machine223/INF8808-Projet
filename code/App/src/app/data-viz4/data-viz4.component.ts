@@ -140,6 +140,7 @@ export class DataViz4Component implements OnInit {
     const pass = 'pass'
 
     //Add football field with predetermine size:
+    // <circle cx="50" cy="50" r="50"/>
 
 
     //Add Title

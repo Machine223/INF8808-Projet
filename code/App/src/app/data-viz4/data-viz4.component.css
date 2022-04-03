@@ -1,0 +1,144 @@
+.container {  display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-rows: 0.2fr 1.8fr 1fr;
+    gap: 20px 20px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "title title"
+      "field legend"
+      "field legend";
+    height: 1779px;
+    width: 1630px;
+
+    
+  }
+  .fit-img-tight {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  
+  .field { 
+    grid-area: field;
+    width: 100%; 
+    height: 100%; 
+}
+  
+  .title { grid-area: title;
+    height: 30px;
+    background-color: red;
+    }
+  
+  .legend {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.01fr 0.7fr 1.7fr 1.5fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "legendHeader legendHeader legendHeader"
+      "salaryLegend salaryLegend salaryLegend"
+      "players players players"
+      "piechart piechart piechart";
+    grid-area: legend;
+    background-color: bisque;
+    height: auto;
+    width: auto;
+    grid-gap: 5px;
+  }
+  
+  .legendHeader { grid-area: legendHeader; 
+    
+    }
+  
+  .salaryLegend 
+    { 
+        grid-area: salaryLegend;
+        padding: 10px;
+        padding-left: 10%;
+    }
+
+  
+    .players {  display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.4fr 0.9fr 0.6fr 1.2fr 0.5fr 1.3fr 0.6fr 2.5fr;
+        gap: 0px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+          "GK_header GK_header GK_header"
+          "GK GK GK"
+          "MF_Header MF_Header MF_Header"
+          "MF MF MF"
+          "DF_header . ."
+          "DF DF DF"
+          "FW_header FW_header FW_header"
+          "FW FW FW";
+        grid-area: players;
+        background-color: aquamarine;
+      }
+      
+      .GK_header { grid-area: GK_header; }
+      
+      .GK { grid-area: GK; }
+      
+      .MF_Header { grid-area: MF_Header; }
+      
+      .MF { grid-area: MF; }
+      
+      .DF_header { grid-area: DF_header; }
+      
+      .DF { grid-area: DF; }
+      
+      .FW_header { grid-area: FW_header; }
+      
+      .FW { grid-area: FW; }
+      
+    
+      
+    .teamValue { grid-area: teamValue; }
+      
+    .fieldValue { grid-area: fieldValue; }
+    
+  .piechart {  display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "teamValue fieldValue";
+    grid-area: piechart;
+  }
+
+  
+/* This is for responsive container with specified aspect ratio */
+.aspect-ratio {
+    position: relative;
+  }
+  
+
+
+  /* This is the key part - position and fit the image to the container */
+  .oversize {
+    width: 100%;
+    height: 98%;
+    object-fit: cover;  
+}
+  
+  .img-overlay-wrap {
+    position: relative;
+    
+  }
+  
+  .img-overlay-wrap img { /* <= optional, for responsiveness */
+     display: block;
+  }
+  
+  .img-overlay-wrap svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  
+
+  
