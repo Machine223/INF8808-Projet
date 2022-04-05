@@ -1,1 +1,13 @@
 <p>data-viz2 works!</p>
+<div id="vis2">
+<mat-form-field appearance="fill">
+  <mat-label>Classement</mat-label>
+  <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect()" [placeholder]="selectedCategory">
+      <mat-option *ngFor="let cat of categories" [value]="cat.value">
+          {{cat.viewValue}}
+      </mat-option>
+  </mat-select>
+</mat-form-field>
+
+</div>
+<script src="./data-viz3.component.ts"></script>
