@@ -84,3 +84,32 @@
   color: #8ae89f;
   font-weight: bold;
 }
+
+#vis3-desc {
+  flex-wrap: wrap;
+  font-size: 1rem;
+  line-height: 1rem;
+  width: 40%;
+  margin-bottom: 4rem;
+  margin-right: 2rem;
+  text-align: justify;
+}
+#vis3-legend {
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+}
+
+#vis3-legend-divider {
+  stroke: black;
+  stroke-width: 1;
+}
+
+.vis3-grid {
+  stroke: black;
+  stroke-width: 1;
+  stroke-dasharray: 2;
+  opacity: 0.5;
+}

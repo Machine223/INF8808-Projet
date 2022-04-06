@@ -1,5 +1,14 @@
 <div id="vis3">
-<p>data-viz3 works!</p>
+<div id="vis3-legend">
+<p id="vis3-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum veritatis porro officiis officia praesentium magnam ab ipsam architecto hic! Inventore illo tenetur consequatur debitis obcaecati deleniti cumque nulla, eum repudiandae.Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum veritatis porro officiis officia praesentium magnam ab
+ipsam architecto hic! Inventore illo tenetur consequatur debitis obcaecati deleniti cumque nulla, eum repudiandae.</p>
+<svg width="500" id="vis3-legend-rect">
+    <rect width="400" height="200" fill="none" stroke-width="3" stroke="black" x="1" y="1">
+    </rect>
+    <line x1="230" y1="10" x2="230" y2="190" id="vis3-legend-divider"></line>
+</svg>
+
+</div>
 <mat-form-field appearance="fill">
     <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect()" [placeholder]="selectedCategory">
         <mat-option *ngFor="let cat of categories" [value]="cat.value">

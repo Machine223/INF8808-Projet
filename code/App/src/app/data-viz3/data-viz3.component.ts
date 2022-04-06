@@ -11,7 +11,11 @@ import d3Tip from 'd3-tip';
 })
 export class DataViz3Component implements OnInit {
   private svg: any;
-  private width: number = window.innerWidth - window.innerWidth / 4;
+  private width: number = Math.min(
+    window.innerWidth - window.innerWidth / 4,
+    1000
+  );
+  private legendPos: Object = {};
   private height: number = window.innerHeight;
   private imSize: number = 30;
   private areaOutputRange: number = 70;
@@ -19,6 +23,7 @@ export class DataViz3Component implements OnInit {
   private cols: number = 6;
   private data: any[] = [];
   private legendData: any[] = [];
+  private legendSizes: number[] = [1, 5, 15];
   private colors: any[] = ['#df3251', ' #5cbbf0', '#8ae89f'];
   tip = d3Tip()
     .attr('class', 'd3-tip')
@@ -41,49 +46,15 @@ export class DataViz3Component implements OnInit {
   onSelect(): any {
     this.sortPlayers(this.selectedCategory);
     for (let i = 0; i < this.categories.length; i++) {
-      d3.selectAll(`.${this.categories[i].value}`)
+      d3.select('#vis3-svg')
+        .selectAll(`.${this.categories[i].value}`)
         .data(this.data)
         .transition()
         .duration(1000)
-        .attr('width', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('height', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('x', (d: any) => {
-          if (i !== 1) {
-            return (
-              this.xScale(d['Index'] % this.cols) +
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value]) -
-              this.imSize / 4 +
-              this.imSize / 8
-            );
-          } else {
-            return (
-              this.xScale(d['Index'] % this.cols) +
-              this.areaOutputRange -
-              this.imSize / 8
-            );
-          }
-        })
-        .attr('y', (d: any) => {
-          if (i !== 2) {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value])
-            );
-          } else {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange
-            );
-          }
-        });
+        .call(svg => this.modifySquares(svg, i, '#vis3-svg'));
     }
-    d3.selectAll('.face')
+    d3.select('#vis3-svg')
+      .selectAll('.face')
       .data(this.data)
       .transition()
       .duration(1000)
@@ -102,8 +73,22 @@ export class DataViz3Component implements OnInit {
           this.imSize / 2
         );
       })
-      .select('.positionNumber')
-      .text((d: any) => d['Index'] + 1);
+      .call(svg =>
+        svg.select('.positionNumber').text((d: any) => d['Index'] + 1)
+      )
+      .call(svg =>
+        svg.select('.positionCircle').attr('fill', (d: any) => {
+          let color =
+            d['Index'] === 0
+              ? '#D4AF37'
+              : d['Index'] === 1
+              ? '#C4CACE'
+              : d['Index'] === 2
+              ? '#A97142'
+              : '#FFFAF2';
+          return color;
+        })
+      );
   }
 
   ngOnInit(): void {
@@ -165,7 +150,8 @@ export class DataViz3Component implements OnInit {
       .range([0, this.height]);
     return y(index);
   }
-  private createSvg(): void {
+
+  private createMainSvg(): void {
     this.svg = d3
       .select('#vis3')
       .append('svg')
@@ -175,227 +161,266 @@ export class DataViz3Component implements OnInit {
       .attr('id', 'vis3-svg');
 
     this.svg.call(this.tip);
+  }
 
-    d3.select('#vis3')
-      .append('svg')
-      .attr('transform', `translate(${this.width - 200},${-this.height - 150})`)
-      .attr('width', 200)
-      .attr('height', 200)
+  private createLegend(): void {
+    d3.select('#vis3-legend-rect')
       .append('g')
-      .attr('id', 'legend');
+      .attr('id', 'vis3-legend-rect-ex')
+      .attr('transform', 'translate(40,20)');
+  }
+
+  private xSquareTranslation(
+    id: String,
+    d: any,
+    i: number,
+    isText = false
+  ): number {
+    let xValue: number = 0;
+    if (id === '#vis3-svg') {
+      xValue += this.xScale(d['Index'] % this.cols);
+    }
+    if (i !== 1) {
+      xValue +=
+        this.areaOutputRange -
+        this.areaScale(d[this.categories[i].value]) -
+        this.imSize / 4 +
+        this.imSize / 8;
+      if (isText) {
+        xValue -= this.imSize;
+      }
+    } else {
+      xValue += this.areaOutputRange - this.imSize / 8;
+    }
+    return xValue;
+  }
+
+  private ySquareTranslation(d: any, i: number, isText = false): number {
+    let yValue: number = 0;
+    if (i !== 2) {
+      yValue +=
+        this.yScale(Math.floor(d['Index'] / this.rows)) +
+        this.areaOutputRange -
+        this.areaScale(d[this.categories[i].value]);
+      if (isText) {
+        yValue -= this.imSize / 8;
+      }
+    } else {
+      yValue +=
+        this.yScale(Math.floor(d['Index'] / this.rows)) + this.areaOutputRange;
+      if (isText) {
+        yValue += this.areaOutputRange + this.imSize / 2;
+      }
+    }
+    return yValue;
+  }
+
+  private modifySquares(svg: any, i: number, id: String) {
+    svg
+      .attr('width', (d: any) => {
+        return this.areaScale(d[this.categories[i].value]);
+      })
+      .attr('height', (d: any) => {
+        return this.areaScale(d[this.categories[i].value]);
+      })
+      .attr('fill', this.colors[i])
+      .attr('x', (d: any) => {
+        return this.xSquareTranslation(id, d, i);
+      })
+      .attr('y', (d: any) => {
+        return this.ySquareTranslation(d, i);
+      })
+      .attr('class', this.categories[i].value);
+  }
+
+  private createSquares(id: String): void {
+    const data: any =
+      id === '#vis3-legend-rect-ex' ? this.legendData : this.data;
     for (let i = 0; i < this.categories.length; i++) {
       d3.select('#vis3')
-        .select('#legend')
+        .select(`${id}`)
+        .selectAll('g')
+        .data(data)
+        .enter()
+        .append('rect')
+        .call(svg => this.modifySquares(svg, i, id));
+    }
+  }
+
+  private createCircles(id: String): void {
+    const data: any =
+      id === '#vis3-legend-rect-ex' ? this.legendData : this.data;
+    d3.select(`${id}`)
+      .selectAll('g')
+      .data(data)
+      .enter()
+      .append('svg')
+      .attr('class', 'face')
+      .on('mouseover', this.tip.show)
+      .on('mouseout', this.tip.hide)
+      .attr('overflow', 'visible')
+      .attr('x', (d: any) => {
+        let xValue: number = 0;
+        if (id === '#vis3-svg') {
+          xValue += this.xScale(d['Index'] % this.cols);
+        }
+        xValue += this.areaOutputRange - this.imSize / 2 - this.imSize / 8;
+        return xValue;
+      })
+      .attr('y', (d: any) => {
+        let yValue: number = 0;
+        if (id === '#vis3-svg') {
+          yValue += this.yScale(Math.floor(d['Index'] / this.rows));
+        }
+        yValue += this.areaOutputRange - this.imSize / 2;
+        return yValue;
+      })
+      .call(svg =>
+        svg
+          .append('line')
+          .attr('x1', this.imSize / 2)
+          .attr('x2', this.imSize / 2)
+          .attr(
+            'y1',
+            -this.imSize / 4 - this.imSize - this.imSize / 2 - this.imSize / 8
+          )
+          .attr(
+            'y2',
+            this.imSize / 4 +
+              2 * this.imSize +
+              this.imSize / 2 +
+              this.imSize / 8
+          )
+          .attr('class', 'vis3-grid')
+      )
+      .call(svg =>
+        svg
+          .append('line')
+          .attr('x1', -this.imSize * 2 - this.imSize / 4)
+          .attr('x2', this.imSize * 2 + this.imSize + this.imSize / 4)
+          .attr('y1', this.imSize / 2)
+          .attr('y2', this.imSize / 2)
+          .attr('class', 'vis3-grid')
+      )
+      .call(svg =>
+        svg
+          .append('circle')
+          .attr('r', this.imSize / 2 + this.imSize / 32)
+          .attr('cx', this.imSize / 2)
+          .attr('cy', this.imSize / 2)
+          .attr('fill', 'none')
+          .attr('stroke', 'black')
+          .attr('stroke-width', 2)
+          .attr('class', 'cir')
+      )
+      .call(svg =>
+        svg
+          .append('foreignObject')
+          .attr('width', this.imSize)
+          .attr('height', this.imSize)
+          .append('xhtml:img')
+          .attr('src', (d: any) => d['Img'])
+          .attr('width', this.imSize)
+          .attr('height', this.imSize)
+      )
+      .call(svg =>
+        svg
+          .append('circle')
+          .attr('r', this.imSize / 4)
+          .attr('cx', this.imSize)
+          .attr('cy', this.imSize)
+          .attr('fill', (d: any) => {
+            let color =
+              d['Index'] === 0
+                ? '#D4AF37'
+                : d['Index'] === 1
+                ? '#C4CACE'
+                : d['Index'] === 2
+                ? '#A97142'
+                : '#FFFAF2';
+            return color;
+          })
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1)
+          .attr('class', 'positionCircle')
+      )
+      .call(svg =>
+        svg
+          .append('text')
+          .attr('x', this.imSize)
+          .attr('y', this.imSize)
+          .attr('text-anchor', 'middle')
+          .attr('fill', 'black')
+          .attr('dy', '.3em')
+          .attr('class', 'positionNumber')
+          .text((d: any) => d['Index'] + 1)
+      );
+  }
+
+  private createSvg(): void {
+    this.createMainSvg();
+    this.createLegend();
+    this.createSquares('#vis3-legend-rect-ex');
+    this.createCircles('#vis3-legend-rect-ex');
+    this.createSquares('#vis3-svg');
+    this.createCircles('#vis3-svg');
+    for (let i = 0; i < this.categories.length; i++) {
+      d3.select('#vis3-legend-rect-ex')
         .selectAll('g')
         .data(this.legendData)
         .enter()
-        .append('rect')
-        .attr('width', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('height', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('fill', this.colors[i])
+        .append('text')
+        .text(`${this.categories[i].viewValue}`)
         .attr('x', (d: any) => {
-          if (i !== 1) {
-            return (
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value]) -
-              this.imSize / 4 +
-              this.imSize / 8
-            );
-          } else {
-            return this.areaOutputRange - this.imSize / 8;
-          }
+          return this.xSquareTranslation('#vis3-legend-rect-ex', d, i, true);
         })
         .attr('y', (d: any) => {
-          if (i !== 2) {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value])
-            );
-          } else {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange
-            );
-          }
-        })
-        .attr('class', this.categories[i].value);
+          return this.ySquareTranslation(d, i, true);
+        });
     }
-    d3.select('#legend')
-      .selectAll('g')
-      .data(this.legendData)
-      .enter()
-      .append('svg')
-      .attr('class', 'face')
-      .on('mouseover', this.tip.show)
-      .on('mouseout', this.tip.hide)
-      .attr('overflow', 'visible')
-      .attr('x', (d: any) => {
-        return this.areaOutputRange - this.imSize / 2 - this.imSize / 8;
+    d3.select('#vis3-legend-rect-ex')
+      .append('text')
+      .text('Classement')
+      .attr('x', () => {
+        return this.areaOutputRange;
       })
-      .attr('y', (d: any) => {
-        return this.areaOutputRange - this.imSize / 2;
-      })
-      .call(svg =>
-        svg
-          .append('circle')
-          .attr('r', this.imSize / 2 + this.imSize / 32)
-          .attr('cx', this.imSize / 2)
-          .attr('cy', this.imSize / 2)
-          .attr('fill', 'none')
-          .attr('stroke', 'black')
-          .attr('stroke-width', 2)
-          .attr('class', 'cir')
-      )
-      .call(svg =>
-        svg
-          .append('foreignObject')
-          .attr('width', this.imSize)
-          .attr('height', this.imSize)
-          .append('xhtml:img')
-          .attr('src', (d: any) => d['Img'])
-          .attr('width', this.imSize)
-          .attr('height', this.imSize)
-      )
-      .call(svg =>
-        svg
-          .append('circle')
-          .attr('r', this.imSize / 4)
-          .attr('cx', this.imSize)
-          .attr('cy', this.imSize)
-          .attr('fill', 'grey')
-          .attr('stroke', 'black')
-          .attr('stroke-width', 1)
-          .attr('class', 'positionCircle')
-      )
-      .call(svg =>
-        svg
-          .append('text')
-          .attr('x', this.imSize)
-          .attr('y', this.imSize)
-          .attr('text-anchor', 'middle')
-          .attr('fill', 'black')
-          .attr('dy', '.3em')
-          .attr('class', 'positionNumber')
-          .text((d: any) => d['Index'] + 1)
-      );
+      .attr('y', () => {
+        return this.areaOutputRange + this.imSize + this.imSize / 8;
+      });
 
-    for (let i = 0; i < this.categories.length; i++) {
-      d3.select('#vis3-svg')
-        .selectAll('g')
-        .data(this.data)
-        .enter()
-        .append('rect')
-        .attr('width', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('height', (d: any) => {
-          return this.areaScale(d[this.categories[i].value]);
-        })
-        .attr('fill', this.colors[i])
-        .attr('x', (d: any) => {
-          if (i !== 1) {
-            return (
-              this.xScale(d['Index'] % this.cols) +
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value]) -
-              this.imSize / 4 +
-              this.imSize / 8
-            );
-          } else {
-            return (
-              this.xScale(d['Index'] % this.cols) +
-              this.areaOutputRange -
-              this.imSize / 8
-            );
-          }
-        })
-        .attr('y', (d: any) => {
-          if (i !== 2) {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange -
-              this.areaScale(d[this.categories[i].value])
-            );
-          } else {
-            return (
-              this.yScale(Math.floor(d['Index'] / this.rows)) +
-              this.areaOutputRange
-            );
-          }
-        })
-        .attr('class', this.categories[i].value);
+    for (let i = 0; i < this.legendSizes.length; i++) {
+      d3.select('#vis3-legend-rect-ex')
+        .call(svg =>
+          svg
+            .append('rect')
+            .attr('x', this.areaOutputRange * 3 + this.imSize)
+            .attr(
+              'y',
+              this.areaOutputRange * 2 - this.areaScale(this.legendSizes[i])
+            )
+            .attr('width', this.areaScale(this.legendSizes[i]))
+            .attr('height', this.areaScale(this.legendSizes[i]))
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+        )
+        .call(svg =>
+          svg
+            .append('text')
+            .text(this.legendSizes[i])
+            .attr('x', this.areaOutputRange * 3 + this.imSize + this.imSize / 8)
+            .attr(
+              'y',
+              this.areaOutputRange * 2 -
+                this.areaScale(this.legendSizes[i]) -
+                this.imSize / 8
+            )
+        );
     }
-    d3.select('#vis3-svg')
-      .selectAll('g')
-      .data(this.data)
-      .enter()
-      .append('svg')
-      .attr('class', 'face')
-      .on('mouseover', this.tip.show)
-      .on('mouseout', this.tip.hide)
-      .attr('overflow', 'visible')
-      .attr('x', (d: any) => {
-        return (
-          this.xScale(d['Index'] % this.cols) +
-          this.areaOutputRange -
-          this.imSize / 2 -
-          this.imSize / 8
-        );
-      })
-      .attr('y', (d: any) => {
-        return (
-          this.yScale(Math.floor(d['Index'] / this.rows)) +
-          this.areaOutputRange -
-          this.imSize / 2
-        );
-      })
-      .call(svg =>
-        svg
-          .append('circle')
-          .attr('r', this.imSize / 2 + this.imSize / 32)
-          .attr('cx', this.imSize / 2)
-          .attr('cy', this.imSize / 2)
-          .attr('fill', 'none')
-          .attr('stroke', 'black')
-          .attr('stroke-width', 2)
-          .attr('class', 'cir')
-      )
-      .call(svg =>
-        svg
-          .append('foreignObject')
-          .attr('width', this.imSize)
-          .attr('height', this.imSize)
-          .append('xhtml:img')
-          .attr('src', (d: any) => d['Img'])
-          .attr('width', this.imSize)
-          .attr('height', this.imSize)
-      )
-      .call(svg =>
-        svg
-          .append('circle')
-          .attr('r', this.imSize / 4)
-          .attr('cx', this.imSize)
-          .attr('cy', this.imSize)
-          .attr('fill', 'grey')
-          .attr('stroke', 'black')
-          .attr('stroke-width', 1)
-          .attr('class', 'positionCircle')
-      )
-      .call(svg =>
-        svg
-          .append('text')
-          .attr('x', this.imSize)
-          .attr('y', this.imSize)
-          .attr('text-anchor', 'middle')
-          .attr('fill', 'black')
-          .attr('dy', '.3em')
-          .attr('class', 'positionNumber')
-          .text((d: any) => d['Index'] + 1)
-      );
+    d3.select('#vis3-legend-rect-ex')
+      .append('text')
+      .text('Échelle de grandeur')
+      .attr('x', this.areaOutputRange * 3)
+      .attr('y', this.imSize / 4);
   }
 }
