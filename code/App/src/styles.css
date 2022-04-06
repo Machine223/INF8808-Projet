@@ -1,4 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+text {
+  font-size: 1.5em;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.title-viz2{
+  font-size: 1.6em;
+  fill: #1C4686;
+  font-weight: 400;
+}
+.yAxis{
+  display: flex;
+}
+.yAxis text{
+  font-size: 1.6em;
+  text-align: left;
+
+}
+.tick{
+  text-align: left;
+}
+.tick text {
+  font-size: 1em;
+  fill: #263238;
+}
+
+.tick line{
+  stroke: #C4C4C4;
+}
