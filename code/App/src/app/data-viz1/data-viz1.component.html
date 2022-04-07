@@ -1,1 +1,20 @@
-<p>data-viz1 works!</p>
+<div id=vis1>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Ordering</mat-label>
+        <mat-select [(value)]="selectedOrderingCategory" (selectionChange)="onSelectOrdering()">
+            <mat-option *ngFor="let cat1 of orderingCategories" [value]="cat1.value">
+                {{cat1.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Gradient</mat-label>
+        <mat-select [(value)]="selectedGradientCategory" (selectionChange)="onSelectGradient()">
+            <mat-option *ngFor="let cat2 of gradientCategories" [value]="cat2.value">
+                {{cat2.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>

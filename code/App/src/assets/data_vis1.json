@@ -15,7 +15,11 @@
         "unSub": 15,
         "PPM": 0.0,
         "VSGls": 22,
-        "PKRatio": 0.0
+        "W": 0,
+        "D": 0,
+        "Pts": 0,
+        "PKRatio": 0.0,
+        "Index": 0
     },
     {
         "Squad": "ag Antigua and Barbuda",
@@ -33,7 +37,11 @@
         "unSub": 30,
         "PPM": 1.75,
         "VSGls": 5,
-        "PKRatio": 1.0
+        "W": 2,
+        "D": 1,
+        "Pts": 7,
+        "PKRatio": 1.0,
+        "Index": 1
     },
     {
         "Squad": "aw Aruba",
@@ -51,7 +59,11 @@
         "unSub": 20,
         "PPM": 0.75,
         "VSGls": 17,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 0,
+        "Pts": 3,
+        "PKRatio": 0.0,
+        "Index": 2
     },
     {
         "Squad": "bs Bahamas",
@@ -69,7 +81,11 @@
         "unSub": 18,
         "PPM": 0.25,
         "VSGls": 15,
-        "PKRatio": 0.0
+        "W": 0,
+        "D": 1,
+        "Pts": 1,
+        "PKRatio": 0.0,
+        "Index": 3
     },
     {
         "Squad": "bb Barbados",
@@ -87,7 +103,11 @@
         "unSub": 32,
         "PPM": 1.25,
         "VSGls": 3,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 2,
+        "Pts": 5,
+        "PKRatio": 0.0,
+        "Index": 4
     },
     {
         "Squad": "bz Belize",
@@ -105,7 +125,11 @@
         "unSub": 12,
         "PPM": 1.0,
         "VSGls": 5,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 0,
+        "Pts": 3,
+        "PKRatio": 0.0,
+        "Index": 5
     },
     {
         "Squad": "bm Bermuda",
@@ -123,7 +147,11 @@
         "unSub": 18,
         "PPM": 1.0,
         "VSGls": 12,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 1,
+        "Pts": 4,
+        "PKRatio": 0.0,
+        "Index": 6
     },
     {
         "Squad": "vg British Virgin Islands",
@@ -141,7 +169,11 @@
         "unSub": 15,
         "PPM": 0.0,
         "VSGls": 19,
-        "PKRatio": 0.0
+        "W": 0,
+        "D": 0,
+        "Pts": 0,
+        "PKRatio": 0.0,
+        "Index": 7
     },
     {
         "Squad": "ca Canada",
@@ -159,7 +191,11 @@
         "unSub": 124,
         "PPM": 2.53,
         "VSGls": 6,
-        "PKRatio": 0.8
+        "W": 13,
+        "D": 4,
+        "Pts": 43,
+        "PKRatio": 0.8,
+        "Index": 8
     },
     {
         "Squad": "ky Cayman Islands",
@@ -177,7 +213,11 @@
         "unSub": 19,
         "PPM": 0.25,
         "VSGls": 18,
-        "PKRatio": 1.0
+        "W": 0,
+        "D": 1,
+        "Pts": 1,
+        "PKRatio": 1.0,
+        "Index": 9
     },
     {
         "Squad": "cr Costa Rica",
@@ -195,7 +235,11 @@
         "unSub": 78,
         "PPM": 1.45,
         "VSGls": 6,
-        "PKRatio": 0.5
+        "W": 4,
+        "D": 4,
+        "Pts": 16,
+        "PKRatio": 0.5,
+        "Index": 10
     },
     {
         "Squad": "cu Cuba",
@@ -213,7 +257,11 @@
         "unSub": 23,
         "PPM": 1.5,
         "VSGls": 3,
-        "PKRatio": 1.0
+        "W": 2,
+        "D": 0,
+        "Pts": 6,
+        "PKRatio": 1.0,
+        "Index": 11
     },
     {
         "Squad": "cw Curaçao",
@@ -231,7 +279,11 @@
         "unSub": 41,
         "PPM": 1.83,
         "VSGls": 3,
-        "PKRatio": 1.0
+        "W": 3,
+        "D": 2,
+        "Pts": 11,
+        "PKRatio": 1.0,
+        "Index": 12
     },
     {
         "Squad": "dm Dominica",
@@ -249,7 +301,11 @@
         "unSub": 21,
         "PPM": 1.0,
         "VSGls": 3,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 1,
+        "Pts": 4,
+        "PKRatio": 0.0,
+        "Index": 13
     },
     {
         "Squad": "do Dominican Republic",
@@ -267,7 +323,11 @@
         "unSub": 22,
         "PPM": 1.75,
         "VSGls": 4,
-        "PKRatio": 0.5
+        "W": 2,
+        "D": 1,
+        "Pts": 7,
+        "PKRatio": 0.5,
+        "Index": 14
     },
     {
         "Squad": "sv El Salvador",
@@ -285,7 +345,11 @@
         "unSub": 106,
         "PPM": 1.47,
         "VSGls": 14,
-        "PKRatio": 0.5
+        "W": 7,
+        "D": 4,
+        "Pts": 25,
+        "PKRatio": 0.5,
+        "Index": 15
     },
     {
         "Squad": "gd Grenada",
@@ -303,7 +367,11 @@
         "unSub": 25,
         "PPM": 0.75,
         "VSGls": 5,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 0,
+        "Pts": 3,
+        "PKRatio": 0.0,
+        "Index": 16
     },
     {
         "Squad": "gt Guatemala",
@@ -321,7 +389,11 @@
         "unSub": 28,
         "PPM": 2.5,
         "VSGls": 0,
-        "PKRatio": 1.0
+        "W": 3,
+        "D": 1,
+        "Pts": 10,
+        "PKRatio": 1.0,
+        "Index": 17
     },
     {
         "Squad": "gy Guyana",
@@ -339,7 +411,11 @@
         "unSub": 27,
         "PPM": 0.75,
         "VSGls": 8,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 0,
+        "Pts": 3,
+        "PKRatio": 0.0,
+        "Index": 18
     },
     {
         "Squad": "ht Haiti",
@@ -357,7 +433,11 @@
         "unSub": 26,
         "PPM": 1.8,
         "VSGls": 3,
-        "PKRatio": 0.0
+        "W": 3,
+        "D": 0,
+        "Pts": 9,
+        "PKRatio": 0.0,
+        "Index": 19
     },
     {
         "Squad": "hn Honduras",
@@ -375,7 +455,11 @@
         "unSub": 83,
         "PPM": 0.27,
         "VSGls": 21,
-        "PKRatio": 1.0
+        "W": 0,
+        "D": 3,
+        "Pts": 3,
+        "PKRatio": 1.0,
+        "Index": 20
     },
     {
         "Squad": "jm Jamaica",
@@ -393,7 +477,11 @@
         "unSub": 71,
         "PPM": 0.64,
         "VSGls": 15,
-        "PKRatio": 1.0
+        "W": 1,
+        "D": 4,
+        "Pts": 7,
+        "PKRatio": 1.0,
+        "Index": 21
     },
     {
         "Squad": "mx Mexico",
@@ -411,7 +499,11 @@
         "unSub": 84,
         "PPM": 1.91,
         "VSGls": 8,
-        "PKRatio": 1.0
+        "W": 6,
+        "D": 3,
+        "Pts": 21,
+        "PKRatio": 1.0,
+        "Index": 22
     },
     {
         "Squad": "ms Montserrat",
@@ -429,7 +521,11 @@
         "unSub": 29,
         "PPM": 2.0,
         "VSGls": 4,
-        "PKRatio": 1.0
+        "W": 2,
+        "D": 2,
+        "Pts": 8,
+        "PKRatio": 1.0,
+        "Index": 23
     },
     {
         "Squad": "ni Nicaragua",
@@ -447,7 +543,11 @@
         "unSub": 20,
         "PPM": 2.0,
         "VSGls": 1,
-        "PKRatio": 0.0
+        "W": 2,
+        "D": 0,
+        "Pts": 6,
+        "PKRatio": 0.0,
+        "Index": 24
     },
     {
         "Squad": "pa Panama",
@@ -465,7 +565,11 @@
         "unSub": 124,
         "PPM": 1.94,
         "VSGls": 14,
-        "PKRatio": 0.6666666666666666
+        "W": 10,
+        "D": 3,
+        "Pts": 33,
+        "PKRatio": 0.6666666666666666,
+        "Index": 25
     },
     {
         "Squad": "pr Puerto Rico",
@@ -483,7 +587,11 @@
         "unSub": 28,
         "PPM": 1.75,
         "VSGls": 2,
-        "PKRatio": 1.0
+        "W": 2,
+        "D": 1,
+        "Pts": 7,
+        "PKRatio": 1.0,
+        "Index": 26
     },
     {
         "Squad": "kn St. Kitts and Nevis",
@@ -501,7 +609,11 @@
         "unSub": 41,
         "PPM": 1.5,
         "VSGls": 8,
-        "PKRatio": 1.0
+        "W": 3,
+        "D": 0,
+        "Pts": 9,
+        "PKRatio": 1.0,
+        "Index": 27
     },
     {
         "Squad": "vc St. Vincent and the Grenadines",
@@ -519,7 +631,11 @@
         "unSub": 26,
         "PPM": 0.75,
         "VSGls": 16,
-        "PKRatio": 0.0
+        "W": 1,
+        "D": 0,
+        "Pts": 3,
+        "PKRatio": 0.0,
+        "Index": 28
     },
     {
         "Squad": "sr Suriname",
@@ -537,7 +653,11 @@
         "unSub": 28,
         "PPM": 2.25,
         "VSGls": 4,
-        "PKRatio": 0.5
+        "W": 3,
+        "D": 0,
+        "Pts": 9,
+        "PKRatio": 0.5,
+        "Index": 29
     },
     {
         "Squad": "tt Trinidad and Tobago",
@@ -555,7 +675,11 @@
         "unSub": 29,
         "PPM": 2.0,
         "VSGls": 1,
-        "PKRatio": 0.0
+        "W": 2,
+        "D": 2,
+        "Pts": 8,
+        "PKRatio": 0.0,
+        "Index": 30
     },
     {
         "Squad": "tc Turks and Caicos Islands",
@@ -573,7 +697,11 @@
         "unSub": 15,
         "PPM": 0.0,
         "VSGls": 22,
-        "PKRatio": 0.0
+        "W": 0,
+        "D": 0,
+        "Pts": 0,
+        "PKRatio": 0.0,
+        "Index": 31
     },
     {
         "Squad": "us United States",
@@ -591,7 +719,11 @@
         "unSub": 81,
         "PPM": 1.91,
         "VSGls": 7,
-        "PKRatio": 0.0
+        "W": 6,
+        "D": 3,
+        "Pts": 21,
+        "PKRatio": 0.0,
+        "Index": 32
     },
     {
         "Squad": "vi US Virgin Islands",
@@ -609,6 +741,10 @@
         "unSub": 27,
         "PPM": 0.0,
         "VSGls": 15,
-        "PKRatio": 0.0
+        "W": 0,
+        "D": 0,
+        "Pts": 0,
+        "PKRatio": 0.0,
+        "Index": 33
     }
 ]
