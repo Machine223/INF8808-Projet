@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AppComponent } from './app.component';
 import { DataViz1Component } from './data-viz1/data-viz1.component';
@@ -23,6 +24,7 @@ import { DataViz4Component } from './data-viz4/data-viz4.component';
     MatFormFieldModule,
     MatSelectModule,
     BrowserAnimationsModule,
+    MatDividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

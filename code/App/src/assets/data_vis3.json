@@ -2,7 +2,7 @@
     {
         "Player": "Sam Adekugbe",
         "Img": "https://fbref.com/req/202005121/images/headshots/7f2309be_2018.jpg",
-        "Pos": "DF,MF",
+        "Pos": "DF/MF",
         "Squad": "Canada",
         "MP": 16,
         "Gls": 1,
@@ -23,7 +23,7 @@
     {
         "Player": "Zachary Brault-Guillard",
         "Img": "https://fbref.com/req/202005121/images/headshots/948a58c2_2018.jpg",
-        "Pos": "DF,MF",
+        "Pos": "DF/MF",
         "Squad": "Canada",
         "MP": 2,
         "Gls": 1,
@@ -43,7 +43,7 @@
     {
         "Player": "Tajon Buchanan",
         "Img": "https://fbref.com/req/202005121/images/headshots/3aca6420_2018.jpg",
-        "Pos": "MF,FW",
+        "Pos": "MF/FW",
         "Squad": "Canada",
         "MP": 14,
         "Gls": 2,
@@ -73,7 +73,7 @@
     {
         "Player": "Derek Cornelius",
         "Img": "https://fbref.com/req/202005121/images/headshots/577744b8_2018.jpg",
-        "Pos": "DF,FW",
+        "Pos": "DF/FW",
         "Squad": "Canada",
         "MP": 1,
         "Gls": 0,
@@ -93,7 +93,7 @@
     {
         "Player": "Jonathan David",
         "Img": "https://fbref.com/req/202005121/images/headshots/ce50fd99_2018.jpg",
-        "Pos": "FW,MF",
+        "Pos": "FW/MF",
         "Squad": "Canada",
         "MP": 15,
         "Gls": 9,
@@ -103,7 +103,7 @@
     {
         "Player": "Alphonso Davies",
         "Img": "https://fbref.com/req/202005121/images/headshots/d781d855_2018.jpg",
-        "Pos": "FW,MF",
+        "Pos": "FW/MF",
         "Squad": "Canada",
         "MP": 13,
         "Gls": 4,
@@ -153,7 +153,7 @@
     {
         "Player": "Junior Hoilett",
         "Img": "https://fbref.com/req/202005121/images/headshots/33af5b9e_2018.jpg",
-        "Pos": "MF,FW",
+        "Pos": "MF/FW",
         "Squad": "Canada",
         "MP": 10,
         "Gls": 2,
@@ -203,7 +203,7 @@
     {
         "Player": "Cyle Larin",
         "Img": "https://fbref.com/req/202005121/images/headshots/e7af9060_2018.jpg",
-        "Pos": "FW,MF",
+        "Pos": "FW/MF",
         "Squad": "Canada",
         "MP": 13,
         "Gls": 12,
@@ -213,7 +213,7 @@
     {
         "Player": "Richie Laryea",
         "Img": "https://fbref.com/req/202005121/images/headshots/276fdbe4_2018.jpg",
-        "Pos": "MF,DF",
+        "Pos": "MF/DF",
         "Squad": "Canada",
         "MP": 13,
         "Gls": 1,
@@ -243,7 +243,7 @@
     {
         "Player": "Jonathan Osorio",
         "Img": "https://fbref.com/req/202005121/images/headshots/70106ff6_2018.jpg",
-        "Pos": "MF,FW",
+        "Pos": "MF/FW",
         "Squad": "Canada",
         "MP": 13,
         "Gls": 1,
