@@ -12,7 +12,9 @@ export class DataViz1Component implements OnInit {
   svg: any
   width: number = 800
   height: number = 800
-  margin = {left:180, top:20, bottom:20, right:20}
+  margin = {left:180, top:20, bottom:50, right:20}
+  legendWidth = 300
+  legendHeight = 20
   orderingCategories: any[] = [    
   { value: 'Gls', viewValue: 'Buts marqués' },
   { value: 'VSGls', viewValue: 'Buts encaissés' },
@@ -64,7 +66,7 @@ export class DataViz1Component implements OnInit {
         return -1
       }
     })
-    this.data=  newData
+    this.data =  newData
     // newData.map((d:any, i: number) => {
     //   const index = this.data.findIndex((x:any) => x.Squad === d.Squad);
     //   this.data[index]['Index'] = i;
@@ -79,6 +81,9 @@ export class DataViz1Component implements OnInit {
     .attr('height', this.height)
     .append('g')
     .attr('id', 'vis1-svg')
+
+    this.createLegend()
+
     this.render()
   }
 
@@ -86,7 +91,7 @@ export class DataViz1Component implements OnInit {
     const xValue = (d:any) => d[this.selectedOrderingCategory]
     const yValue = (d:any) => d.Squad
     const innerWidth = this.width - this.margin.right - this.margin.left
-    const innerHeight = this.height - this.margin.top - this.margin.bottom
+    const innerHeight = this.height - this.margin.top - this.margin.bottom - this.legendHeight
 
     const xScale = d3.scaleLinear()
     .domain([0, d3.max(this.data as number[], xValue)])
@@ -125,5 +130,39 @@ export class DataViz1Component implements OnInit {
 
   clearSvg() {
     d3.selectAll('svg').remove()
+  }
+
+  createLegend() {
+    var defs = this.svg.append('defs')
+
+    var gradient = defs.append('linearGradient')
+      .attr('id', 'legend')
+      .attr('x1', '0%')
+      .attr('x2', '100%')
+      // .attr('y1', '0%')
+      // .attr('y2', '100%')
+
+
+      gradient.append('stop')
+        .attr('class','start')
+        .attr('offset', '0%')
+        .attr('stop-color', 'blue')
+        .attr('stop-opacity', 1)
+
+      gradient.append('stop')
+        .attr('class','end')
+        .attr('offset', '100%')
+        .attr('stop-color', 'red')
+        .attr('stop-opacity', 1)
+
+      var legend = this.svg.append('rect')
+        .attr('width', this.legendWidth)
+        .attr('height', this.legendHeight)
+        .attr('y', this.height - this.margin.top)
+        .attr('x', (this.width + this.margin.left)/2 - this.legendWidth/2)
+        .attr('fill', 'url(#legend)')
+
+      // legend.append('text')
+
   }
 }
