@@ -77,6 +77,7 @@ export class DataViz1Component implements OnInit {
     this.svg = d3
     .select('#vis1')
     .append('svg')
+    .attr('id', 'vis1-svg')
     .attr('width', this.width)
     .attr('height', this.height)
     .append('g')
@@ -137,7 +138,7 @@ export class DataViz1Component implements OnInit {
   }
 
   clearSvg() {
-    d3.selectAll('svg').remove()
+    d3.selectAll('#vis1-svg').remove()
   }
 
   createLegend() {
