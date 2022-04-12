@@ -82,7 +82,7 @@ export class DataViz1Component implements OnInit {
     .append('g')
     .attr('id', 'vis1-svg')
 
-    this.createLegend()
+    // this.createLegend()
 
     this.render()
   }
@@ -92,9 +92,9 @@ export class DataViz1Component implements OnInit {
     const yValue = (d:any) => d.Squad
     const innerWidth = this.width - this.margin.right - this.margin.left
     const innerHeight = this.height - this.margin.top - this.margin.bottom - this.legendHeight
-
+    const max = d3.max(this.data as number[], xValue)
     const xScale = d3.scaleLinear()
-    .domain([0, d3.max(this.data as number[], xValue)])
+    .domain([max, 0])
     .range([0, innerWidth])
 
     
@@ -109,11 +109,18 @@ export class DataViz1Component implements OnInit {
     g.append('g').call(axisLeft(yScale))
     g.append('g').call(axisBottom(xScale))
     .attr('transform', `translate(0, ${innerHeight})`)
+    g.append('line')
+      .attr('x1',innerWidth)
+      .attr('x2',innerWidth)
+      .attr('y1', 0)
+      .attr('y2', innerHeight)
+      .attr('stroke', 'black')
+      .attr('stroke-width', '1px')
 
     g.selectAll('rect').data(this.data).enter()
     .append("text") 
     .attr('y', (d:any) => yScale(yValue(d)) as number + yScale.bandwidth()/2 + 4)
-    .attr('x', (d:any) => xScale(xValue(d)) as number + 3)
+    .attr('x', (d:any) => innerWidth + 3 )
     .attr('fill', 'black')
     .attr('style', 'font-size: 8px;')
     .text((d:any) => xValue(d))
@@ -121,7 +128,8 @@ export class DataViz1Component implements OnInit {
     g.selectAll("rect").data(this.data)
     .enter().append('rect')
     .attr('y', (d:any) => yScale(yValue(d)))
-    .attr('width', (d:any) => xScale(xValue(d)))
+    .attr('x', (d:any) => xScale(xValue(d)))
+    .attr('width', (d:any) => innerWidth - xScale(xValue(d)))
     .attr('height', (d:any) => yScale.bandwidth())
     .attr('fill', '#4682b4')
 
