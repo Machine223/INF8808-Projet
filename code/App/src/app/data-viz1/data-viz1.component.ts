@@ -98,8 +98,8 @@ export class DataViz1Component implements OnInit {
     const yValue = (d:any) => d.Squad;
     const innerWidth = this.width - this.margin.right - this.margin.left;
     const innerHeight = this.height - this.margin.top - this.margin.bottom - this.legendHeight;
-    const minColor = d3.min(this.viewedData as number[], colorValue);
-    const maxColor = d3.max(this.viewedData as number[], colorValue);
+    const minColor = d3.min(this.data as number[], colorValue);
+    const maxColor = d3.max(this.data as number[], colorValue);
     const max = d3.max(this.viewedData as number[], xValue);
     const xScale = d3.scaleLinear()
     .domain([max, 0])
