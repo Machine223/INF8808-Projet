@@ -11,12 +11,22 @@ export class DataViz1Component implements OnInit {
   viewedData: any
   data:any
   svg: any
-  top: number = 12
-  width: number = 800
-  height: number = 600
-  margin = {left:320, top:20, bottom:50, right:20}
+
+  numCols:number = 4
+  topTeams: number = 12
+  fontSize:number = 12
+  width: number = 1800
+  height: number = 1600
   legendWidth :number= 300
   legendHeight:number = 20
+
+  chartMargin = {left:50, right:50, top:50, bottom:50}
+  margin = {left:20, top:20, bottom:100, right:20}
+
+  chartHeight:number = this.height / this.numCols;
+  chartWidth:number = this.width / this.numCols;
+
+  
   orderingCategories: any[] = [    
   { value: 'Gls', viewValue: 'Buts marqués' },
   { value: 'VSGls', viewValue: 'Buts encaissés' },
@@ -31,7 +41,6 @@ export class DataViz1Component implements OnInit {
     { value: 'Crds', viewValue: 'Nombre de cartons'},
     { value: 'Subs', viewValue:'Nombre de remplacements'}
   ]
-  selectedOrderingCategory: string = 'Gls'
   selectedGradientCategory: string = 'Age'
 
   constructor() { }
@@ -41,23 +50,17 @@ export class DataViz1Component implements OnInit {
     .then((data: any) => {
       this.viewedData = data;
       this.data = data;
-      this.sortOrdering(this.selectedOrderingCategory);
-
+      
     })
     .then(() => {
-      this.createSvg(this.selectedOrderingCategory);
+      this.createSvg()
     });
   }
 
-  onSelectOrdering() {
-    this.sortOrdering(this.selectedOrderingCategory);
-    this.clearSvg();
-    this.createSvg(this.selectedOrderingCategory);
-  }
 
   onSelectGradient() {
     this.clearSvg();
-    this.createSvg(this.selectedOrderingCategory);
+    this.createSvg();
   }
 
   private sortOrdering(category: any): void {
@@ -70,14 +73,20 @@ export class DataViz1Component implements OnInit {
         return -1;
       }
     })
-    this.viewedData =  newData.slice(0,this.top);
+    return newData.slice(0,this.topTeams);
     // newData.map((d:any, i: number) => {
     //   const index = this.data.findIndex((x:any) => x.Squad === d.Squad);
     //   this.data[index]['Index'] = i;
     // });
   }
 
-  createSvg(category:string) {
+  coordinates(index:number): any {
+    const x = this.chartWidth * (index % this.numCols)
+    const y = this.chartHeight * Math.floor(index / this.numCols)
+    return {x:x, y:y}
+  }
+
+  createSvg() {
     this.svg = d3
     .select('#vis1')
     .append('svg')
@@ -85,38 +94,52 @@ export class DataViz1Component implements OnInit {
     .attr('width', this.width)
     .attr('height', this.height)
     .append('g')
-    .attr('id', 'vis1-svg');
+    .attr('fill', 'black')
+    .attr('id', 'vis1-svg-g');
 
+    for (var i=0;i<this.orderingCategories.length;i++) {
+      const coord = this.coordinates(i)
+      var g = this.svg.append('g')
+        .attr('width', this.chartWidth)
+        .attr('height', this.chartHeight)
+        .attr('x', coord.x)
+        .attr('y', coord.y)
+
+      // g.append('rect')
+      //   .attr('width', this.chartWidth - this.chartMargin.right)
+      //   .attr('height', this.chartHeight - this.chartMargin.bottom)
+      //   .attr('x', coord.x + this.chartMargin.left)
+      //   .attr('y', coord.y + this.chartMargin.top)
+      var chartData = this.sortOrdering(this.orderingCategories[i].value)
+      this.render(g, this.orderingCategories[i].value, coord, chartData)
+    }
     this.createLegend();
 
-    this.render(category);
+    // this.render(category);
   }
 
-  render(category:string) {
+  render(g:any, category:string, coord:any, chartData:any) {
     const xValue = (d:any) => d[category];
     const colorValue = (d:any) => d[this.selectedGradientCategory];
     const yValue = (d:any) => d.Squad;
-    const innerWidth = this.width - this.margin.right - this.margin.left;
-    const innerHeight = this.height - this.margin.top - this.margin.bottom - this.legendHeight;
+    const innerWidth =  this.chartWidth -  this.chartMargin.right - this.chartMargin.left + coord.x;
+    const innerHeight = this.chartHeight - this.chartMargin.top -   this.chartMargin.bottom + coord.y;
     const minColor = d3.min(this.data as number[], colorValue);
     const maxColor = d3.max(this.data as number[], colorValue);
-    const max = d3.max(this.viewedData as number[], xValue);
+    const max = d3.max(chartData as number[], xValue);
     const xScale = d3.scaleLinear()
     .domain([max, 0])
-    .range([0, innerWidth]);
+    .range([coord.x, innerWidth]);
 
     
     const yScale = d3.scaleBand()
-    .domain(this.viewedData.map(yValue))
-    .range([0, innerHeight])
+    .domain(chartData.map(yValue))
+    .range([coord.y, innerHeight])
     .padding(0.2);
 
     const colorScale = d3.scaleLinear<string>()
       .domain([minColor, maxColor])
       .range(["blue", "red"]);
-
-    const g = this.svg.append('g')
-    .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
     g.append('g').style('font-size', '20px').call(axisLeft(yScale));
 
@@ -130,15 +153,15 @@ export class DataViz1Component implements OnInit {
       .attr('stroke', 'black')
       .attr('stroke-width', '1px');
 
-    g.selectAll('rect').data(this.viewedData).enter()
+    g.selectAll('rect').data(chartData).enter()
     .append("text") 
-    .attr('y', (d:any) => yScale(yValue(d)) as number + yScale.bandwidth()/2 + 4)
+    .attr('y', (d:any) => yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
     .attr('x', (d:any) => innerWidth + 3 )
     .attr('fill', 'black')
-    .attr('style', 'font-size: 8px;')
+    .attr('style', `font-size: ${this.fontSize};`)
     .text((d:any) => xValue(d));
 
-    g.selectAll("rect").data(this.viewedData)
+    g.selectAll("rect").data(chartData)
     .enter().append('rect')
     .attr('y', (d:any) => yScale(yValue(d)))
     .attr('x', (d:any) => xScale(xValue(d)))
@@ -194,14 +217,14 @@ export class DataViz1Component implements OnInit {
       .attr('x', legendx + this.legendWidth + 5)
       .attr('y', legendy + yTextOffset)
       .attr('fill', 'black')
-      .attr('style', 'font-size: 20px;')
+      .attr('style', `font-size: ${this.fontSize}px;`)
       .text(maxColor);
     
     g.append('text')
     .attr('x', legendx - 40)
     .attr('y', legendy + yTextOffset)
     .attr('fill', 'black')
-    .attr('style', 'font-size: 20px;')
+    .attr('style', `font-size: ${this.fontSize}px;`)
     .text(minColor);
 
   }
