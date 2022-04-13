@@ -152,6 +152,9 @@ export class DataViz1Component implements OnInit {
   createLegend() {
     var g = this.svg.append('g')
     var defs = this.svg.append('defs')
+    const colorValue = (d:any) => d[this.selectedGradientCategory]
+    const minColor = d3.min(this.data as number[], colorValue)
+    const maxColor = d3.max(this.data as number[], colorValue)
 
     var gradient = defs.append('linearGradient')
       .attr('id', 'legend')
@@ -188,14 +191,14 @@ export class DataViz1Component implements OnInit {
       .attr('y', legendy + yTextOffset)
       .attr('fill', 'black')
       .attr('style', 'font-size: 20px;')
-      .text('max')
+      .text(maxColor)
     
     g.append('text')
     .attr('x', legendx - 40)
     .attr('y', legendy + yTextOffset)
     .attr('fill', 'black')
     .attr('style', 'font-size: 20px;')
-    .text('min')
+    .text(minColor)
 
   }
 }
