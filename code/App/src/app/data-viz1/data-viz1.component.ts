@@ -53,7 +53,8 @@ export class DataViz1Component implements OnInit {
   }
 
   onSelectGradient() {
-
+    this.clearSvg()
+    this.createSvg()
   }
 
   private sortOrdering(category: any): void {
