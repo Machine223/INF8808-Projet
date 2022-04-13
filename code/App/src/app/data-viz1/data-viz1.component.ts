@@ -83,7 +83,7 @@ export class DataViz1Component implements OnInit {
     .append('g')
     .attr('id', 'vis1-svg')
 
-    // this.createLegend()
+    this.createLegend()
 
     this.render()
   }
@@ -142,6 +142,7 @@ export class DataViz1Component implements OnInit {
   }
 
   createLegend() {
+    var g = this.svg.append('g')
     var defs = this.svg.append('defs')
 
     var gradient = defs.append('linearGradient')
@@ -152,26 +153,41 @@ export class DataViz1Component implements OnInit {
       // .attr('y2', '100%')
 
 
-      gradient.append('stop')
-        .attr('class','start')
-        .attr('offset', '0%')
-        .attr('stop-color', 'blue')
-        .attr('stop-opacity', 1)
+    gradient.append('stop')
+      .attr('class','start')
+      .attr('offset', '0%')
+      .attr('stop-color', 'blue')
+      .attr('stop-opacity', 1)
 
-      gradient.append('stop')
-        .attr('class','end')
-        .attr('offset', '100%')
-        .attr('stop-color', 'red')
-        .attr('stop-opacity', 1)
+    gradient.append('stop')
+      .attr('class','end')
+      .attr('offset', '100%')
+      .attr('stop-color', 'red')
+      .attr('stop-opacity', 1)
 
-      var legend = this.svg.append('rect')
-        .attr('width', this.legendWidth)
-        .attr('height', this.legendHeight)
-        .attr('y', this.height - this.margin.top)
-        .attr('x', (this.width + this.margin.left)/2 - this.legendWidth/2)
-        .attr('fill', 'url(#legend)')
+    var legendx = (this.width + this.margin.left)/2 - this.legendWidth/2
+    var legendy = this.height - this.margin.top
+    var legend = g.append('rect')
+      .attr('width', this.legendWidth)
+      .attr('height', this.legendHeight)
+      .attr('y', legendy)
+      .attr('x', legendx)
+      .attr('fill', 'url(#legend)')
 
-      // legend.append('text')
+    var yTextOffset = (this.legendHeight + 10)/2
+    g.append('text')
+      .attr('x', legendx + this.legendWidth + 5)
+      .attr('y', legendy + yTextOffset)
+      .attr('fill', 'black')
+      .attr('style', 'font-size: 20px;')
+      .text('max')
+    
+    g.append('text')
+    .attr('x', legendx - 40)
+    .attr('y', legendy + yTextOffset)
+    .attr('fill', 'black')
+    .attr('style', 'font-size: 20px;')
+    .text('min')
 
   }
 }
