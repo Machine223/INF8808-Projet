@@ -13,8 +13,8 @@ export class DataViz1Component implements OnInit {
   svg: any
   top: number = 12
   width: number = 800
-  height: number = 800
-  margin = {left:180, top:20, bottom:50, right:20}
+  height: number = 600
+  margin = {left:320, top:20, bottom:50, right:20}
   legendWidth :number= 300
   legendHeight:number = 20
   orderingCategories: any[] = [    
@@ -119,7 +119,7 @@ export class DataViz1Component implements OnInit {
     .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
     g.append('g').style('font-size', '20px').call(axisLeft(yScale));
-    
+
     g.append('g').call(axisBottom(xScale))
     .attr('transform', `translate(0, ${innerHeight})`);
     g.append('line')
