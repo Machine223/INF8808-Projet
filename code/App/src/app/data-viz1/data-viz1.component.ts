@@ -90,9 +90,12 @@ export class DataViz1Component implements OnInit {
 
   render() {
     const xValue = (d:any) => d[this.selectedOrderingCategory]
+    const colorValue = (d:any) => d[this.selectedGradientCategory]
     const yValue = (d:any) => d.Squad
     const innerWidth = this.width - this.margin.right - this.margin.left
     const innerHeight = this.height - this.margin.top - this.margin.bottom - this.legendHeight
+    const minColor = d3.min(this.data as number[], colorValue)
+    const maxColor = d3.max(this.data as number[], colorValue)
     const max = d3.max(this.data as number[], xValue)
     const xScale = d3.scaleLinear()
     .domain([max, 0])
@@ -103,6 +106,10 @@ export class DataViz1Component implements OnInit {
     .domain(this.data.map(yValue))
     .range([0, innerHeight])
     .padding(0.2)
+
+    const colorScale = d3.scaleLinear<string>()
+      .domain([minColor, maxColor])
+      .range(["blue", "red"])
 
     const g = this.svg.append('g')
     .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
@@ -132,7 +139,7 @@ export class DataViz1Component implements OnInit {
     .attr('x', (d:any) => xScale(xValue(d)))
     .attr('width', (d:any) => innerWidth - xScale(xValue(d)))
     .attr('height', (d:any) => yScale.bandwidth())
-    .attr('fill', '#4682b4')
+    .attr('fill',(d:any) => colorScale(colorValue(d)))
 
 
   }
