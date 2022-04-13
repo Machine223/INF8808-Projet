@@ -13,10 +13,6 @@ export class DataViz2Component implements OnInit {
   private svg: any;
   private width: number = 800;
   private height: number = 800;
-  private rows: number = 1;
-  private cols: number = 1;
-
-  selectedCategory: any;
   categories: any[] = [
     { value: 'canada', viewValue: 'Joueur Canadien' },
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
@@ -24,6 +20,8 @@ export class DataViz2Component implements OnInit {
     { value: 'club', viewValue: 'Afficher le club de actuelle' },
   ];
   headers: string[] = [ 'Joueur Canadien', 'Joueur de la Concacaf'];
+  selectedCategory: any;
+
 
 
   constructor() { }
@@ -41,8 +39,46 @@ export class DataViz2Component implements OnInit {
       });
   }
 
-  onSelect(): any {
-    // console.table("hello category is selected:", this.categories)
+  onSelect(event: any): any {
+
+    if(event.value == this.categories[0].value){
+      d3.json('../../assets/data_vis2.json')
+      .then((data: any) => {
+        this.data = data;
+        this.sortPlayers();
+        // console.table(this.data);
+        // this.sortPlayers('MP'); // sort player by default mode
+      })
+      .then(() => {
+        this.clearSvg()
+        this.createSvg();
+      });
+    }else if(event.value == this.categories[1].value){
+      d3.json('../../assets/data_vis2.1.json')
+      .then((data: any) => {
+        this.data = data;
+        this.sortPlayers();
+        // console.table(this.data);
+        // this.sortPlayers('MP'); // sort player by default mode
+      })
+      .then(() => {
+        this.clearSvg()
+        this.createSvg();
+      });
+
+    }else if(event.value == this.categories[2].value){
+      console.log('Book changed...',event.value );
+      console.log("this.categories:",this.categories)
+    }else if(event.value == this.categories[3].value){
+      console.log('Book changed...',event.value );
+      console.log("this.categories:",this.categories)
+    }
+
+
+  }
+
+  clearSvg() {
+    d3.selectAll('#vis2-svg').remove()
   }
 
   private sortPlayers(): void {
@@ -61,6 +97,7 @@ export class DataViz2Component implements OnInit {
       const index = this.data.findIndex(x => x['Player'] === d['Player']);
       this.data[index]['Index'] = i;
     });
+    newData.splice(20)
     this.data = newData
   }
 
@@ -84,10 +121,11 @@ export class DataViz2Component implements OnInit {
     this.svg = d3
       .select('#vis2')
       .append('svg')
+      .attr('id', 'vis2-svg')
       .attr('width', this.width)
       .attr('height', this.height)
       .append('g')
-      .attr('id', 'vis2-svg')
+      .attr('id', 'vis2-g')
       .attr("transform", `translate(0,0)`);
 
 
@@ -102,7 +140,7 @@ export class DataViz2Component implements OnInit {
 
     // color palette = one color per subgroup
     var color = d3.scaleOrdinal()
-    .range(['#e41a1c','#377eb8'])
+    .range(['#4381B6','#97B3CB'])
 
 
     // Custom axis X and Y
@@ -113,8 +151,6 @@ export class DataViz2Component implements OnInit {
     var stackedData = d3.stack()
     .keys(subgroups)
     (this.data)
-
-    console.log(stackedData)
 
     const g = this.svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -149,7 +185,23 @@ export class DataViz2Component implements OnInit {
     // Show text header
     g.append('text').attr('y', -30).text(`${this.headers[0]}`).attr('class','title-viz2')
 
+    // select the svg area
+    var legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend')
+    // create a list of keys
+    var legendKeys = ["Nombre de but", "Nombre d’assists"]
 
+    // Usually you have a color scale in your chart already
+    var colorLegend = d3.scaleOrdinal()
+    .domain(legendKeys)
+    .range(['#4381B6','#97B3CB']);
+    // Handmade legend
+    legend.append("rect").attr("x",0).attr("y",0).attr("width",25).attr("height",25).style("fill", "#4381B6")
+    legend.append("rect").attr("x",0).attr("y",40).attr("width",25).attr("height",25).style("fill", "#97B3CB")
+    legend.append("text").attr("x", 40).attr("y", 12).text("Nombre de but").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("text").attr("x", 40).attr("y", 52).text("Nombre d’assists").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("text").attr("x", 0).attr("y", -24).text("Légende").style("font-size", "17px").attr("alignment-baseline","middle")
+
+    legend.attr("transform", `translate(600,650)`)
 
   }
 
