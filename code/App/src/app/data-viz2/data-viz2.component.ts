@@ -15,13 +15,13 @@ export class DataViz2Component implements OnInit {
   private width: number = 800;
   private height: number = 800;
   categories: any[] = [
-    { value: 'canada', viewValue: 'Joueur Canadien' },
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
+    { value: 'canada', viewValue: 'Joueur Canadien' },
     // { value: 'formation', viewValue: 'Afficher le club de formation' },
     // { value: 'club', viewValue: 'Afficher le club de actuelle' },
   ];
   actualCat : any;
-  headers: string[] = [ 'Joueur Canadien', 'Joueur de la Concacaf'];
+  headers: string[] = ['Joueur de la Concacaf', 'Joueur Canadien'];
   selectedCategory: any;
   tipCad = d3Tip()
     .attr('class', 'd3-tip')
@@ -49,7 +49,7 @@ export class DataViz2Component implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    d3.json('../../assets/data_vis2.json')
+    d3.json('../../assets/data_vis2.1.json')
       .then((data: any) => {
         this.data = data;
         this.sortPlayers();
@@ -65,7 +65,7 @@ export class DataViz2Component implements OnInit {
   onSelect(event: any): any {
     if(event.value == this.categories[0].value){
       this.actualCat = this.categories[0];
-      d3.json('../../assets/data_vis2.json')
+      d3.json('../../assets/data_vis2.1.json')
       .then((data: any) => {
         this.data = data;
         this.sortPlayers();
@@ -78,7 +78,7 @@ export class DataViz2Component implements OnInit {
       });
     }else if(event.value == this.categories[1].value){
       this.actualCat = this.categories[1];
-      d3.json('../../assets/data_vis2.1.json')
+      d3.json('../../assets/data_vis2.json')
       .then((data: any) => {
         this.data = data;
         this.sortPlayers();
@@ -141,7 +141,7 @@ export class DataViz2Component implements OnInit {
       .attr('id', 'vis2-g')
       .attr("transform", `translate(0,0)`);
 
-    if( this.actualCat == this.categories[0]){
+    if( this.actualCat == this.categories[1]){
       this.svg.call(this.tipCad);
     }else{
       this.svg.call(this.tipConcacaf);
@@ -182,7 +182,7 @@ export class DataViz2Component implements OnInit {
     g.append('g').attr('class', 'xAxis').call(xAxis)
       .selectAll('.domain').remove();
 
-    if( this.actualCat == this.categories[0]){
+    if( this.actualCat == this.categories[1]){
       // Show the stacked bars
       g.append("g")
       .selectAll("g")
@@ -204,7 +204,7 @@ export class DataViz2Component implements OnInit {
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
-      g.append('text').attr('y', -50).text(`${this.headers[0]}`).attr('class','title-viz2')
+      g.append('text').attr('y', -50).text(`${this.headers[1]}`).attr('class','title-viz2')
     }else{
       // Show the stacked bars
       g.append("g")
@@ -227,7 +227,7 @@ export class DataViz2Component implements OnInit {
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
-      g.append('text').attr('y', -50).text(`${this.headers[1]}`).attr('class','title-viz2')
+      g.append('text').attr('y', -50).text(`${this.headers[0]}`).attr('class','title-viz2')
     }
 
     // select the svg area
