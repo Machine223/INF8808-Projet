@@ -573,13 +573,13 @@ export class DataViz4Component implements OnInit {
   }
   //Make the outerEdge of the rectangle
   private outerEdge() {
-    var fieldDiv:any = document.getElementById("start");
-    d3.select(fieldDiv).append("svg")
-    .attr("id","curved_rec")
-    .attr("width",1000)
-    .attr("height",1000)
-    .append("rect")
-    .attr("stroke","black")
+    // var fieldDiv:any = document.getElementById("start");
+    // d3.select(fieldDiv).append("svg")
+    // .attr("id","curved_rec")
+    // .attr("width",1000)
+    // .attr("height",1000)
+    // .append("rect")
+    // .attr("stroke","black")
 
   }
 
