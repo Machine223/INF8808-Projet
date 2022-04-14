@@ -32,7 +32,7 @@ export class DataViz2Component implements OnInit {
       <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
       <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
       <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>
-      <div class='tooltip-value'>Club actuelle : ${d['data']['Club']}</span></div>
+      <div class='tooltip-value'>Club actuel : ${d['data']['Club']}</span></div>
       <div class='tooltip-value'>Club de formation : ${d['data']['Formation']}, ${d['data']['PaysFormation']}</span></div>`;
     });
   tipConcacaf = d3Tip()
