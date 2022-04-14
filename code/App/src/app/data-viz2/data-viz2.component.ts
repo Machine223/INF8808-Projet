@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { numbers } from '@material/select';
 import * as d3 from 'd3';
-import { axisBottom, axisLeft, axisTop, color, max, scaleBand, scaleLinear, stack, transpose } from 'd3';
+import { axisLeft, axisTop, max, scaleBand, scaleLinear } from 'd3';
+//@ts-ignore
+import d3Tip from 'd3-tip';
 
 @Component({
   selector: 'app-data-viz2',
@@ -21,6 +22,15 @@ export class DataViz2Component implements OnInit {
   ];
   headers: string[] = [ 'Joueur Canadien', 'Joueur de la Concacaf'];
   selectedCategory: any;
+  tip = d3Tip()
+    .attr('class', 'd3-tip')
+    .html(function (e: any, d: any) {
+      return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${d['data']['Player']}</b></p>\
+      <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>`;
+    });
 
 
 
@@ -87,7 +97,7 @@ export class DataViz2Component implements OnInit {
       firstPlayer: any,
       secondPlayer: any
     ): number {
-      if ((firstPlayer['Ast']+firstPlayer['Gls']) < (secondPlayer['Ast']+ secondPlayer['Gls']) ) {
+      if ((firstPlayer['Gls']+firstPlayer['Ast']) < (secondPlayer['Gls']+ secondPlayer['Ast']) ) {
         return 1;
       } else {
         return -1;
@@ -128,6 +138,7 @@ export class DataViz2Component implements OnInit {
       .attr('id', 'vis2-g')
       .attr("transform", `translate(0,0)`);
 
+    this.svg.call(this.tip);
 
     // Create X and Y axis DOMAIN and RANGE SCALE
     const xScale = scaleLinear()
@@ -163,10 +174,7 @@ export class DataViz2Component implements OnInit {
     g.append('g').attr('class', 'xAxis').call(xAxis)
       .selectAll('.domain').remove();
 
-    g.append('g').selectAll('g').data(stackedData).enter().append('g')
-      .attr
-
-    // Show the bars
+    // Show the stacked bars
     g.append("g")
     .selectAll("g")
     // Enter in the stack data = loop key per key = group per group
@@ -175,10 +183,17 @@ export class DataViz2Component implements OnInit {
       .attr("fill", function(d: { key: string; }) { return color(d.key); })
       .selectAll("rect")
       // enter a second time = loop subgroup per subgroup to add all rectangles
-      .data(function(d: any) { return d; })
+      .data(function(d: any) {
+        console.log('Yo',d)
+        return d;  })
       .enter().append("rect")
+
+        .attr('overflow', 'visible')
         .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
         .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
+        .on('mouseover', this.tip.show)
+        .on('mouseout', this.tip.hide)
+        .on("mouseleave", this.tip.leave)
         .attr("height", yScale.bandwidth())
         .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
