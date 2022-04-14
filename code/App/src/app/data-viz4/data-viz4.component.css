@@ -1,22 +1,22 @@
 .container {  display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     grid-template-rows: 0.2fr 1.8fr 1fr;
-    gap: 20px 20px;
+    gap: 5px 5px;
     grid-auto-flow: row;
     grid-template-areas:
-      "title title"
+      "title legend"
       "field legend"
       "field legend";
-    height: 1779px;
-    width: 1630px;
+    height: 900px;
+    width: 100%;
 
-    
   }
   .fit-img-tight {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
 
   
   .field { 
@@ -30,93 +30,54 @@
     background-color: red;
     }
   
-  .legend {  display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.01fr 0.1fr 0.7fr 1.7fr 1.5fr;
+  .legend {  
     gap: 0px 0px;
     grid-auto-flow: row;
-    grid-template-areas:
-      "legendHeader legendHeader legendHeader"
-      "salaryLegend salaryLegend salaryLegend"
-      "players players players"
-      "piechart piechart piechart";
     grid-area: legend;
     background-color: bisque;
     height: auto;
-    width: auto;
-    grid-gap: 5px;
   }
+  
   
   .legendHeader { grid-area: legendHeader; 
     
     }
   
-  .salaryLegend 
+  .salaryScale
     { 
-        grid-area: salaryLegend;
+        height: 25%;
+        background-color: rgb(153, 32, 157);
 
+    }
+    .infoHeader {
+      display:block;
+      margin: 0;
+      font-size:10px;
+      padding: 0;
+      
     }
 
   
-    .players {  display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: auto 0.6fr auto 1.3fr auto 1.3fr auto 1.3fr;
-        gap: 0px 0px;
-        grid-auto-flow: row;
-        grid-template-areas:
-          "GK_header GK_header GK_header"
-          "GK GK GK"
-          "MF_Header MF_Header MF_Header"
-          "MF MF MF"
-          "DF_header . ."
-          "DF DF DF"
-          "FW_header FW_header FW_header"
-          "FW FW FW";
-        grid-area: players;
+    .players {
+        height:45%;
         background-color: aquamarine;
       }
-      
-      .GK_header {
-        grid-area: GK_header;
-        display: "block"; }
-      
-      .GK { grid-area: GK; }
-      
-      .MF_Header { grid-area: MF_Header;
-        display: "block"; }
-      
-      .MF { grid-area: MF; }
-      
-      .DF_header { grid-area: DF_header;
-        display: "block"; }
-      
-      .DF { grid-area: DF; }
-      
-      .FW_header { grid-area: FW_header;
-        display: "block"; }
-      
-      .FW { grid-area: FW; }
-      
-    
-      
-    .teamValue { grid-area: teamValue; }
-      
-    .fieldValue { grid-area: fieldValue; }
-    
-  .piechart {  display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
-    grid-template-areas:
-      "teamValue fieldValue";
-    grid-area: piechart;
-  }
+
+     
+    .piechart {
+      background-color: rgb(20, 12, 179);
+      height: 20%;
+    }
+
+  .shadow{
+      filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    }
 
   
 /* This is for responsive container with specified aspect ratio */
 .aspect-ratio {
     position: relative;
+    
   }
   
 
