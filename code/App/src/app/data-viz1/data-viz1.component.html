@@ -8,9 +8,9 @@
             </mat-option>
         </mat-select>
     </mat-form-field> -->
-
+    <p id="vis1-desc">Dans cette visualisation, il est possible pour un analyste d’avoir une vue d’ensemble des résultats des performances des différentes équipes de la Concacaf. Les barcharts sont ordonnées du plus grand au plus petit en partant d’en haut en fonction de la donnée affichée respectivement. La coloration des bandes encode une données secondaire qui peut être selectionnée parmi les options.</p>
     <mat-form-field appearance="fill">
-        <mat-label>Gradient</mat-label>
+        <mat-label>Coloration</mat-label>
         <mat-select [(value)]="selectedGradientCategory" (selectionChange)="onSelectGradient()">
             <mat-option *ngFor="let cat2 of gradientCategories" [value]="cat2.value">
                 {{cat2.viewValue}}
