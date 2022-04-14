@@ -142,10 +142,8 @@ export class DataViz2Component implements OnInit {
       .attr("transform", `translate(0,0)`);
 
     if( this.actualCat == this.categories[0]){
-      console.log(this.actualCat)
       this.svg.call(this.tipCad);
     }else{
-      console.log(this.actualCat)
       this.svg.call(this.tipConcacaf);
     }
 
