@@ -29,7 +29,8 @@ export class DataViz2Component implements OnInit {
       <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
       <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
       <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
-      <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>`;
+      <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
+      <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>`;
     });
 
 
