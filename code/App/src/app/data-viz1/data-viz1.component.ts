@@ -12,19 +12,19 @@ export class DataViz1Component implements OnInit {
   data:any
   svg: any
 
-  numCols:number = 3
+  numCols:number = 2
   topTeams: number = 12
   fontSize:number = 12
-  width: number = 1800
+  width: number = 1100
   legendWidth :number= 300
   legendHeight:number = 20
   
-  chartMargin = {left:100, right:100, top:80, bottom:80}
+  chartMargin = {left:100, right:100, top:50, bottom:50}
   margin = {left:20, top:20, bottom:20, right:20}
   
   chartGroupWidth:number = this.width / this.numCols;
   chartGroupHeight:number = this.chartGroupWidth;
-  height: number = (this.chartGroupHeight) * 3
+  height: number = (this.chartGroupHeight) * 4
 
   units:any = {'Age':'Ans', 'Crds':'Cartons', 'Subs':'Remplacements'}
   orderingCategories: any[] = [    
@@ -82,7 +82,7 @@ export class DataViz1Component implements OnInit {
 
   coordinates(index:number): any {
     const x = this.chartGroupWidth * (index % this.numCols)
-    const y = this.chartGroupHeight * Math.floor(index / this.numCols)
+    const y = this.chartGroupHeight * Math.floor(index / this.numCols) + 50
     return {x:x, y:y}
   }
 
@@ -214,8 +214,16 @@ export class DataViz1Component implements OnInit {
       .attr('stop-opacity', 1);
 
     var legendx = (this.width + this.margin.left)/2 - this.legendWidth/2;
-    var legendy = 0;
-    g.append('rect')
+    var legendy = 40;
+    // g.append('g')
+    //   .attr('id', 'legendText')
+    //   .attr('class', 'legendTitleContainer')
+    //   .append('text')
+    //   .attr('fill', 'black')
+    //   .attr('style', `font-size: ${this.fontSize}px;`)
+    //   .text(maxColor);
+
+      g.append('rect')
       .attr('width', this.legendWidth)
       .attr('height', this.legendHeight)
       .attr('y', legendy)
@@ -237,12 +245,13 @@ export class DataViz1Component implements OnInit {
     .attr('style', `font-size: ${this.fontSize}px;`)
     .text(minColor);
 
-    g.append('text')
-      .attr('x', legendx + this.legendWidth/2 - 60)
-      .attr('y', legendy + this.legendHeight + this.fontSize*2)
-      .attr('fill', 'black')
-      .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
-      .text(`Légende (${this.units[this.selectedGradientCategory]})`);
+    var text = g.append('text')
+    .attr('y', legendy - this.legendHeight)
+    .attr('fill', 'black')
+    .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
+    .text(`Légende (${this.units[this.selectedGradientCategory]})`);
+
+    text.attr('x', legendx + this.legendWidth/2 - text.node().getBoundingClientRect().width/2)
 
   }
 }
