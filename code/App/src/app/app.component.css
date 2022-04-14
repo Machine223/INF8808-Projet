@@ -35,6 +35,8 @@ p {
   background-color: #0f7ae5;
   color: white;
   font-weight: 600;
+  padding-left: 24px;
+  font-size: medium;
 }
 
 .content {
