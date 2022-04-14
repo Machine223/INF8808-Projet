@@ -12,7 +12,8 @@ export interface Player {
     Pos: string[],
     Age: number,
     salary: number,
-    OnField: boolean
+    OnField: boolean,
+    id:number
 
 }
 //sum up player value per position and total, this will be easier to generate pie graph
@@ -23,4 +24,11 @@ export interface TotalValue {
     DF:number,
     total:number
 }
+
+
+export interface PieData {
+    position: string;
+    value: string;
+  }
+  
 

@@ -102,6 +102,10 @@
   display: flex;
 }
 
+#vis3-legend-rect-ex text {
+  font-size: 0.8rem;
+}
+
 #vis3-legend-divider {
   stroke: black;
   stroke-width: 1;
