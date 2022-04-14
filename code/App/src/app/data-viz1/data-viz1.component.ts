@@ -19,7 +19,7 @@ export class DataViz1Component implements OnInit {
   legendWidth :number= 300
   legendHeight:number = 20
   
-  chartMargin = {left:100, right:100, top:50, bottom:50}
+  chartMargin = {left:100, right:100, top:80, bottom:80}
   margin = {left:20, top:20, bottom:20, right:20}
   
   chartGroupWidth:number = this.width / this.numCols;
@@ -144,10 +144,14 @@ export class DataViz1Component implements OnInit {
       .domain([minColor, maxColor])
       .range(["blue", "red"]);
 
-    g.append('g').style('font-size', '10px').call(axisLeft(yScale))
+    g.append('g')
+      .attr('class', 'tick')
+      .call(axisLeft(yScale))
       .attr('transform', `translate(${x}, ${y})`);
 
-    g.append('g').call(axisBottom(xScale))
+    g.append('g')
+      .style('font-size','1em')
+      .call(axisBottom(xScale))
       .attr('transform', `translate(${x}, ${y + innerHeight})`);
 
     g.append('line')
@@ -159,12 +163,14 @@ export class DataViz1Component implements OnInit {
       .attr('stroke-width', '1px');
 
     g.selectAll('rect').data(chartData).enter()
-    .append("text") 
-    .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
-    .attr('x', x + innerWidth + 3 )
-    .attr('fill', 'black')
-    .attr('style', `font-size: ${this.fontSize};`)
-    .text((d:any) => xValue(d));
+      .append('g')
+      .attr('class', 'tick')
+      .append('text')
+      .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
+      .attr('x', x + innerWidth + 10 )
+      .attr('fill', 'black')
+      // .attr('style', `font-size: ${this.fontSize};`)
+      .text((d:any) => xValue(d));
 
     g.selectAll("rect").data(chartData)
     .enter().append('rect')
@@ -174,10 +180,11 @@ export class DataViz1Component implements OnInit {
     .attr('height', (d:any) => yScale.bandwidth())
     .attr('fill',(d:any) => colorScale(colorValue(d)));
 
-    g.append('text')
+    g.append('g')
       .attr('x', x + 5)
-      .attr('y', y - 5)
+      .attr('y', y - 20)
       .attr('fill', 'black')
+      .attr('class', 'title-viz2')
       .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
       .text(category.viewValue);
   }
@@ -248,6 +255,7 @@ export class DataViz1Component implements OnInit {
     var text = g.append('text')
     .attr('y', legendy - this.legendHeight)
     .attr('fill', 'black')
+    .attr('class', 'title-viz2')
     .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
     .text(`Légende (${this.units[this.selectedGradientCategory]})`);
 
