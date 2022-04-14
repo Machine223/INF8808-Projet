@@ -348,23 +348,91 @@ export class DataViz4Component implements OnInit {
     console.log(fieldDiv)
     //Create SVG
     var svg = d3.select(fieldDiv).append("svg")
-    .attr("width", fieldDiv.width)
-    .attr("height",fieldDiv.clientHeight)
-    .attr("id",id+"_svg").attr("height", fieldDiv.clientHeight)
-    .attr("class","img-overlay-wrap")
+    .attr("height",818)
+    .attr("id",id+"_svg").attr("width", 516)
+    svg.style("position","absolute")
+    .style("left","0px")
+    .style("top","0px")
     //
     let defs = svg.append("defs").append("clipPath").attr("id",id+"_circle")
 
-    let g_wrapper= svg.append("g").attr("width", fieldDiv.clientWidth)
-    .attr("id",id+"_g")
-
     pos_property.forEach(position => {
         let playerList = this.getProperty(this.playerMainPosition,position as keyof PlayerByPosition) as any[]
-        // this.createPlayerCircle(playerList,svg,g_wrapper,defs,position)
+        this.createPlayerFieldCircle(playerList,svg,defs,position)
         console.log("playerList:",playerList)
 
     })
     
   }
+  private createPlayerFieldCircle(players:any[],svg:d3.Selection<any, unknown, null, undefined>,defs:d3.Selection<any, unknown, null, undefined>,currentPos:string){
+    console.log("pos",currentPos)
+    
+    let g_wrapper = svg.append("g").attr("id","field"+currentPos)
+
+    let self = this;
+    let x = 35 
+    let y = 35
+    let r= 20
+    let color = COLOR_MAP.get(currentPos) as string
+    let current_svg_width = Number(svg.attr("width"))
+    console.log("createPlayerCircle")
+    
+    for(let i =0; i < players.length; i++) {
+      let circle_tag = g_wrapper.attr("id")+PLAYER_ID
+      let player_name = players[i].Name.split(" ", 2)
+      let firstname= player_name[0]
+      let lastname = player_name[1]
+      //Adding circle
+      if (x+r*2 > current_svg_width) {
+        x= 30
+        y +=60
+      }
+
+      defs.append("circle")
+      .attr("cx", x)
+      .attr("cy", y)
+      .attr("r", r)
+      .attr("class","shadow")
+      .attr("id",circle_tag)
+      
+      g_wrapper.append("circle")
+      .attr("cx", x)
+      .attr("cy", y)
+      .attr("r", r+1)
+      .attr("class","shadow")
+      .attr("stroke",color)
+      .attr("fill",color)
+      .attr("id",circle_tag)
+
+      g_wrapper.append("text").
+      attr("x",x).attr("y",y+r+7)
+      .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
+      .text(firstname)
+      g_wrapper.append("text").
+      attr("x",x).attr("y",y+r+15)
+      .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
+      .text(lastname)
+  
+  
+      g_wrapper.append("image")
+      .attr('xlink:href', players[i].Img)
+      .attr("clip-path",`url(#${defs.attr("id")})`)
+      .attr("width",40)
+      .attr("heigth",40)
+      .attr("x",x-r)
+      .attr("id","f"+PLAYER_ID)
+      .attr("y",y-r)
+
+      
+  
+      PLAYER_ID++
+
+      x += 60
+    }
+    svg.attr("height",g_wrapper.node().getBBox().height+15)
+  }
+
+
+
 
 }
