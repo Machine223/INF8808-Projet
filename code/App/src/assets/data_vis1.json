@@ -1,6 +1,6 @@
 [
     {
-        "Squad": "ai Anguilla",
+        "Squad": "Anguilla",
         "Age": 28.3,
         "CrdR": 0,
         "CrdY": 2,
@@ -22,7 +22,7 @@
         "Index": 0
     },
     {
-        "Squad": "ag Antigua and Barbuda",
+        "Squad": "Antigua and Barbuda",
         "Age": 28.4,
         "CrdR": 0,
         "CrdY": 4,
@@ -44,7 +44,7 @@
         "Index": 1
     },
     {
-        "Squad": "aw Aruba",
+        "Squad": "Aruba",
         "Age": 27.1,
         "CrdR": 0,
         "CrdY": 5,
@@ -66,7 +66,7 @@
         "Index": 2
     },
     {
-        "Squad": "bs Bahamas",
+        "Squad": "Bahamas",
         "Age": 25.5,
         "CrdR": 0,
         "CrdY": 7,
@@ -88,7 +88,7 @@
         "Index": 3
     },
     {
-        "Squad": "bb Barbados",
+        "Squad": "Barbados",
         "Age": 26.0,
         "CrdR": 0,
         "CrdY": 5,
@@ -110,7 +110,7 @@
         "Index": 4
     },
     {
-        "Squad": "bz Belize",
+        "Squad": "Belize",
         "Age": 29.0,
         "CrdR": 0,
         "CrdY": 5,
@@ -132,7 +132,7 @@
         "Index": 5
     },
     {
-        "Squad": "bm Bermuda",
+        "Squad": "Bermuda",
         "Age": 25.6,
         "CrdR": 0,
         "CrdY": 5,
@@ -154,7 +154,7 @@
         "Index": 6
     },
     {
-        "Squad": "vg British Virgin Islands",
+        "Squad": "British Virgin Islands",
         "Age": 23.1,
         "CrdR": 1,
         "CrdY": 6,
@@ -176,7 +176,7 @@
         "Index": 7
     },
     {
-        "Squad": "ca Canada",
+        "Squad": "Canada",
         "Age": 27.2,
         "CrdR": 0,
         "CrdY": 27,
@@ -198,7 +198,7 @@
         "Index": 8
     },
     {
-        "Squad": "ky Cayman Islands",
+        "Squad": "Cayman Islands",
         "Age": 24.7,
         "CrdR": 0,
         "CrdY": 7,
@@ -220,7 +220,7 @@
         "Index": 9
     },
     {
-        "Squad": "cr Costa Rica",
+        "Squad": "Costa Rica",
         "Age": 30.2,
         "CrdR": 0,
         "CrdY": 14,
@@ -242,7 +242,7 @@
         "Index": 10
     },
     {
-        "Squad": "cu Cuba",
+        "Squad": "Cuba",
         "Age": 26.7,
         "CrdR": 1,
         "CrdY": 3,
@@ -264,7 +264,7 @@
         "Index": 11
     },
     {
-        "Squad": "cw Curaçao",
+        "Squad": "Curaçao",
         "Age": 29.4,
         "CrdR": 0,
         "CrdY": 4,
@@ -286,7 +286,7 @@
         "Index": 12
     },
     {
-        "Squad": "dm Dominica",
+        "Squad": "Dominica",
         "Age": 28.2,
         "CrdR": 0,
         "CrdY": 5,
@@ -308,7 +308,7 @@
         "Index": 13
     },
     {
-        "Squad": "do Dominican Republic",
+        "Squad": "Dominican Republic",
         "Age": 26.9,
         "CrdR": 0,
         "CrdY": 2,
@@ -330,7 +330,7 @@
         "Index": 14
     },
     {
-        "Squad": "sv El Salvador",
+        "Squad": "El Salvador",
         "Age": 27.5,
         "CrdR": 2,
         "CrdY": 26,
@@ -352,7 +352,7 @@
         "Index": 15
     },
     {
-        "Squad": "gd Grenada",
+        "Squad": "Grenada",
         "Age": 27.3,
         "CrdR": 0,
         "CrdY": 3,
@@ -374,7 +374,7 @@
         "Index": 16
     },
     {
-        "Squad": "gt Guatemala",
+        "Squad": "Guatemala",
         "Age": 28.0,
         "CrdR": 0,
         "CrdY": 5,
@@ -396,7 +396,7 @@
         "Index": 17
     },
     {
-        "Squad": "gy Guyana",
+        "Squad": "Guyana",
         "Age": 25.9,
         "CrdR": 0,
         "CrdY": 10,
@@ -418,7 +418,7 @@
         "Index": 18
     },
     {
-        "Squad": "ht Haiti",
+        "Squad": "Haiti",
         "Age": 28.5,
         "CrdR": 1,
         "CrdY": 6,
@@ -440,7 +440,7 @@
         "Index": 19
     },
     {
-        "Squad": "hn Honduras",
+        "Squad": "Honduras",
         "Age": 27.9,
         "CrdR": 1,
         "CrdY": 15,
@@ -462,7 +462,7 @@
         "Index": 20
     },
     {
-        "Squad": "jm Jamaica",
+        "Squad": "Jamaica",
         "Age": 29.4,
         "CrdR": 1,
         "CrdY": 19,
@@ -484,7 +484,7 @@
         "Index": 21
     },
     {
-        "Squad": "mx Mexico",
+        "Squad": "Mexico",
         "Age": 28.9,
         "CrdR": 1,
         "CrdY": 18,
@@ -506,7 +506,7 @@
         "Index": 22
     },
     {
-        "Squad": "ms Montserrat",
+        "Squad": "Montserrat",
         "Age": 30.7,
         "CrdR": 0,
         "CrdY": 5,
@@ -528,7 +528,7 @@
         "Index": 23
     },
     {
-        "Squad": "ni Nicaragua",
+        "Squad": "Nicaragua",
         "Age": 29.5,
         "CrdR": 1,
         "CrdY": 5,
@@ -550,7 +550,7 @@
         "Index": 24
     },
     {
-        "Squad": "pa Panama",
+        "Squad": "Panama",
         "Age": 28.5,
         "CrdR": 0,
         "CrdY": 11,
@@ -572,7 +572,7 @@
         "Index": 25
     },
     {
-        "Squad": "pr Puerto Rico",
+        "Squad": "Puerto Rico",
         "Age": 24.2,
         "CrdR": 0,
         "CrdY": 5,
@@ -594,7 +594,7 @@
         "Index": 26
     },
     {
-        "Squad": "kn St. Kitts and Nevis",
+        "Squad": "St. Kitts and Nevis",
         "Age": 28.6,
         "CrdR": 0,
         "CrdY": 10,
@@ -616,7 +616,7 @@
         "Index": 27
     },
     {
-        "Squad": "vc St. Vincent and the Grenadines",
+        "Squad": "St. Vinc. & the Gren.",
         "Age": 26.2,
         "CrdR": 0,
         "CrdY": 2,
@@ -638,7 +638,7 @@
         "Index": 28
     },
     {
-        "Squad": "sr Suriname",
+        "Squad": "Suriname",
         "Age": 30.2,
         "CrdR": 0,
         "CrdY": 4,
@@ -660,7 +660,7 @@
         "Index": 29
     },
     {
-        "Squad": "tt Trinidad and Tobago",
+        "Squad": "Trinidad and Tobago",
         "Age": 27.8,
         "CrdR": 0,
         "CrdY": 5,
@@ -682,7 +682,7 @@
         "Index": 30
     },
     {
-        "Squad": "tc Turks and Caicos Islands",
+        "Squad": "Turks & Caicos",
         "Age": 26.5,
         "CrdR": 0,
         "CrdY": 0,
@@ -704,7 +704,7 @@
         "Index": 31
     },
     {
-        "Squad": "us United States",
+        "Squad": "United States",
         "Age": 24.2,
         "CrdR": 1,
         "CrdY": 10,
@@ -726,7 +726,7 @@
         "Index": 32
     },
     {
-        "Squad": "vi US Virgin Islands",
+        "Squad": "US Virgin Islands",
         "Age": 24.2,
         "CrdR": 0,
         "CrdY": 4,
