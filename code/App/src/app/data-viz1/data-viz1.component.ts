@@ -252,7 +252,7 @@ export class DataViz1Component implements OnInit {
     .text(minColor);
 
     var text = g.append('text')
-    .attr('y', legendy - this.legendHeight)
+    .attr('y', legendy - this.legendHeight +5)
     .attr('fill', 'black')
     .attr('class', 'title-viz2')
     .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
