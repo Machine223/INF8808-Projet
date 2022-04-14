@@ -13,10 +13,6 @@ export class DataViz2Component implements OnInit {
   private svg: any;
   private width: number = 800;
   private height: number = 800;
-  private rows: number = 1;
-  private cols: number = 1;
-
-  selectedCategory: any;
   categories: any[] = [
     { value: 'canada', viewValue: 'Joueur Canadien' },
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
@@ -24,6 +20,8 @@ export class DataViz2Component implements OnInit {
     { value: 'club', viewValue: 'Afficher le club de actuelle' },
   ];
   headers: string[] = [ 'Joueur Canadien', 'Joueur de la Concacaf'];
+  selectedCategory: any;
+
 
 
   constructor() { }
@@ -32,6 +30,7 @@ export class DataViz2Component implements OnInit {
     d3.json('../../assets/data_vis2.json')
       .then((data: any) => {
         this.data = data;
+        this.sortPlayers();
         // console.table(this.data);
         // this.sortPlayers('MP'); // sort player by default mode
       })
@@ -40,8 +39,66 @@ export class DataViz2Component implements OnInit {
       });
   }
 
-  onSelect(): any {
-    // console.table("hello category is selected:", this.categories)
+  onSelect(event: any): any {
+
+    if(event.value == this.categories[0].value){
+      d3.json('../../assets/data_vis2.json')
+      .then((data: any) => {
+        this.data = data;
+        this.sortPlayers();
+        // console.table(this.data);
+        // this.sortPlayers('MP'); // sort player by default mode
+      })
+      .then(() => {
+        this.clearSvg()
+        this.createSvg();
+      });
+    }else if(event.value == this.categories[1].value){
+      d3.json('../../assets/data_vis2.1.json')
+      .then((data: any) => {
+        this.data = data;
+        this.sortPlayers();
+        // console.table(this.data);
+        // this.sortPlayers('MP'); // sort player by default mode
+      })
+      .then(() => {
+        this.clearSvg()
+        this.createSvg();
+      });
+
+    }else if(event.value == this.categories[2].value){
+      console.log('Book changed...',event.value );
+      console.log("this.categories:",this.categories)
+    }else if(event.value == this.categories[3].value){
+      console.log('Book changed...',event.value );
+      console.log("this.categories:",this.categories)
+    }
+
+
+  }
+
+  clearSvg() {
+    d3.selectAll('#vis2-svg').remove()
+  }
+
+  private sortPlayers(): void {
+    let newData = this.data.map(d => d);
+    newData = newData.sort(function (
+      firstPlayer: any,
+      secondPlayer: any
+    ): number {
+      if ((firstPlayer['Ast']+firstPlayer['Gls']) < (secondPlayer['Ast']+ secondPlayer['Gls']) ) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+    newData.map((d, i) => {
+      const index = this.data.findIndex(x => x['Player'] === d['Player']);
+      this.data[index]['Index'] = i;
+    });
+    newData.splice(20)
+    this.data = newData
   }
 
   private createSvg(): void {
@@ -50,6 +107,10 @@ export class DataViz2Component implements OnInit {
     const xValue = (d: { Gls: number; }) => d.Gls
     const x2Value = (d: { Ast: number; }) => d.Ast
     const yValue = (d: { Player: string; }) => d.Player
+
+    // List of subgroups = header of the csv files = soil condition here
+    var subgroups = ['Gls','Ast']
+
 
     // set the dimensions and margins of the graph
     const margin = { top:70, right:20, bottom:20, left:150 };
@@ -60,10 +121,11 @@ export class DataViz2Component implements OnInit {
     this.svg = d3
       .select('#vis2')
       .append('svg')
+      .attr('id', 'vis2-svg')
       .attr('width', this.width)
       .attr('height', this.height)
       .append('g')
-      .attr('id', 'vis2-svg')
+      .attr('id', 'vis2-g')
       .attr("transform", `translate(0,0)`);
 
 
@@ -76,33 +138,22 @@ export class DataViz2Component implements OnInit {
       .range([0,innerHeight])
       .padding(0.4);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    // color palette = one color per subgroup
+    var color = d3.scaleOrdinal()
+    .range(['#4381B6','#97B3CB'])
+
 
     // Custom axis X and Y
     const xAxis = axisTop(xScale).tickSize(-innerHeight)
     const yAxis = axisLeft(yScale)
 
-
-    // this.data.forEach(function(d){
-    //   var x0 = 0;
-    //   d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
-    //   d.total = d.ages[d.ages.length - 1].y1;
-    // })
-    // this.data.forEach((d) =>{
-    //     console.log("hello")
-    //     var x0 = 0
-    //     d.ages =  color.domain().map((d)=>{
-    //       return{
-    //         Player:
-    //       }
-    //     })
-    //     console.log(d)
-    // })
-
+    //stack the data? --> stack per subgroup
+    var stackedData = d3.stack()
+    .keys(subgroups)
+    (this.data)
 
     const g = this.svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`)
-
 
 
     // Append the Y Axis
@@ -112,67 +163,46 @@ export class DataViz2Component implements OnInit {
     g.append('g').attr('class', 'xAxis').call(xAxis)
       .selectAll('.domain').remove();
 
+    g.append('g').selectAll('g').data(stackedData).enter().append('g')
+      .attr
 
-    // ne marche pas encore trouver un meilleur moyen de stack
-    // const dataMatrix: any[][] = [
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [3,12],
-    //   [0,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,0],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [0,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [2,12],
-    //   [20,5],
-    //   [2,12],
-    //   [20,5],
-    // ]
-    // console.log('dataMatrix',dataMatrix)
-    // const stackData = stack().keys(Object.keys(this.data))(dataMatrix as any);
-    // console.log('stackData',stackData)
+    // Show the bars
+    g.append("g")
+    .selectAll("g")
+    // Enter in the stack data = loop key per key = group per group
+    .data(stackedData)
+    .enter().append("g")
+      .attr("fill", function(d: { key: string; }) { return color(d.key); })
+      .selectAll("rect")
+      // enter a second time = loop subgroup per subgroup to add all rectangles
+      .data(function(d: any) { return d; })
+      .enter().append("rect")
+        .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
+        .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
+        .attr("height", yScale.bandwidth())
+        .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
-    // const stacks  = this.svg.selectAll(".layer").data(stackData);
-    // console.log('stackData',stacks)
-    // const layer = stacks.enter().append('g').attr('class', 'layer').attr('fill',(_: any,i: any) => red)
-    // console.log("layer", layer);
-    // console.log("Color", this.data[2].color);
-
-    g.selectAll('rect').data(this.data)
-      .enter().append('rect')
-      .attr('fill', '#5ccbf0')
-      .attr('y', (d: { Player: string; }) => yScale(yValue(d)))
-      .attr('width', (d: { Ast: number; Gls: number }) => xScale(xValue(d)+x2Value(d)))
-      .attr('height',yScale.bandwidth())
-    // layer.selectAll('rect').data(this.data)
-    //   .enter().append('rect')
-    //   .attr('fill', '#5ccbf0')
-    //   .attr('y', (d: { Player: string; }) => yScale(yValue(d)))
-    //   .attr("x", (d: { Ast: number; Gls: number }) => xScale(xValue(d)+x2Value(d)))
-    //   .attr('width', (d: { Ast: number; Gls: number }) => xScale(xValue(d)+x2Value(d)))
-    //   .attr('height',yScale.bandwidth())
-
+    // Show text header
     g.append('text').attr('y', -30).text(`${this.headers[0]}`).attr('class','title-viz2')
+
+    // select the svg area
+    var legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend')
+    // create a list of keys
+    var legendKeys = ["Nombre de but", "Nombre d’assists"]
+
+    // Usually you have a color scale in your chart already
+    var colorLegend = d3.scaleOrdinal()
+    .domain(legendKeys)
+    .range(['#4381B6','#97B3CB']);
+    // Handmade legend
+    legend.append("rect").attr("x",0).attr("y",0).attr("width",25).attr("height",25).style("fill", "#4381B6")
+    legend.append("rect").attr("x",0).attr("y",40).attr("width",25).attr("height",25).style("fill", "#97B3CB")
+    legend.append("text").attr("x", 40).attr("y", 12).text("Nombre de but").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("text").attr("x", 40).attr("y", 52).text("Nombre d’assists").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("text").attr("x", 0).attr("y", -24).text("Légende").style("font-size", "17px").attr("alignment-baseline","middle")
+
+    legend.attr("transform", `translate(600,650)`)
+
   }
 
 }

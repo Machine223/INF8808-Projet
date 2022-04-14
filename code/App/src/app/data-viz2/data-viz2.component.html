@@ -2,7 +2,7 @@
 <div id="vis2">
 <mat-form-field appearance="fill">
   <mat-label>Classement</mat-label>
-  <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect()" [placeholder]="selectedCategory">
+  <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect($event)" [placeholder]="selectedCategory">
       <mat-option *ngFor="let cat of categories" [value]="cat.value">
           {{cat.viewValue}}
       </mat-option>
@@ -10,4 +10,5 @@
 </mat-form-field>
 
 </div>
-<script src="./data-viz3.component.ts"></script>
+<script src="./data-viz2.component.ts"></script>
+
