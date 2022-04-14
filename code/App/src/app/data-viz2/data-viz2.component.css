@@ -77,13 +77,12 @@
   font-weight: bold;
 }
 
-#vis3-desc {
-  flex-wrap: wrap;
+#vis2-desc {
   font-size: 1rem;
   line-height: 1rem;
-  width: 40%;
-  margin-bottom: 7rem;
-  margin-right: 2rem;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: 24px;
   text-align: justify;
 }
 #vis3-legend {

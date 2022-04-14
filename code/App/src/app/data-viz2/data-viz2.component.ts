@@ -204,7 +204,7 @@ export class DataViz2Component implements OnInit {
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
-      g.append('text').attr('y', -30).text(`${this.headers[0]}`).attr('class','title-viz2')
+      g.append('text').attr('y', -50).text(`${this.headers[0]}`).attr('class','title-viz2')
     }else{
       // Show the stacked bars
       g.append("g")
@@ -227,7 +227,7 @@ export class DataViz2Component implements OnInit {
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
-      g.append('text').attr('y', -30).text(`${this.headers[1]}`).attr('class','title-viz2')
+      g.append('text').attr('y', -50).text(`${this.headers[1]}`).attr('class','title-viz2')
     }
 
     // select the svg area
