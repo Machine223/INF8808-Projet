@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { numbers } from '@material/select';
 import * as d3 from 'd3';
-import { axisBottom, axisLeft, axisTop, color, max, scaleBand, scaleLinear, stack, transpose } from 'd3';
+import { axisLeft, axisTop, max, scaleBand, scaleLinear } from 'd3';
+//@ts-ignore
+import d3Tip from 'd3-tip';
 
 @Component({
   selector: 'app-data-viz2',
@@ -11,26 +12,46 @@ import { axisBottom, axisLeft, axisTop, color, max, scaleBand, scaleLinear, stac
 export class DataViz2Component implements OnInit {
   private data: any[] = [];
   private svg: any;
-  private width: number = 800;
+  private width: number = 900;
   private height: number = 800;
   categories: any[] = [
-    { value: 'canada', viewValue: 'Joueur Canadien' },
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
-    { value: 'formation', viewValue: 'Afficher le club de formation' },
-    { value: 'club', viewValue: 'Afficher le club de actuelle' },
+    { value: 'canada', viewValue: 'Joueur Canadien' },
   ];
-  headers: string[] = [ 'Joueur Canadien', 'Joueur de la Concacaf'];
+  actualCat : any;
+  headers: string[] = ['Joueur de la Concacaf', 'Joueur Canadien'];
   selectedCategory: any;
-
-
+  tipCad = d3Tip()
+    .attr('class', 'd3-tip')
+    .html(function (e: any, d: any) {
+      return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${d['data']['Player']}</b></p>\
+      <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
+      <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>
+      <div class='tooltip-value'>Club actuel : ${d['data']['Club']}</span></div>
+      <div class='tooltip-value'>Club de formation : ${d['data']['Formation']}, ${d['data']['PaysFormation']}</span></div>`;
+    });
+  tipConcacaf = d3Tip()
+  .attr('class', 'd3-tip')
+  .html(function (e: any, d: any) {
+    return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${d['data']['Player']}</b></p>\
+    <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
+    <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
+    <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
+    <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
+    <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>`;
+  });
 
   constructor() { }
 
   ngOnInit(): void {
-    d3.json('../../assets/data_vis2.json')
+    d3.json('../../assets/data_vis2.1.json')
       .then((data: any) => {
         this.data = data;
         this.sortPlayers();
+        this.actualCat = this.categories[0];
         // console.table(this.data);
         // this.sortPlayers('MP'); // sort player by default mode
       })
@@ -40,20 +61,8 @@ export class DataViz2Component implements OnInit {
   }
 
   onSelect(event: any): any {
-
     if(event.value == this.categories[0].value){
-      d3.json('../../assets/data_vis2.json')
-      .then((data: any) => {
-        this.data = data;
-        this.sortPlayers();
-        // console.table(this.data);
-        // this.sortPlayers('MP'); // sort player by default mode
-      })
-      .then(() => {
-        this.clearSvg()
-        this.createSvg();
-      });
-    }else if(event.value == this.categories[1].value){
+      this.actualCat = this.categories[0];
       d3.json('../../assets/data_vis2.1.json')
       .then((data: any) => {
         this.data = data;
@@ -65,16 +74,18 @@ export class DataViz2Component implements OnInit {
         this.clearSvg()
         this.createSvg();
       });
-
-    }else if(event.value == this.categories[2].value){
-      console.log('Book changed...',event.value );
-      console.log("this.categories:",this.categories)
-    }else if(event.value == this.categories[3].value){
-      console.log('Book changed...',event.value );
-      console.log("this.categories:",this.categories)
+    }else if(event.value == this.categories[1].value){
+      this.actualCat = this.categories[1];
+      d3.json('../../assets/data_vis2.json')
+      .then((data: any) => {
+        this.data = data;
+        this.sortPlayers();
+      })
+      .then(() => {
+        this.clearSvg()
+        this.createSvg();
+      });
     }
-
-
   }
 
   clearSvg() {
@@ -87,7 +98,7 @@ export class DataViz2Component implements OnInit {
       firstPlayer: any,
       secondPlayer: any
     ): number {
-      if ((firstPlayer['Ast']+firstPlayer['Gls']) < (secondPlayer['Ast']+ secondPlayer['Gls']) ) {
+      if ((firstPlayer['Gls']+firstPlayer['Ast']) < (secondPlayer['Gls']+ secondPlayer['Ast']) ) {
         return 1;
       } else {
         return -1;
@@ -128,6 +139,12 @@ export class DataViz2Component implements OnInit {
       .attr('id', 'vis2-g')
       .attr("transform", `translate(0,0)`);
 
+    if( this.actualCat == this.categories[1]){
+      this.svg.call(this.tipCad);
+    }else{
+      this.svg.call(this.tipConcacaf);
+    }
+
 
     // Create X and Y axis DOMAIN and RANGE SCALE
     const xScale = scaleLinear()
@@ -163,27 +180,53 @@ export class DataViz2Component implements OnInit {
     g.append('g').attr('class', 'xAxis').call(xAxis)
       .selectAll('.domain').remove();
 
-    g.append('g').selectAll('g').data(stackedData).enter().append('g')
-      .attr
+    if( this.actualCat == this.categories[1]){
+      // Show the stacked bars
+      g.append("g")
+      .selectAll("g")
+      // Enter in the stack data = loop key per key = group per group
+      .data(stackedData)
+      .enter().append("g")
+        .attr("fill", function(d: { key: string; }) { return color(d.key); })
+        .selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(function(d: any) { return d;  })
+        .enter().append("rect")
+          .attr('overflow', 'visible')
+          .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
+          .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
+          .on('mouseover', this.tipCad.show)
+          .on('mouseout', this.tipCad.hide)
+          .on("mouseleave", this.tipCad.leave)
+          .attr("height", yScale.bandwidth())
+          .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
-    // Show the bars
-    g.append("g")
-    .selectAll("g")
-    // Enter in the stack data = loop key per key = group per group
-    .data(stackedData)
-    .enter().append("g")
-      .attr("fill", function(d: { key: string; }) { return color(d.key); })
-      .selectAll("rect")
-      // enter a second time = loop subgroup per subgroup to add all rectangles
-      .data(function(d: any) { return d; })
-      .enter().append("rect")
-        .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
-        .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
-        .attr("height", yScale.bandwidth())
-        .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
+      // Show text header
+      g.append('text').attr('y', -50).text(`${this.headers[1]}`).attr('class','title-viz2')
+    }else{
+      // Show the stacked bars
+      g.append("g")
+      .selectAll("g")
+      // Enter in the stack data = loop key per key = group per group
+      .data(stackedData)
+      .enter().append("g")
+        .attr("fill", function(d: { key: string; }) { return color(d.key); })
+        .selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(function(d: any) { return d;  })
+        .enter().append("rect")
+          .attr('overflow', 'visible')
+          .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
+          .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
+          .on('mouseover', this.tipConcacaf.show)
+          .on('mouseout', this.tipConcacaf.hide)
+          .on("mouseleave", this.tipConcacaf.leave)
+          .attr("height", yScale.bandwidth())
+          .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
-    // Show text header
-    g.append('text').attr('y', -30).text(`${this.headers[0]}`).attr('class','title-viz2')
+      // Show text header
+      g.append('text').attr('y', -50).text(`${this.headers[0]}`).attr('class','title-viz2')
+    }
 
     // select the svg area
     var legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend')

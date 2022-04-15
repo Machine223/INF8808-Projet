@@ -51,7 +51,7 @@ export class DataViz4Component implements OnInit {
   //This will store player on field.
   private playerOnField: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   //We use these fields for Pie Chart:
-  private teamValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0} 
+  private teamValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0}
   private onFieldValue: TotalValue ={GK:0,FW:0,MF:0,DF:0,total:0}
   private isOnField: boolean[] = []
 
@@ -63,9 +63,9 @@ export class DataViz4Component implements OnInit {
   ngOnInit(): void {
     d3.json('../../assets/data_viz4.json')
       .then((data: any) => {
-        console.log("Init")
+        // console.log("Init")
         this.data = data;
-        
+
         this.playerByPositionMapping()
       }).then(() =>{
         this.outerEdge()
@@ -91,7 +91,7 @@ export class DataViz4Component implements OnInit {
     this.data.forEach(player => {
       this.addPlayerInit(player);
     })
-    console.log("onfield:",this.onFieldValue)
+    // console.log("onfield:",this.onFieldValue)
   }
 
   private listenClick() {
@@ -115,7 +115,7 @@ export class DataViz4Component implements OnInit {
   
   //Add player name to the right array
   private addPlayerInit(playerInfo: any) {
-    
+
 
     let pos: string[] = playerInfo.Pos.split(",",2)
     let player:Player = {Name:playerInfo.Player, Img:playerInfo.Img ,Pos:pos,Age:playerInfo.Age,salary:playerInfo.salary,OnField: false,id:playerInfo.id}
@@ -192,7 +192,7 @@ export class DataViz4Component implements OnInit {
 
         //defense
       } else if (player.Pos[0] == "DF" && cur_DF < MAX_DF){
-        
+
         cur_DF+=1
         player.OnField = true
         this.isOnField[i] = true
@@ -219,7 +219,7 @@ export class DataViz4Component implements OnInit {
 
     //Add football field with predetermine size:
     let playerLegendIdList:string[]= ["GK_legend","MF_legend","FW_legend","DF_legend"]
-    
+
     playerLegendIdList.forEach(id => this.createSVGLegend(id))
 
   }
@@ -243,13 +243,13 @@ export class DataViz4Component implements OnInit {
     attr("x",0).attr("y",10)
     .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold")
     .text(svgSectionTitle)
-    
-    
+
+
 
     let currentPos  = id.split("_",1)[0] as keyof PlayerByPosition
     let playerList = this.getProperty(this.playerMainPosition,currentPos) as any[]
     this.createPlayerCircle(playerList,svg,g_wrapper,defs,currentPos)
-    playerList.forEach(player => { 
+    playerList.forEach(player => {
     });
   }
 
@@ -264,8 +264,8 @@ export class DataViz4Component implements OnInit {
     let r= 20
     let color = COLOR_MAP.get(currentPos) as string
     let current_svg_width = Number(svg.attr("width"))
-    console.log("createPlayerCircle")
-    
+    // console.log("createPlayerCircle")
+
     for(let i =0; i < players.length; i++) {
       let playerID = players[i].id
       let circle_tag = "cl_"+playerID
@@ -495,10 +495,10 @@ export class DataViz4Component implements OnInit {
         let playerList = this.getProperty(this.playerOnField,position as keyof PlayerByPosition) as any[]
         this.createPlayerFieldCircle(playerList,svg,defs,position)
     })
-    
+
   }
   private createPlayerFieldCircle(players:any[],svg:d3.Selection<any, unknown, null, undefined>,defs:d3.Selection<any, unknown, null, undefined>,currentPos:string){
-    
+
     let g_wrapper = svg.append("g").attr("id","field"+currentPos)
 
     let self = this;
@@ -507,7 +507,7 @@ export class DataViz4Component implements OnInit {
     let r= 20
     let r2 =20
     let color = COLOR_MAP.get(currentPos) as string
-    
+
     for(let i =0; i < players.length; i++) {
       let currentClass = "classf_"+currentPos
       let playerID = players[i].id
@@ -520,13 +520,13 @@ export class DataViz4Component implements OnInit {
       } else if (players[i].salary > 1000000) {
         r2= 30
       } else {
-        r2 = 5 
+        r2 = 5
       }
       //Adding circle with absolute position hardcoded
       if(currentPos == "GK"){
         x = 300
         y = 100
-        
+
       } else if (currentPos == "DF") {
         if ( i == 0 ){
           x = 130
@@ -563,7 +563,7 @@ export class DataViz4Component implements OnInit {
 
           default:
             break;
-        } 
+        }
         if (i>=MAX_MF){
           break;
         }
@@ -593,7 +593,7 @@ export class DataViz4Component implements OnInit {
         .attr("r", r)
         .attr("class",currentClass)
         .attr("id",circle_tag)
-        
+
         g_wrapper.append("circle")
         .attr("cx", x)
         .attr("cy", y)
@@ -734,14 +734,14 @@ export class DataViz4Component implements OnInit {
   }
   //Make the outerEdge of the rectangle
   private outerEdge() {
-    var fieldDiv:any = document.getElementById("start");
-    d3.select(fieldDiv).append("svg")
-    .attr("id","curved_rec")
-    .attr("width",1000)
-    .attr("height",1000)
-    .append("rect")
-    .attr("stroke","black")
-    
+    // var fieldDiv:any = document.getElementById("start");
+    // d3.select(fieldDiv).append("svg")
+    // .attr("id","curved_rec")
+    // .attr("width",1000)
+    // .attr("height",1000)
+    // .append("rect")
+    // .attr("stroke","black")
+
   }
 
   private pieInit(){

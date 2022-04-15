@@ -17,7 +17,12 @@ h6 {
 }
 
 p {
-  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3rem;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: 24px;
+  text-align: justify;
 }
 
 .spacer {
@@ -35,13 +40,14 @@ p {
   background-color: #0f7ae5;
   color: white;
   font-weight: 600;
+  padding-left: 24px;
+  font-size: medium;
 }
 
 .content {
-  display: flex;
   margin: 82px auto 32px;
   padding: 0 16px;
-  max-width: 960px;
+  max-width: 1000px;
   flex-direction: column;
   align-items: center;
 }
@@ -49,17 +55,17 @@ p {
 
 .card {
   all: unset;
-  border-radius: 4px;
+  border-radius: 12px;
   border: 1px solid #eee;
   background-color: #fafafa;
-  margin: 0 8px 16px;
   padding: 16px;
   display: flex;
+  margin-top: 12px;
+  margin-bottom: 24px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease-in-out;
-  line-height: 24px;
 }
 
 .card.highlight-card {
