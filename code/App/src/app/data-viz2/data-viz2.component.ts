@@ -12,7 +12,7 @@ import d3Tip from 'd3-tip';
 export class DataViz2Component implements OnInit {
   private data: any[] = [];
   private svg: any;
-  private width: number = 800;
+  private width: number = 900;
   private height: number = 800;
   categories: any[] = [
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
