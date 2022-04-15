@@ -15,19 +15,19 @@ export class DataViz1Component implements OnInit {
   numCols:number = 2
   topTeams: number = 12
   fontSize:number = 12
-  width: number = 1100
+  width: number = 1000
   legendWidth :number= 300
   legendHeight:number = 20
-  
+
   chartMargin = {left:100, right:100, top:50, bottom:50}
   margin = {left:20, top:20, bottom:20, right:20}
-  
+
   chartGroupWidth:number = this.width / this.numCols;
   chartGroupHeight:number = this.chartGroupWidth;
-  height: number = (this.chartGroupHeight) * 4
+  height: number = (this.chartGroupHeight) * 4 + 80
 
   units:any = {'Age':'Ans', 'Crds':'Cartons', 'Subs':'Remplacements'}
-  orderingCategories: any[] = [    
+  orderingCategories: any[] = [
   { value: 'Gls', viewValue: 'Buts marqués' },
   { value: 'VSGls', viewValue: 'Buts encaissés' },
   { value: 'Pts', viewValue: 'Pointage'},
@@ -50,7 +50,7 @@ export class DataViz1Component implements OnInit {
     .then((data: any) => {
       this.viewedData = data;
       this.data = data;
-      
+
     })
     .then(() => {
       this.createSvg()
@@ -94,8 +94,8 @@ export class DataViz1Component implements OnInit {
     .attr('width', this.width)
     .attr('height', this.height)
     .append('g')
-    .attr('fill', 'black')
-    .attr('id', 'vis1-svg-g');
+    .attr('id', 'vis1-svg-g')
+    .attr("transform", `translate(49,-7)`);
 
     this.createLegend();
     for (var i=0;i<this.orderingCategories.length;i++) {
@@ -144,8 +144,11 @@ export class DataViz1Component implements OnInit {
       .domain([minColor, maxColor])
       .range(["blue", "red"]);
 
-    g.append('g').style('font-size', '10px').call(axisLeft(yScale))
+      g.append('g')
+      .attr('class', 'tick')
+      .call(axisLeft(yScale))
       .attr('transform', `translate(${x}, ${y})`);
+
 
     g.append('g').call(axisBottom(xScale))
       .attr('transform', `translate(${x}, ${y + innerHeight})`);
@@ -159,12 +162,14 @@ export class DataViz1Component implements OnInit {
       .attr('stroke-width', '1px');
 
     g.selectAll('rect').data(chartData).enter()
-    .append("text") 
-    .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
-    .attr('x', x + innerWidth + 3 )
-    .attr('fill', 'black')
-    .attr('style', `font-size: ${this.fontSize};`)
-    .text((d:any) => xValue(d));
+      .append('g')
+      .attr('class', 'tick')
+      .append('text')
+      .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
+      .attr('x', x + innerWidth + 10 )
+      .attr('fill', 'black')
+      // .attr('style', `font-size: ${this.fontSize};`)
+      .text((d:any) => xValue(d));
 
     g.selectAll("rect").data(chartData)
     .enter().append('rect')
@@ -176,7 +181,8 @@ export class DataViz1Component implements OnInit {
 
     g.append('text')
       .attr('x', x + 5)
-      .attr('y', y - 5)
+      .attr('y', y - 15)
+      .attr('class', 'title-viz2')
       .attr('fill', 'black')
       .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
       .text(category.viewValue);
@@ -232,22 +238,23 @@ export class DataViz1Component implements OnInit {
 
     var yTextOffset = (this.legendHeight + 10)/2;
     g.append('text')
-      .attr('x', legendx + this.legendWidth + 5)
+      .attr('x', legendx + this.legendWidth + 8)
       .attr('y', legendy + yTextOffset)
       .attr('fill', 'black')
-      .attr('style', `font-size: ${this.fontSize}px;`)
+      .attr('style', `font-size: 14px;`)
       .text(maxColor);
-    
+
     g.append('text')
-    .attr('x', legendx - 40)
+    .attr('x', legendx - 32)
     .attr('y', legendy + yTextOffset)
     .attr('fill', 'black')
-    .attr('style', `font-size: ${this.fontSize}px;`)
+    .attr('style', `font-size: 14px;`)
     .text(minColor);
 
     var text = g.append('text')
     .attr('y', legendy - this.legendHeight)
     .attr('fill', 'black')
+    .attr('class', 'title-viz2')
     .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
     .text(`Légende (${this.units[this.selectedGradientCategory]})`);
 
