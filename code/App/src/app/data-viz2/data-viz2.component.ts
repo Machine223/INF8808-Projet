@@ -17,8 +17,6 @@ export class DataViz2Component implements OnInit {
   categories: any[] = [
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
     { value: 'canada', viewValue: 'Joueur Canadien' },
-    // { value: 'formation', viewValue: 'Afficher le club de formation' },
-    // { value: 'club', viewValue: 'Afficher le club de actuelle' },
   ];
   actualCat : any;
   headers: string[] = ['Joueur de la Concacaf', 'Joueur Canadien'];
