@@ -95,7 +95,7 @@ export class DataViz1Component implements OnInit {
     .attr('height', this.height)
     .append('g')
     .attr('id', 'vis1-svg-g')
-    .attr("transform", `translate(49,-7)`);
+    .attr("transform", `translate(45,-7)`);
 
     this.createLegend();
     for (var i=0;i<this.orderingCategories.length;i++) {
@@ -149,8 +149,10 @@ export class DataViz1Component implements OnInit {
       .call(axisLeft(yScale))
       .attr('transform', `translate(${x}, ${y})`);
 
-
-    g.append('g').call(axisBottom(xScale))
+    g.append('g')
+      .attr('class', 'tick')
+      .style('font-size','0.7em')
+      .call(axisBottom(xScale))
       .attr('transform', `translate(${x}, ${y + innerHeight})`);
 
     g.append('line')
@@ -167,8 +169,7 @@ export class DataViz1Component implements OnInit {
       .append('text')
       .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
       .attr('x', x + innerWidth + 10 )
-      .attr('fill', 'black')
-      // .attr('style', `font-size: ${this.fontSize};`)
+      .attr('style', `font-size: 1em;`)
       .text((d:any) => xValue(d));
 
     g.selectAll("rect").data(chartData)
@@ -181,9 +182,8 @@ export class DataViz1Component implements OnInit {
 
     g.append('text')
       .attr('x', x + 5)
-      .attr('y', y - 15)
+      .attr('y', y - 20)
       .attr('class', 'title-viz2')
-      .attr('fill', 'black')
       .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
       .text(category.viewValue);
   }
