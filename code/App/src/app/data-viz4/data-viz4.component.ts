@@ -3,20 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { strings } from '@material/select';
 import * as d3 from 'd3';
 import { select, stratify } from 'd3';
+import { BehaviorSubject } from 'rxjs';
 import {PlayerByPosition,Player,TotalValue, PieData} from "./viz4_interface";
 
 const MAX_GK =1
 const MAX_DF =2
 const MAX_MF =5
 const MAX_FW =3
+
+const GREY_FILL = "#D3D3D3"
+const GREY_STROKE = "#585858"
 // Current count
 var cur_GK =0
 var cur_DF =0
 var cur_MF =0
 var cur_FW =0
 
-
-var PLAYER_ID = 0
 
 let LEGEND_MAP = new Map<string, string>([
   ["GK_legend", "Gardien de but:"],
@@ -32,10 +34,6 @@ let COLOR_MAP  = new Map<string, string>([
   ["MF", "orange"],
 ]);
 
-// id in data structure -> id in map
-let PLAYERID_MAP = new Map<number,number>([
-
-])
 
 
 
@@ -51,12 +49,14 @@ export class DataViz4Component implements OnInit {
   private playerByPosition: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   private playerMainPosition:PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   //This will store player on field.
-  private onFieldPlayer: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
+  private playerOnField: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   //We use these fields for Pie Chart:
   private teamValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0} 
   private onFieldValue: TotalValue ={GK:0,FW:0,MF:0,DF:0,total:0}
   private isOnField: boolean[] = []
 
+  private isSelecting: boolean = false
+  private selectedid: number|null = null
 
   constructor() { }
 
@@ -72,11 +72,11 @@ export class DataViz4Component implements OnInit {
         this.createBaseTemplate()
         this.createSVGPlayerOnField()
         this.createSalaryScale()
-        this.greyPlayerOnField()
+        this.listenClick()
         this.pieInit()
 
       })
-      console.log("onfield,",this.onFieldPlayer)
+      console.log("onfield,",this.playerOnField)
   }
 
   // Fill the player map to enumerate player by position later on.
@@ -92,6 +92,25 @@ export class DataViz4Component implements OnInit {
       this.addPlayerInit(player);
     })
     console.log("onfield:",this.onFieldValue)
+  }
+
+  private listenClick() {
+    let self = this
+    d3.select("#outer").on('click', (event) => {
+      let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
+      if (elem.tagName =="image" || elem.tagName == "circle"){
+        console.log("is an image")
+      }
+      else if(this.selectedid != null){
+        this.removeFieldStroke()
+        let players = this.matchingPosOnFieldPlayers()
+        this.deactivateSwapablePlayers(players)
+        this.removeSelectionShadow(this.selectedid as number)
+        this.greyingPlayerInLegend(this.selectedid as number)
+        this.selectedid = null
+        console.log("selectedid",this.selectedid)
+      }
+    });
   }
   
   //Add player name to the right array
@@ -155,7 +174,7 @@ export class DataViz4Component implements OnInit {
 
         player.OnField = true
         cur_GK +=1
-        this.onFieldPlayer.GK.push(player)
+        this.playerOnField.GK.push(player)
         this.onFieldValue.GK += player.salary
         this.onFieldValue.total += player.salary
 
@@ -166,7 +185,7 @@ export class DataViz4Component implements OnInit {
         this.isOnField[i] = true
 
         cur_FW+=1
-        this.onFieldPlayer.FW.push(player)
+        this.playerOnField.FW.push(player)
         this.onFieldValue.FW += player.salary
         this.onFieldValue.total += player.salary
 
@@ -178,7 +197,7 @@ export class DataViz4Component implements OnInit {
         player.OnField = true
         this.isOnField[i] = true
 
-        this.onFieldPlayer.DF.push(player)
+        this.playerOnField.DF.push(player)
         this.onFieldValue.DF += player.salary
         this.onFieldValue.total += player.salary
 
@@ -187,7 +206,7 @@ export class DataViz4Component implements OnInit {
           cur_MF+=1
           this.isOnField[i] = true
           player.OnField = true
-          this.onFieldPlayer.MF.push(player)
+          this.playerOnField.MF.push(player)
           this.onFieldValue.MF += player.salary
           this.onFieldValue.total += player.salary
 
@@ -195,51 +214,13 @@ export class DataViz4Component implements OnInit {
     }
 
   }
-
-  //Switch player onField with another one update onfieldValue
-  private substitutePlayer(){
-    const pass = 'pass';  
-
-    //update salary
-
-    //update d3
-
-
-  }
-
-  //add d3 logic here:
-
-
+  
   private createBaseTemplate() {
 
     //Add football field with predetermine size:
     let playerLegendIdList:string[]= ["GK_legend","MF_legend","FW_legend","DF_legend"]
     
     playerLegendIdList.forEach(id => this.createSVGLegend(id))
-
-
-    
-
-    var svg_GK_legend = d3.select("div.GK_legend")
-    .append("svg")
-    .attr("id","GK_legend_id")
-    .attr("width", 960)
-
-
-    d3.selectAll("div.MF_legend").append("svg")
-    d3.selectAll("div.DF_legend").append("svg")
-    d3.selectAll("div.FW_legend").append("svg")
- 
-    //With hover
-
-
-    //Create D3 pie chart
-
-
-  }
-
-  private drawCircle() {
-    const pass = 'pass';  
 
   }
 
@@ -286,8 +267,8 @@ export class DataViz4Component implements OnInit {
     console.log("createPlayerCircle")
     
     for(let i =0; i < players.length; i++) {
-      PLAYER_ID = players[i].id
-      let circle_tag = g_wrapper.attr("id")+PLAYER_ID
+      let playerID = players[i].id
+      let circle_tag = "cl_"+playerID
       let player_name = players[i].Name.split(" ", 2)
       let firstname= player_name[0]
       let lastname = player_name[1]
@@ -302,16 +283,17 @@ export class DataViz4Component implements OnInit {
       .attr("cy", y)
       .attr("r", r)
       .attr("class","shadow")
-      .attr("id",circle_tag)
+      .attr("id",circle_tag+"_defs")
       
       g_wrapper.append("circle")
       .attr("cx", x)
       .attr("cy", y)
       .attr("r", r+1)
       .attr("class","shadow")
-      .attr("stroke",color)
-      .attr("fill",color)
+      .attr("stroke",GREY_STROKE)
+      .attr("fill",GREY_FILL)
       .attr("id",circle_tag)
+      .style("filter","url(#inactive-shadow)")
 
       g_wrapper.append("text").
       attr("x",x).attr("y",y+r+7)
@@ -323,36 +305,176 @@ export class DataViz4Component implements OnInit {
       .text(lastname)
   
   
-      g_wrapper.append("image")
+      let img = g_wrapper.append("image")
       .attr('xlink:href', players[i].Img)
       .attr("clip-path",`url(#${defs.attr("id")})`)
       .attr("width",40)
       .attr("heigth",40)
+      .style("filter","grayscale(1)")
       .attr("x",x-r)
-      .attr("id","i"+PLAYER_ID)
-      .attr("y",y-r)
-
+      .attr("id","i"+playerID)
+      .attr("y",y-r).on('click', (datum) => {
+        console.log(datum); // the datum for the clicked circle
+        console.log("image clicked")
+        self.startingNewPlayerSelection(datum)
+      });
       //.style("filter","grayscale(100)")
-  
 
       x += 60
     }
     svg.attr("height",g_wrapper.node().getBBox().height+15)
   }
 
-  public clickNewPlayer(event:any,d:any) {
-    // console.log("click new player")
+  //Starting a player selection
+  public startingNewPlayerSelection(event:any) {
     let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
-    let elemid = elem.id
+    if (!this.isOnField[Number(elem.id.substring(1))]) {
+      this.activatingPlayer(elem)
+    }
+    else {
+      console.log("player already on field")
+    }
+   
     let parentid = (elem.parentNode as HTMLElement).id
-    // console.log(parentid+elemid) combining id to get circle id doesn't work yet.
-
-    // console.log(elem)
-    let elem1= d3.select("i"+elemid).attr("style","filter: grayscale(100%);")
+    
     // console.log(elem1)
-
   }
 
+    //Activating player for potential 
+    private activatingPlayer(elem: HTMLElement) {
+      console.log("first activating palayer",this.selectedid)
+      console.log(elem)
+      if (this.selectedid != null) {
+        this.greyingPlayerInLegend(this.selectedid as number)
+        let playerOnField = this.matchingPosOnFieldPlayers()
+        this.removeSelectionShadow(this.selectedid)
+
+        this.activateSwapablePlayers(playerOnField)
+        this.deactivateSwapablePlayers(playerOnField)
+      }
+
+      let id = Number(elem.id.substring(1))
+      this.removeFieldStroke()
+      this.selectedid = id
+      this.isSelecting = true
+
+      this.removeSelectionShadow(this.selectedid)
+      this.greyingPlayerInLegend(this.selectedid as number)
+
+      
+      if (!this.isOnField[id]){
+        console.log(this.selectedid)
+        let playerOnField = this.matchingPosOnFieldPlayers()
+        this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
+        //Add effect for player to replace
+        this.addStrokePlayerGroup(this.data[id].Pos.split(",",2)[0])
+        //On field player legend selection
+
+        this.activateSwapablePlayers(playerOnField)
+
+        } 
+
+      }
+      //If the user want to select another player while in select mode
+      
+    //Legend
+  private matchingPosOnFieldPlayers() {
+    console.log(this.data[this.selectedid as number])
+    //We will only consider the main position for the moment
+    let pos: any =this.data[this.selectedid as number].Pos.split(",",2)[0]
+    return this.getProperty(this.playerOnField,pos)
+  }
+
+  private greyLegendImageOnly(id:number){
+    d3.select("#i"+id).style("filter","grayscale(100)")
+  }
+  private colorLegendImageOnly(id:number){
+    d3.select("#i"+id).style("filter","grayscale(0)")
+  }
+  private addSelectionShadow(id:number){
+    d3.select("#cl_"+id)
+    .style("filter","url(#selection-shadow)")
+  }
+  //setting up different shadows
+  private removeSelectionShadow(id:number){
+    if (this.isOnField[id]){
+      console.log("removeSelectionShadow", id)
+      d3.selectAll("#cl_"+id)
+      .style("filter","url(#active-shadow)")
+    }
+    else{
+      console.log("removeSelectionShadow", id)
+      d3.selectAll("#cl_"+id)
+      .style("filter","url(#inactive-shadow)")
+    }
+
+  }
+  private activateSwapablePlayers(players:Player[]){
+    for(let i =0;i<players.length;i++) {
+      this.colorLegendImageOnly(players[i].id)
+      this.addSelectionShadow(players[i].id)
+    }
+  }
+
+  // grey only the image
+  private deactivateSwapablePlayers(players:Player[]){
+    for(let i =0;i<players.length;i++) {
+      // this.greyLegendImageOnly(players[i].id)
+      this.removeSelectionShadow(players[i].id)
+    }
+  }
+
+  //Modifying legend to inactive effect
+  private greyingPlayerInLegend(id:number){
+    d3.select("#i"+id).style("filter","grayscale(100)")
+    .attr("stroke",GREY_STROKE)
+    .attr("fill",GREY_FILL)
+
+    d3.select("#cl_"+id)
+    .style("stroke", GREY_STROKE)
+    .style("filter","url(#inactive-shadow)")
+    .style("fill", GREY_FILL)
+    .style("stroke-width",1)
+  }
+  private colorPlayerInLegendSelection(id:number){
+    let pos:string = this.data[id].Pos
+    d3.select("#i"+id).style("filter","grayscale(0)")
+    console.log(COLOR_MAP.get(pos.substring(0,2)))
+    d3.select("#cl_"+id).style("stroke", COLOR_MAP.get(pos.substring(0,2)) as string).style("filter","url(#active-shadow)")
+    .style("fill", COLOR_MAP.get(pos.substring(0,2)) as string).style("stroke-width","3")
+  }
+
+  private colorPlayerInLegend(id:number){
+    let pos:string = this.data[id].Pos
+    d3.select("#i"+id).style("filter","grayscale(0)")
+    console.log(COLOR_MAP.get(pos.substring(0,2)))
+    d3.select("#cl_"+id).style("stroke", COLOR_MAP.get(pos.substring(0,2)) as string).style("filter","url(#active-shadow)")
+    .style("fill", COLOR_MAP.get(pos.substring(0,2)) as string)
+  }
+  private addStrokePlayerGroup(pos:string){
+    console.log(pos)
+    d3.selectAll(".classf_"+pos)
+    .attr("stroke","black")
+    .attr("stroke-width","4")
+  }
+  private removeFieldStroke(){
+    d3.selectAll(".classf_GK")
+    .attr("stroke","black")
+    .attr("stroke-width","0")
+    d3.selectAll(".classf_FW")
+    .attr("stroke","black")
+    .attr("stroke-width","0")
+    d3.selectAll(".classf_MF")
+    .attr("stroke","black")
+    .attr("stroke-width","0")
+    d3.selectAll(".classf_DF")
+    .attr("stroke","black")
+    .attr("stroke-width","0")
+  }
+
+
+
+  // Create SVG for player on field
   createSVGPlayerOnField() 
   {
     let id= "field"
@@ -370,9 +492,8 @@ export class DataViz4Component implements OnInit {
     //
     let defs = svg.append("defs").append("clipPath").attr("id",id+"_circle")
     pos_property.forEach(position => {
-        let playerList = this.getProperty(this.playerMainPosition,position as keyof PlayerByPosition) as any[]
+        let playerList = this.getProperty(this.playerOnField,position as keyof PlayerByPosition) as any[]
         this.createPlayerFieldCircle(playerList,svg,defs,position)
-
     })
     
   }
@@ -388,7 +509,9 @@ export class DataViz4Component implements OnInit {
     let color = COLOR_MAP.get(currentPos) as string
     
     for(let i =0; i < players.length; i++) {
-      let circle_tag = g_wrapper.attr("id")+i
+      let currentClass = "classf_"+currentPos
+      let playerID = players[i].id
+      let circle_tag = g_wrapper.attr("id")+"_"+i
       let player_name = players[i].Name.split(" ", 2)
       let firstname= player_name[0]
       let lastname = player_name[1]
@@ -399,7 +522,7 @@ export class DataViz4Component implements OnInit {
       } else {
         r2 = 5 
       }
-      //Adding circle with absolute position
+      //Adding circle with absolute position hardcoded
       if(currentPos == "GK"){
         x = 300
         y = 100
@@ -468,14 +591,14 @@ export class DataViz4Component implements OnInit {
         .attr("cx", x)
         .attr("cy", y)
         .attr("r", r)
-        .attr("class","shadow")
+        .attr("class",currentClass)
         .attr("id",circle_tag)
         
         g_wrapper.append("circle")
         .attr("cx", x)
         .attr("cy", y)
         .attr("r", r+1)
-        .attr("class","shadow")
+        .attr("class",currentClass)
         .attr("stroke",color)
         .attr("fill",color)
         .attr("id",circle_tag)
@@ -484,8 +607,8 @@ export class DataViz4Component implements OnInit {
         .attr("cx", x)
         .attr("cy", y)
         .attr("r", r2+40)
-        .attr("class","shadow")
-        .attr("stroke",color)
+        .attr("class",currentClass)
+        .attr("stroke","color")
         .attr("fill",color)
         .attr("id","e_"+circle_tag)
         g_wrapper.append("text").
@@ -495,6 +618,7 @@ export class DataViz4Component implements OnInit {
         g_wrapper.append("text").
         attr("x",x).attr("y",y+r+15)
         .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
+        .attr("id","f_firstname_"+i)
         .text(lastname)
 
         g_wrapper.append("image")
@@ -502,11 +626,13 @@ export class DataViz4Component implements OnInit {
         .attr("clip-path",`url(#${defs.attr("id")})`)
         .attr("width",40)
         .attr("heigth",40)
-        .attr("x",x-r)
-        .attr("id","i"+PLAYER_ID)
+        .attr("x",x-r).attr("id","f_lastname")
+        .attr("id","f"+playerID)
         .attr("y",y-r)
 
-      PLAYER_ID++
+        this.colorPlayerInLegend(playerID)
+
+
 
       x += 60
     }
@@ -520,6 +646,39 @@ export class DataViz4Component implements OnInit {
     var svg = d3.select(fieldDiv).append("svg")
     .attr("width",380).attr("height",225)
     .attr("id","scale")
+    let defs= svg.append("defs")
+    let linearGradient = defs.append("linearGradient").attr("id","Gradient-1")
+    .attr("x1","20%").attr("y1","30%").attr("x2","40%").attr("y2","80%")
+    linearGradient.append("stop").attr("offset","0%").attr("stop-color","#B8D0DF")
+    linearGradient.insert("stop").attr("offset","100%").attr("stop-color","#73A2BD")
+
+    let filterActiveShadow = defs.insert("filter").attr("id","active-shadow").attr("xmlns","http://www.w3.org/2000/svg")
+    .attr("height","130%").attr("width","130%")
+    filterActiveShadow.append("feGaussianBlur").attr("in","SourceAlpha").attr("stdDeviation",3)
+    filterActiveShadow.append("feOffset").attr("dx",2).attr("dy",2).attr("result","offsetblur")
+    filterActiveShadow.append("feComponentTransfer").append("feFuncA").attr("type","linear").attr("slope","0.3")
+    let feMerge = filterActiveShadow.append("feMerge")
+    feMerge.append("feMergeNode")
+    feMerge.append("feMergeNode").attr("in","SourceGraphic")
+
+    let filterInactiveShadow =defs.insert("filter").attr("id","inactive-shadow").attr("xmlns","http://www.w3.org/2000/svg")
+    .attr("height","130%").attr("width","130%")
+    filterInactiveShadow.append("feGaussianBlur").attr("in","SourceAlpha").attr("stdDeviation",3)
+    filterInactiveShadow.append("feOffset").attr("dx",2).attr("dy",2).attr("result","offsetblur")
+    filterInactiveShadow.append("feComponentTransfer").append("feFuncA").attr("type","linear").attr("slope","0.15")
+    let feMerge2 = filterInactiveShadow.append("feMerge")
+    feMerge2.append("feMergeNode")
+    feMerge2.append("feMergeNode").attr("in","SourceGraphic")
+
+    let filterSelection =defs.insert("filter").attr("id","selection-shadow").attr("xmlns","http://www.w3.org/2000/svg")
+    .attr("height","130%").attr("width","130%")
+    filterSelection.append("feGaussianBlur").attr("in","SourceAlpha").attr("stdDeviation",3)
+    filterSelection.append("feOffset").attr("dx",2).attr("dy",2).attr("result","offsetblur")
+    filterSelection.append("feComponentTransfer").append("feFuncB").attr("type","linear").attr("slope","0.10")
+    let feMerge3 = filterSelection.append("feMerge")
+    feMerge3.append("feMergeNode")
+    feMerge3.append("feMergeNode").attr("in","SourceGraphic")
+
     svg.append("circle")
     .attr("cx","50%")
     .attr("cy","50%")
@@ -528,6 +687,8 @@ export class DataViz4Component implements OnInit {
     .attr("fill","none")
     .attr("stroke-dasharray","5,5")
     .style("")
+    //Create filters drop shadow Defs for all players 
+
 
     svg.append("text").
     attr("x",190).attr("y",150)
@@ -590,38 +751,42 @@ export class DataViz4Component implements OnInit {
     let margin = 40
     var radius = Math.min(width, height) / 2 - margin
 
-    var svg = d3.select("#pie")
-    .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-    .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    // var svg = d3.select("#pie")
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height)
+    // .append("g")
+    //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
       
-      // Create dummy data
+    //   // Create dummy data
 
-      // set the color scale
-      let data:PieData[] = [{position:"Gardien",value: this.teamValue.GK.toString()} 
-      , {position:"Défense", value: this.teamValue.DF.toString()},
-      {position:"Attaque", value: this.teamValue.FW.toString()},
-      {position:"Milieu de terrain", value: this.teamValue.DF.toString()}]
-      console.log(data)
+    //   // set the color scale
+    //   let data:PieData[] = [{position:"Gardien",value: this.teamValue.GK.toString()} 
+    //   , {position:"Défense", value: this.teamValue.DF.toString()},
+    //   {position:"Attaque", value: this.teamValue.FW.toString()},
+    //   {position:"Milieu de terrain", value: this.teamValue.DF.toString()}]
+    //   console.log(data)
 
-      // let pie:PieData[] = d3.pie().sort(null).value(function(d: any){return d.number;}(data))
-      // console.log(pie)
+    //   // let pie:PieData[] = d3.pie().sort(null).value(function(d: any){return d.number;}(data))
+    //   // console.log(pie)
       
-      // var segments = d3.arc().innerRadius(100).outerRadius(200).padAngle(0.05).padRadius(50)
+    //   // var segments = d3.arc().innerRadius(100).outerRadius(200).padAngle(0.05).padRadius(50)
 
-      // var sections = svg.append("g").attr("transform","translate(250,250)").selectAll("path").data(pie)
+    //   // var sections = svg.append("g").attr("transform","translate(250,250)").selectAll("path").data(pie)
 
   }
 
-  private greyPlayerOnField(){
-    console.log(this.data)
-    console.log(this.playerMainPosition)
-    
+  private selectingPlayer() {
+    const pass = 'pass'
   }
 
 
+
+
+
+  // private swapPlayer(player_id_on_field, player_id_to_swap) {
+
+  // }
 
 }
 
