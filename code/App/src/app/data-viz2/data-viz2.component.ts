@@ -10,6 +10,7 @@ import d3Tip from 'd3-tip';
   styleUrls: ['./data-viz2.component.css']
 })
 export class DataViz2Component implements OnInit {
+  private tag = document.getElementById('vis2')
   private data: any[] = [];
   private svg: any;
   private width: number = 900;
@@ -58,6 +59,7 @@ export class DataViz2Component implements OnInit {
       .then(() => {
         this.createSvg();
       });
+
   }
 
   onSelect(event: any): any {
@@ -183,10 +185,14 @@ export class DataViz2Component implements OnInit {
     if( this.actualCat == this.categories[1]){
       // Show the stacked bars
       g.append("g")
+      .attr('class', 'stacked')
+      .attr('id', 'stacked')
       .selectAll("g")
       // Enter in the stack data = loop key per key = group per group
       .data(stackedData)
       .enter().append("g")
+        .attr('class', 'bar')
+        .attr('id', 'bar')
         .attr("fill", function(d: { key: string; }) { return color(d.key); })
         .selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
@@ -199,6 +205,9 @@ export class DataViz2Component implements OnInit {
           .on('mouseout', this.tipCad.hide)
           .on("mouseleave", this.tipCad.leave)
           .attr("height", yScale.bandwidth())
+          .attr("width",(d: any) =>  0)
+          .transition()
+          .duration(800)
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
@@ -206,10 +215,14 @@ export class DataViz2Component implements OnInit {
     }else{
       // Show the stacked bars
       g.append("g")
+      .attr('class', 'stacked')
+      .attr('id', 'stacked')
       .selectAll("g")
       // Enter in the stack data = loop key per key = group per group
       .data(stackedData)
       .enter().append("g")
+        .attr('class', 'bar')
+        .attr('id', 'bar')
         .attr("fill", function(d: { key: string; }) { return color(d.key); })
         .selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
@@ -222,11 +235,28 @@ export class DataViz2Component implements OnInit {
           .on('mouseout', this.tipConcacaf.hide)
           .on("mouseleave", this.tipConcacaf.leave)
           .attr("height", yScale.bandwidth())
+          .attr("width",(d: any) =>  0)
+          .transition()
+          .duration(800)
           .attr("width",(d: any) =>  xScale(d[1]) - xScale(d[0]))
 
       // Show text header
       g.append('text').attr('y', -50).text(`${this.headers[0]}`).attr('class','title-viz2')
     }
+
+    // Show the stacked bars Feedback
+    // g.append("g")
+    //   .attr('class', 'feedback')
+    //   .attr('id', 'feedback')
+    //   .selectAll('rect')
+    //   .data(this.data)
+    //   .enter().append("rect")
+    //   .attr('fill', '#5ccbf0')
+    //   .attr('fill-opacity', '0')
+    //   .attr('y', (d: { Player: string; }) => yScale(yValue(d)))
+    //   .attr('width', (d: { Ast: number; Gls: number }) => xScale(xValue(d)+x2Value(d)))
+    //   .attr('height',yScale.bandwidth())
+
 
     // select the svg area
     var legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend')
