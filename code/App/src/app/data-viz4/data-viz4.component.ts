@@ -76,7 +76,7 @@ export class DataViz4Component implements OnInit {
         this.pieInit()
 
       })
-      console.log("onfield,",this.playerOnField)
+      // console.log("onfield,",this.playerOnField)
   }
 
   // Fill the player map to enumerate player by position later on.
@@ -108,11 +108,11 @@ export class DataViz4Component implements OnInit {
         this.removeSelectionShadow(this.selectedid as number)
         this.greyingPlayerInLegend(this.selectedid as number)
         this.selectedid = null
-        console.log("selectedid",this.selectedid)
+        // console.log("selectedid",this.selectedid)
       }
     });
   }
-  
+
   //Add player name to the right array
   private addPlayerInit(playerInfo: any) {
 
@@ -214,7 +214,7 @@ export class DataViz4Component implements OnInit {
     }
 
   }
-  
+
   private createBaseTemplate() {
 
     //Add football field with predetermine size:
@@ -284,7 +284,7 @@ export class DataViz4Component implements OnInit {
       .attr("r", r)
       .attr("class","shadow")
       .attr("id",circle_tag+"_defs")
-      
+
       g_wrapper.append("circle")
       .attr("cx", x)
       .attr("cy", y)
@@ -303,8 +303,8 @@ export class DataViz4Component implements OnInit {
       attr("x",x).attr("y",y+r+15)
       .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
       .text(lastname)
-  
-  
+
+
       let img = g_wrapper.append("image")
       .attr('xlink:href', players[i].Img)
       .attr("clip-path",`url(#${defs.attr("id")})`)
@@ -314,8 +314,8 @@ export class DataViz4Component implements OnInit {
       .attr("x",x-r)
       .attr("id","i"+playerID)
       .attr("y",y-r).on('click', (datum) => {
-        console.log(datum); // the datum for the clicked circle
-        console.log("image clicked")
+        // console.log(datum); // the datum for the clicked circle
+        // console.log("image clicked")
         self.startingNewPlayerSelection(datum)
       });
       //.style("filter","grayscale(100)")
@@ -332,18 +332,18 @@ export class DataViz4Component implements OnInit {
       this.activatingPlayer(elem)
     }
     else {
-      console.log("player already on field")
+      // console.log("player already on field")
     }
-   
+
     let parentid = (elem.parentNode as HTMLElement).id
-    
+
     // console.log(elem1)
   }
 
-    //Activating player for potential 
+    //Activating player for potential
     private activatingPlayer(elem: HTMLElement) {
-      console.log("first activating palayer",this.selectedid)
-      console.log(elem)
+      // console.log("first activating palayer",this.selectedid)
+      // console.log(elem)
       if (this.selectedid != null) {
         this.greyingPlayerInLegend(this.selectedid as number)
         let playerOnField = this.matchingPosOnFieldPlayers()
@@ -361,9 +361,9 @@ export class DataViz4Component implements OnInit {
       this.removeSelectionShadow(this.selectedid)
       this.greyingPlayerInLegend(this.selectedid as number)
 
-      
+
       if (!this.isOnField[id]){
-        console.log(this.selectedid)
+        // console.log(this.selectedid)
         let playerOnField = this.matchingPosOnFieldPlayers()
         this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
         //Add effect for player to replace
@@ -372,14 +372,14 @@ export class DataViz4Component implements OnInit {
 
         this.activateSwapablePlayers(playerOnField)
 
-        } 
+        }
 
       }
       //If the user want to select another player while in select mode
-      
+
     //Legend
   private matchingPosOnFieldPlayers() {
-    console.log(this.data[this.selectedid as number])
+    // console.log(this.data[this.selectedid as number])
     //We will only consider the main position for the moment
     let pos: any =this.data[this.selectedid as number].Pos.split(",",2)[0]
     return this.getProperty(this.playerOnField,pos)
@@ -398,12 +398,12 @@ export class DataViz4Component implements OnInit {
   //setting up different shadows
   private removeSelectionShadow(id:number){
     if (this.isOnField[id]){
-      console.log("removeSelectionShadow", id)
+      // console.log("removeSelectionShadow", id)
       d3.selectAll("#cl_"+id)
       .style("filter","url(#active-shadow)")
     }
     else{
-      console.log("removeSelectionShadow", id)
+      // console.log("removeSelectionShadow", id)
       d3.selectAll("#cl_"+id)
       .style("filter","url(#inactive-shadow)")
     }
@@ -439,7 +439,7 @@ export class DataViz4Component implements OnInit {
   private colorPlayerInLegendSelection(id:number){
     let pos:string = this.data[id].Pos
     d3.select("#i"+id).style("filter","grayscale(0)")
-    console.log(COLOR_MAP.get(pos.substring(0,2)))
+    // console.log(COLOR_MAP.get(pos.substring(0,2)))
     d3.select("#cl_"+id).style("stroke", COLOR_MAP.get(pos.substring(0,2)) as string).style("filter","url(#active-shadow)")
     .style("fill", COLOR_MAP.get(pos.substring(0,2)) as string).style("stroke-width","3")
   }
@@ -447,12 +447,12 @@ export class DataViz4Component implements OnInit {
   private colorPlayerInLegend(id:number){
     let pos:string = this.data[id].Pos
     d3.select("#i"+id).style("filter","grayscale(0)")
-    console.log(COLOR_MAP.get(pos.substring(0,2)))
+    // console.log(COLOR_MAP.get(pos.substring(0,2)))
     d3.select("#cl_"+id).style("stroke", COLOR_MAP.get(pos.substring(0,2)) as string).style("filter","url(#active-shadow)")
     .style("fill", COLOR_MAP.get(pos.substring(0,2)) as string)
   }
   private addStrokePlayerGroup(pos:string){
-    console.log(pos)
+    // console.log(pos)
     d3.selectAll(".classf_"+pos)
     .attr("stroke","black")
     .attr("stroke-width","4")
@@ -475,7 +475,7 @@ export class DataViz4Component implements OnInit {
 
 
   // Create SVG for player on field
-  createSVGPlayerOnField() 
+  createSVGPlayerOnField()
   {
     let id= "field"
 
@@ -687,7 +687,7 @@ export class DataViz4Component implements OnInit {
     .attr("fill","none")
     .attr("stroke-dasharray","5,5")
     .style("")
-    //Create filters drop shadow Defs for all players 
+    //Create filters drop shadow Defs for all players
 
 
     svg.append("text").
@@ -757,11 +757,11 @@ export class DataViz4Component implements OnInit {
     //   .attr("height", height)
     // .append("g")
     //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-      
+
     //   // Create dummy data
 
     //   // set the color scale
-    //   let data:PieData[] = [{position:"Gardien",value: this.teamValue.GK.toString()} 
+    //   let data:PieData[] = [{position:"Gardien",value: this.teamValue.GK.toString()}
     //   , {position:"Défense", value: this.teamValue.DF.toString()},
     //   {position:"Attaque", value: this.teamValue.FW.toString()},
     //   {position:"Milieu de terrain", value: this.teamValue.DF.toString()}]
@@ -769,7 +769,7 @@ export class DataViz4Component implements OnInit {
 
     //   // let pie:PieData[] = d3.pie().sort(null).value(function(d: any){return d.number;}(data))
     //   // console.log(pie)
-      
+
     //   // var segments = d3.arc().innerRadius(100).outerRadius(200).padAngle(0.05).padRadius(50)
 
     //   // var sections = svg.append("g").attr("transform","translate(250,250)").selectAll("path").data(pie)
