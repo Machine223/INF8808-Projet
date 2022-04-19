@@ -144,22 +144,14 @@ export class DataViz1Component implements OnInit {
       .domain([minColor, maxColor])
       .range(["blue", "red"]);
 
-<<<<<<< HEAD
-    g.append('g')
-=======
       g.append('g')
->>>>>>> 85236c9fafbdc0b74038267f12c78430b848fa4f
       .attr('class', 'tick')
       .call(axisLeft(yScale))
       .attr('transform', `translate(${x}, ${y})`);
 
     g.append('g')
-<<<<<<< HEAD
-      .style('font-size','1em')
-=======
       .attr('class', 'tick')
       .style('font-size','0.7em')
->>>>>>> 85236c9fafbdc0b74038267f12c78430b848fa4f
       .call(axisBottom(xScale))
       .attr('transform', `translate(${x}, ${y + innerHeight})`);
 
@@ -177,12 +169,7 @@ export class DataViz1Component implements OnInit {
       .append('text')
       .attr('y', (d:any) => y + yScale(yValue(d)) as number + yScale.bandwidth()/2 + this.fontSize/2)
       .attr('x', x + innerWidth + 10 )
-<<<<<<< HEAD
-      .attr('fill', 'black')
-      // .attr('style', `font-size: ${this.fontSize};`)
-=======
       .attr('style', `font-size: 1em;`)
->>>>>>> 85236c9fafbdc0b74038267f12c78430b848fa4f
       .text((d:any) => xValue(d));
 
     g.selectAll("rect").data(chartData)
@@ -196,10 +183,6 @@ export class DataViz1Component implements OnInit {
     g.append('g')
       .attr('x', x + 5)
       .attr('y', y - 20)
-<<<<<<< HEAD
-      .attr('fill', 'black')
-=======
->>>>>>> 85236c9fafbdc0b74038267f12c78430b848fa4f
       .attr('class', 'title-viz2')
       .attr('style', `font-size: ${this.fontSize * 1.5}px;`)
       .text(category.viewValue);
