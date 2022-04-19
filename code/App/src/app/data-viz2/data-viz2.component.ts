@@ -194,10 +194,13 @@ export class DataViz2Component implements OnInit {
         .attr('class', 'bar')
         .attr('id', 'bar')
         .attr("fill", function(d: { key: string; }) { return color(d.key); })
-        .selectAll("rect")
+        .selectAll("g")
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(function(d: any) { return d;  })
-        .enter().append("rect")
+        .enter().append('g')
+          .attr('class', 'rect-container')
+          .attr('id', 'rect-container')
+          .append("rect")
           .attr('overflow', 'visible')
           .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
           .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
@@ -224,10 +227,14 @@ export class DataViz2Component implements OnInit {
         .attr('class', 'bar')
         .attr('id', 'bar')
         .attr("fill", function(d: { key: string; }) { return color(d.key); })
-        .selectAll("rect")
+
+        .selectAll("g")
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(function(d: any) { return d;  })
-        .enter().append("rect")
+        .enter().append('g')
+          .attr('class', 'rect-container')
+          .attr('id', 'rect-container')
+          .append("rect")
           .attr('overflow', 'visible')
           .attr("y", (d: { data: { Player: string; }; }) => yScale(d.data.Player))
           .attr("x", (d: d3.NumberValue[]) => xScale(d[0]))
@@ -245,17 +252,14 @@ export class DataViz2Component implements OnInit {
     }
 
     // Show the stacked bars Feedback
-    // g.append("g")
-    //   .attr('class', 'feedback')
-    //   .attr('id', 'feedback')
-    //   .selectAll('rect')
-    //   .data(this.data)
-    //   .enter().append("rect")
-    //   .attr('fill', '#5ccbf0')
-    //   .attr('fill-opacity', '0')
-    //   .attr('y', (d: { Player: string; }) => yScale(yValue(d)))
-    //   .attr('width', (d: { Ast: number; Gls: number }) => xScale(xValue(d)+x2Value(d)))
-    //   .attr('height',yScale.bandwidth())
+    g.selectAll("#bar")
+    .selectAll(".rect-container")
+    .on("mouseenter",  (e:any, d:any) => {
+      selectTicks(d.data.Player, e.target);
+    })
+    .on("mouseleave", function () {
+      unselectTicks()
+    });
 
 
     // select the svg area
@@ -280,4 +284,36 @@ export class DataViz2Component implements OnInit {
 
 }
 
+
+
+function selectTicks(name: any, element:any) {
+  // Met en gras le text Y Axis
+  d3.select("#vis2-g")
+    .select(".yAxis")
+    .selectAll(".tick")
+    .selectAll("text")
+    .filter(function () {
+      return d3.select(this).text() === name;
+    })
+    .style("font-weight", "bold");
+
+  // Met en gras le rect
+  d3.select(element).attr('stroke','#232323').attr('stroke-width','3').attr('stroke-linejoin','round')
+
+}
+
+function unselectTicks() {
+  // Reset feedback
+  d3.select("#vis2-g")
+    .select(".yAxis")
+    .selectAll(".tick")
+    .selectAll("text")
+    .style("font-weight", "normal");
+
+  d3.select("#vis2-g")
+    .select(".stacked")
+    .selectAll(".bar")
+    .selectAll(".rect-container")
+    .attr('stroke-width','0');
+}
 
