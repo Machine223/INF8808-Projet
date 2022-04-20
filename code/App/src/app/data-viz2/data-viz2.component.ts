@@ -15,6 +15,9 @@ export class DataViz2Component implements OnInit {
   private svg: any;
   private width: number = 900;
   private height: number = 800;
+  // SVG margin for scale axis
+  innerWidth:any;
+  innerHeight:any
   categories: any[] = [
     { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
     { value: 'canada', viewValue: 'Joueur Canadien' },
@@ -128,6 +131,8 @@ export class DataViz2Component implements OnInit {
   private createSvg(): void {
     // set the dimensions and margins of the graph
     const margin = { top: 70, right: 20, bottom: 20, left: 150 };
+    this.innerWidth = this.width- margin.left - margin.right;
+    this.innerHeight = this.height - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     this.generateSVG();
@@ -192,14 +197,14 @@ export class DataViz2Component implements OnInit {
   private setAxis() {
     this.xScale = scaleLinear()
       .domain([0, max(this.data, d => d.Gls + d.Ast)])
-      .range([0, innerWidth]);
+      .range([0, this.innerWidth]);
     this.yScale = scaleBand()
       .domain(this.data.map(this.yValue))
-      .range([0, innerHeight])
+      .range([0, this.innerHeight])
       .padding(0.4);
 
     // Custom axis X and Y
-    this.xAxis = axisTop(this.xScale).tickSize(-innerHeight);
+    this.xAxis = axisTop(this.xScale).tickSize(-this.innerHeight);
     this.yAxis = axisLeft(this.yScale);
   }
 
@@ -210,41 +215,11 @@ export class DataViz2Component implements OnInit {
   private generateLegend() {
     this.legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend');
     // Handmade legend
-    this.legend
-      .append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('width', 25)
-      .attr('height', 25)
-      .style('fill', '#4381B6');
-    this.legend
-      .append('rect')
-      .attr('x', 0)
-      .attr('y', 40)
-      .attr('width', 25)
-      .attr('height', 25)
-      .style('fill', '#97B3CB');
-    this.legend
-      .append('text')
-      .attr('x', 40)
-      .attr('y', 12)
-      .text('Nombre de but')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
-    this.legend
-      .append('text')
-      .attr('x', 40)
-      .attr('y', 52)
-      .text('Nombre d’assists')
-      .style('font-size', '15px')
-      .attr('alignment-baseline', 'middle');
-    this.legend
-      .append('text')
-      .attr('x', 0)
-      .attr('y', -24)
-      .text('Légende')
-      .style('font-size', '17px')
-      .attr('alignment-baseline', 'middle');
+    this.legend.append('rect').attr('x', 0).attr('y', 0).attr('width', 25).attr('height', 25).style('fill', '#4381B6');
+    this.legend.append('rect').attr('x', 0).attr('y', 40).attr('width', 25).attr('height', 25).style('fill', '#97B3CB');
+    this.legend.append('text').attr('x', 40).attr('y', 12).text('Nombre de but').style('font-size', '15px').attr('alignment-baseline', 'middle');
+    this.legend.append('text').attr('x', 40).attr('y', 52).text('Nombre d’assists').style('font-size', '15px').attr('alignment-baseline', 'middle');
+    this.legend.append('text').attr('x', 0).attr('y', -24).text('Légende').style('font-size', '17px').attr('alignment-baseline', 'middle');
     this.legend.attr('transform', `translate(600,650)`);
   }
 
@@ -377,15 +352,6 @@ function selectTicks(name: any, element: any) {
 
 function unselectTicks() {
   // Reset feedback
-  d3.select('#vis2-g')
-    .select('.yAxis')
-    .selectAll('.tick')
-    .selectAll('text')
-    .style('font-weight', 'normal');
-
-  d3.select('#vis2-g')
-    .select('.stacked')
-    .selectAll('.bar')
-    .selectAll('.rect-container')
-    .attr('stroke-width', '0');
+  d3.select('#vis2-g').select('.yAxis').selectAll('.tick').selectAll('text').style('font-weight', 'normal');
+  d3.select('#vis2-g').select('.stacked').selectAll('.bar').selectAll('.rect-container').attr('stroke-width', '0');
 }
