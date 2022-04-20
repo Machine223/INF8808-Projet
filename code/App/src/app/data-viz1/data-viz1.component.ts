@@ -198,6 +198,7 @@ export class DataViz1Component implements OnInit {
     .on('mouseleave', this.toolTip.leave);
 
     g.append('g')
+      .append('text')
       .attr('x', x + 5)
       .attr('y', y - 20)
       .attr('class', 'title-viz2')
