@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { axisLeft, axisTop, max, scaleBand, scaleLinear } from 'd3';
+import { axisRight, axisTop, max, scaleBand, scaleLinear } from 'd3';
 //@ts-ignore
 import d3Tip from 'd3-tip';
 
@@ -130,7 +130,7 @@ export class DataViz2Component implements OnInit {
 
   private createSvg(): void {
     // set the dimensions and margins of the graph
-    const margin = { top: 70, right: 20, bottom: 20, left: 150 };
+    const margin = { top: 70, right: 20, bottom: 20, left: 180 };
     this.innerWidth = this.width- margin.left - margin.right;
     this.innerHeight = this.height - margin.top - margin.bottom;
 
@@ -195,17 +195,22 @@ export class DataViz2Component implements OnInit {
   }
 
   private setAxis() {
+    // let stringArrayData = JSON.parse(JSON.stringify(this.data))
+    // console.log('data',this.data)
+    // console.log('stringArrayData',stringArrayData)
     this.xScale = scaleLinear()
       .domain([0, max(this.data, d => d.Gls + d.Ast)])
       .range([0, this.innerWidth]);
     this.yScale = scaleBand()
-      .domain(this.data.map(this.yValue))
+      .domain(this.data.map((e,i)=>{
+        return e.Player = i + '\t'+ e.Player;
+      }))
       .range([0, this.innerHeight])
       .padding(0.4);
 
     // Custom axis X and Y
     this.xAxis = axisTop(this.xScale).tickSize(-this.innerHeight);
-    this.yAxis = axisLeft(this.yScale);
+    this.yAxis = axisRight(this.yScale).tickPadding(-180)
   }
 
   private formatStackData() {
