@@ -20,13 +20,15 @@ export class DataViz1Component implements OnInit {
   width: number = 1000
   legendWidth :number= 300
   legendHeight:number = 20
+  lowColor = "#4381B6"
+  hightColor = "#df3251"
 
-  chartMargin = {left:100, right:100, top:50, bottom:50}
+  chartMargin = {left:100, right:100, top:80, bottom:50}
   margin = {left:20, top:20, bottom:20, right:20}
 
   chartGroupWidth:number = this.width / this.numCols;
   chartGroupHeight:number = this.chartGroupWidth;
-  height: number = (this.chartGroupHeight) * 4 + 80
+  height: number = (this.chartGroupHeight) * 4 + 150
 
   units:any = {'Age':'Ans', 'Crds':'Cartons', 'Subs':'Remplacements'}
   orderingCategories: any[] = [
@@ -39,11 +41,12 @@ export class DataViz1Component implements OnInit {
   { value: 'PKRatio', viewValue: 'Ratio réussite penality' },]
 
   gradientCategories: any[] = [
+    { value: 'noOp', viewValue:"Choisir une option."},
     { value: 'Age', viewValue:"Age moyen des joueurs de l'équipe"},
     { value: 'Crds', viewValue: 'Nombre de cartons'},
     { value: 'Subs', viewValue:'Nombre de remplacements'}
   ]
-  selectedGradientCategory: string = 'Age'
+  selectedGradientCategory: string = 'noOp'
 
   toolTip = d3Tip()
     .attr('class', 'd3-tip')
@@ -138,12 +141,19 @@ export class DataViz1Component implements OnInit {
       var y = coord.y + this.chartMargin.top
 
     const xValue = (d:any) => d[category.value];
-    const colorValue = (d:any) => d[this.selectedGradientCategory];
+    const colorValue = (d:any) => {
+      if (this.selectedGradientCategory == 'noOp') {
+        return 0
+      }
+      return d[this.selectedGradientCategory];
+    }
+    
     const yValue = (d:any) => d.Squad;
 
     const minColor = d3.min(this.data as number[], colorValue);
     const maxColor = d3.max(this.data as number[], colorValue);
     const max = d3.max(chartData as number[], xValue);
+
 
     const xScale = d3.scaleLinear()
       .domain([max, 0])
@@ -154,9 +164,19 @@ export class DataViz1Component implements OnInit {
       .range([0, innerHeight])
       .padding(0.2);
 
-    const colorScale = d3.scaleLinear<string>()
-      .domain([minColor, maxColor])
-      .range(["blue", "red"]);
+    var colorScale:any
+    if (this.selectedGradientCategory == 'noOp') {
+      const noOpColor = this.lowColor
+      colorScale = d3.scaleLinear<string>()
+        .domain([minColor, maxColor])
+        .range([noOpColor, noOpColor]);
+    } else {
+      colorScale = d3.scaleLinear<string>()
+        .domain([minColor, maxColor])
+        .range([this.lowColor, this.hightColor]);
+    }
+
+
 
       g.append('g')
       .attr('class', 'tick')
@@ -186,16 +206,20 @@ export class DataViz1Component implements OnInit {
       .attr('style', `font-size: 1em;`)
       .text((d:any) => xValue(d));
 
-    g.selectAll("rect").data(chartData)
+    var bars = g.selectAll("rect").data(chartData)
     .enter().append('rect')
     .attr('y', (d:any) => y + yScale(yValue(d)))
     .attr('x', (d:any) => x + xScale(xValue(d)))
     .attr('width', (d:any) => innerWidth - xScale(xValue(d)))
     .attr('height', (d:any) => yScale.bandwidth())
     .attr('fill',(d:any) => colorScale(colorValue(d)))
-    .on('mouseover', this.toolTip.show)
-    .on('mouseout',this.toolTip.hide)
-    .on('mouseleave', this.toolTip.leave);
+    
+    if (this.selectedGradientCategory != 'noOp'){
+      bars.on('mouseover', this.toolTip.show)
+      .on('mouseout',this.toolTip.hide)
+      .on('mouseleave', this.toolTip.leave);
+
+    }
 
     g.append('g')
       .append('text')
@@ -211,6 +235,7 @@ export class DataViz1Component implements OnInit {
   }
 
   createLegend() {
+    if (this.selectedGradientCategory == 'noOp') return // return if no coloration is selected
     var g = this.svg.append('g');
     var defs = this.svg.append('defs');
     const colorValue = (d:any) => d[this.selectedGradientCategory];
@@ -228,13 +253,13 @@ export class DataViz1Component implements OnInit {
     gradient.append('stop')
       .attr('class','start')
       .attr('offset', '0%')
-      .attr('stop-color', 'blue')
+      .attr('stop-color', this.lowColor)
       .attr('stop-opacity', 1);
 
     gradient.append('stop')
       .attr('class','end')
       .attr('offset', '100%')
-      .attr('stop-color', 'red')
+      .attr('stop-color', this.hightColor)
       .attr('stop-opacity', 1);
 
     var legendx = (this.width + this.margin.left)/2 - this.legendWidth/2;
