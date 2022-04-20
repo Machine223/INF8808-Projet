@@ -99,7 +99,7 @@ export class DataViz4Component implements OnInit {
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
       if (elem.tagName =="image" || elem.tagName == "circle"){
-        console.log("is an image")
+        // console.log("is an image")
       }
       else if(this.selectedid != null){
         this.removeFieldStroke()
