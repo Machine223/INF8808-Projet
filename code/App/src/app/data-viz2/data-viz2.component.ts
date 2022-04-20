@@ -203,7 +203,7 @@ export class DataViz2Component implements OnInit {
       .range([0, this.innerWidth]);
     this.yScale = scaleBand()
       .domain(this.data.map((e,i)=>{
-        return e.Player = i + ' - \t'+ e.Player;
+        return e.Player = i+1 + ' - \t'+ e.Player;
       }))
       .range([0, this.innerHeight])
       .padding(0.4);
