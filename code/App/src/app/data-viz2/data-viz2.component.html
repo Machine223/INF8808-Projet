@@ -1,15 +1,20 @@
 <div id="vis2">
-<p id="vis2-desc">La visualisation ci-dessous présente les joueurs meneurs de l'équipe canadienne et de la concacaf. Il est possible de voir leur nombre de buts, de passes décisives, de parties jouées, le club actuel et le club de formation.</p>
+  <p id="vis2-desc">
+    La visualisation ci-dessous présente les joueurs meneurs de l'équipe
+    canadienne et de la concacaf. Il est possible de voir leur nombre de buts,
+    de passes décisives, de parties jouées, le club actuel et le club de
+    formation.
+  </p>
 
-<mat-form-field appearance="fill">
-  <mat-label>Classement</mat-label>
-  <mat-select [(value)]="selectedCategory" (selectionChange)="onSelect($event)" [placeholder]="selectedCategory">
+  <mat-form-field appearance="fill">
+    <mat-label>Classement</mat-label>
+    <mat-select
+      [(value)]="selectedCategory"
+      (selectionChange)="onSelect($event)"
+      [placeholder]="selectedCategory">
       <mat-option *ngFor="let cat of categories" [value]="cat.value">
-          {{cat.viewValue}}
+        {{ cat.viewValue }}
       </mat-option>
-  </mat-select>
-</mat-form-field>
-
+    </mat-select>
+  </mat-form-field>
 </div>
-<script src="./data-viz2.component.ts"></script>
-

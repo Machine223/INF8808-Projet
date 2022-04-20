@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { axisBottom, axisLeft, timeHours } from 'd3';
+//@ts-ignore
+import d3Tip from 'd3-tip';
 
 @Component({
   selector: 'app-data-viz1',
@@ -43,6 +45,10 @@ export class DataViz1Component implements OnInit {
   ]
   selectedGradientCategory: string = 'Age'
 
+  toolTip = d3Tip()
+    .attr('class', 'd3-tip')
+    .html((_e:any, d:any) => this.getToolTipHTML(_e, d));
+
   constructor() { }
 
   ngOnInit(): void {
@@ -80,6 +86,12 @@ export class DataViz1Component implements OnInit {
     // });
   }
 
+  
+
+  private getToolTipHTML(_e:any, d:any):string {
+    return `<p class='tooltip-title' style="margin-top: 0px">Équipe : <b>${d['Squad']}</b></p>\
+    <div class='tooltip-value'>${this.getGradientViewValue(this.selectedGradientCategory)} : ${d[this.selectedGradientCategory]} ${this.units[this.selectedGradientCategory]}</div>`;
+  }
   coordinates(index:number): any {
     const x = this.chartGroupWidth * (index % this.numCols)
     const y = this.chartGroupHeight * Math.floor(index / this.numCols) + 50
@@ -96,6 +108,8 @@ export class DataViz1Component implements OnInit {
     .append('g')
     .attr('id', 'vis1-svg-g')
     .attr("transform", `translate(45,-7)`);
+
+    this.svg.call(this.toolTip)
 
     this.createLegend();
     for (var i=0;i<this.orderingCategories.length;i++) {
@@ -178,9 +192,13 @@ export class DataViz1Component implements OnInit {
     .attr('x', (d:any) => x + xScale(xValue(d)))
     .attr('width', (d:any) => innerWidth - xScale(xValue(d)))
     .attr('height', (d:any) => yScale.bandwidth())
-    .attr('fill',(d:any) => colorScale(colorValue(d)));
+    .attr('fill',(d:any) => colorScale(colorValue(d)))
+    .on('mouseover', this.toolTip.show)
+    .on('mouseout',this.toolTip.hide)
+    .on('mouseleave', this.toolTip.leave);
 
-    g.append('text')
+    g.append('g')
+      .append('text')
       .attr('x', x + 5)
       .attr('y', y - 20)
       .attr('class', 'title-viz2')
@@ -260,5 +278,14 @@ export class DataViz1Component implements OnInit {
 
     text.attr('x', legendx + this.legendWidth/2 - text.node().getBoundingClientRect().width/2)
 
+  }
+
+  getGradientViewValue(key:string):string {
+    for (var i = 0;i < this.gradientCategories.length;i++) {
+      if (this.gradientCategories[i].value == key) {
+        return this.gradientCategories[i].viewValue
+      }
+    }
+    return ''
   }
 }
