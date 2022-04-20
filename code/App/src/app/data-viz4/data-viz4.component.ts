@@ -95,20 +95,27 @@ export class DataViz4Component implements OnInit {
   }
 
   private listenClick() {
+    console.log("listen click")
+    console.log("this.selectedid 1:",this.selectedid)
     let self = this
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
-      if (elem.tagName =="image" || elem.tagName == "circle"){
+      console.log("this.selectedid 2:",this.selectedid)
+      //Potential bug with svg circle
+      if ((elem.tagName =="image" || elem.tagName == "circle")){
         console.log("is an image")
-      }
-      else if(this.selectedid != null){
-        this.removeFieldStroke()
-        let players = this.matchingPosOnFieldPlayers()
-        this.deactivateSwapablePlayers(players)
-        this.removeSelectionShadow(this.selectedid as number)
-        this.greyingPlayerInLegend(this.selectedid as number)
-        this.selectedid = null
-        console.log("selectedid",this.selectedid)
+        // Replace by active player in legend or on the field
+
+
+
+      } else {
+          //Here we swap players
+          this.removeFieldStroke()
+          let players = this.matchingPosOnFieldPlayers()
+          this.deactivateSwapablePlayers(players)
+          this.removeSelectionShadow(this.selectedid as number)
+          this.greyingPlayerInLegend(this.selectedid as number)
+          this.selectedid = null     
       }
     });
   }
@@ -328,16 +335,38 @@ export class DataViz4Component implements OnInit {
   //Starting a player selection
   public startingNewPlayerSelection(event:any) {
     let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
+    let id = Number(elem.id.substring(1))
     if (!this.isOnField[Number(elem.id.substring(1))]) {
       this.activatingPlayer(elem)
     }
     else {
+      //We will need to verify if the user select two person from the same position
+      console.log("next player to swap",this.data[Number(this.selectedid)],"with",
+      this.data[Number(elem.id.substring(1))])
       console.log("player already on field")
+      //compare positions from data
+      if(this.data[id].Pos.split(",",2)[0] 
+      == this.data[this.selectedid as number].Pos.split(",",2)[0]){
+        console.log("both player have the same position")
+        //swap here
+        // this.swapPlayers(this.selectedid)
+      } else{
+        console.log("not the same postion ")
+      }
     }
-   
     let parentid = (elem.parentNode as HTMLElement).id
-    
-    // console.log(elem1)
+  }
+
+  private swapPlayers(newPlayer:number,oldPlayer:number){
+    let onFieldBubbleId = this.findPlayerOnField()
+    // logic for swapping element 
+    this.replacePlayer()
+  }
+  private findPlayerOnField(){
+    const pass = 'pass'
+  }
+  private replacePlayer(){
+    const pass = 'pass'
   }
 
     //Activating player for potential 
@@ -356,14 +385,16 @@ export class DataViz4Component implements OnInit {
       let id = Number(elem.id.substring(1))
       this.removeFieldStroke()
       this.selectedid = id
+      console.log("second activating palayer",this.selectedid)
       this.isSelecting = true
 
       this.removeSelectionShadow(this.selectedid)
       this.greyingPlayerInLegend(this.selectedid as number)
 
+      console.log("nsadifhasfda")
       
       if (!this.isOnField[id]){
-        console.log(this.selectedid)
+        console.log("sup sup",this.selectedid)
         let playerOnField = this.matchingPosOnFieldPlayers()
         this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
         //Add effect for player to replace
@@ -613,11 +644,11 @@ export class DataViz4Component implements OnInit {
         .attr("id","e_"+circle_tag)
         g_wrapper.append("text").
         attr("x",x).attr("y",y+r+7)
-        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
+        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold").attr("id","firstname_"+i)
         .text(firstname)
         g_wrapper.append("text").
         attr("x",x).attr("y",y+r+15)
-        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold")
+        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold").attr("id","lastname_"+i)
         .attr("id","f_firstname_"+i)
         .text(lastname)
 
@@ -626,7 +657,7 @@ export class DataViz4Component implements OnInit {
         .attr("clip-path",`url(#${defs.attr("id")})`)
         .attr("width",40)
         .attr("heigth",40)
-        .attr("x",x-r).attr("id","f_lastname")
+        .attr("x",x-r).attr("id","fieldImage_"+i)
         .attr("id","f"+playerID)
         .attr("y",y-r)
 
