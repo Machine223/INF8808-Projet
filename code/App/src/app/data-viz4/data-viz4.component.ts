@@ -775,7 +775,7 @@ export class DataViz4Component implements OnInit {
     const height = 500
 
     const arc = d3.arc().innerRadius(0.20 * height/2).outerRadius(0.30 * height/2)
-    console.log(this.teamValue)
+    // console.log(this.teamValue)
     const resultsTeamValue: number[] = this.teamValue.map(
       r => r.value
     );
