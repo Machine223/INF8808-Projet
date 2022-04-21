@@ -31,10 +31,10 @@ let LEGEND_MAP = new Map<string, string>([
 ]);
 
 let COLOR_MAP  = new Map<string, string>([
-  ["GK", "green"],
-  ["DF", "blue"],
-  ["FW", "red"],
-  ["MF", "orange"],
+  ["GK", "#42FF00"],
+  ["DF", "#4381B6"],
+  ["FW", "#FF0000"],
+  ["MF", "#FAD616"],
 ]);
 
 
@@ -639,7 +639,7 @@ export class DataViz4Component implements OnInit {
     var svg = d3.select(fieldDiv).append("svg")
     .attr("height",818)
     .attr("id",id+"_svg").attr("width", 516)
-    svg.style("position","absolute")
+    svg.style("position","absolute").attr("background-image", "url('../../assets/soccerField.png")
     .style("left","0px")
     .style("top","0px")
     //
