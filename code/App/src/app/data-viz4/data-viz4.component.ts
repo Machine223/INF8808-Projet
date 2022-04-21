@@ -13,6 +13,9 @@ const MAX_FW =3
 
 const GREY_FILL = "#D3D3D3"
 const GREY_STROKE = "#585858"
+
+//Circle id for unfield player
+var CIRCLE_ID = 0
 // Current count
 var cur_GK =0
 var cur_DF =0
@@ -53,6 +56,8 @@ export class DataViz4Component implements OnInit {
   //We use these fields for Pie Chart:
   private teamValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0}
   private onFieldValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0}
+
+  private positionIdMap: Map<number,number> = new Map()
   private isOnField: boolean[] = []
 
   private isSelecting: boolean = false
@@ -74,6 +79,9 @@ export class DataViz4Component implements OnInit {
         this.createSVGPlayerOnField()
         this.createSalaryScale()
         this.listenClick()
+        console.log("team value", this.teamValue)
+        console.log("field value", this.onFieldValue)
+        console.log(this.positionIdMap)
         this.pieInit()
 
       })
@@ -103,24 +111,31 @@ export class DataViz4Component implements OnInit {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
       console.log("this.selectedid 2:",this.selectedid)
       //Potential bug with svg circle
-      if ((elem.tagName =="image" || elem.tagName == "circle")){
-        console.log("is an image")
+      var elemClassName = elem.className as any
+      if ((elem.tagName =="image" || elem.tagName == "circle") && elemClassName instanceof SVGAnimatedString){
+        if (elemClassName.baseVal.split("_",1)[0] == "classf" && this.selectedid !=null) {
+          var circleid = this.getOnFieldCircleID(elem)
+          this.swapPlayers(this.selectedid,circleid)
+        } else if(elemClassName.baseVal =="swap" && this.selectedid !=null) {
+          console.log("here")
+          
+        }
         // Replace by active player in legend or on the field
 
-
-
       } else {
-          //Here we swap players
+          //If we don't want to select a player
           this.removeFieldStroke()
           let players = this.matchingPosOnFieldPlayers()
           this.deactivateSwapablePlayers(players)
           this.removeSelectionShadow(this.selectedid as number)
           this.greyingPlayerInLegend(this.selectedid as number)
-          this.selectedid = null     
+          this.selectedid = null
       }
     });
   }
 
+
+  
   //Add player name to the right array
   private addPlayerInit(playerInfo: any) {
 
@@ -318,6 +333,7 @@ export class DataViz4Component implements OnInit {
       .attr("clip-path",`url(#${defs.attr("id")})`)
       .attr("width",40)
       .attr("heigth",40)
+      .attr("class","swap")
       .style("filter","grayscale(1)")
       .attr("x",x-r)
       .attr("id","i"+playerID)
@@ -349,8 +365,7 @@ export class DataViz4Component implements OnInit {
       if(this.data[id].Pos.split(",",2)[0] 
       == this.data[this.selectedid as number].Pos.split(",",2)[0]){
         console.log("both player have the same position")
-        //swap here
-        // this.swapPlayers(this.selectedid)
+
       } else{
         console.log("not the same postion ")
       }
@@ -358,20 +373,25 @@ export class DataViz4Component implements OnInit {
     let parentid = (elem.parentNode as HTMLElement).id
   }
 
-  private swapPlayers(newPlayer:number,oldPlayer:number){
-    let onFieldBubbleId = this.findPlayerOnField()
+
+  private getOnFieldCircleID(elem:HTMLElement){
+    
+    return Number(elem.id.split("_",2)[1])
+  }
+  private swapPlayers(newPlayer:number,circleID:number){
+    let oldPlayerID = this.positionIdMap.get(circleID) as number
+    console.log("old player",this.data[oldPlayerID])
+    console.log("new player",this.data[newPlayer])
     // logic for swapping element 
     this.replacePlayer()
     //update piechart
-
-    
+    //onFieldPlayer pieChart
   }
   private findPlayerOnField(){
     const pass = 'pass'
   }
   private replacePlayer(){
     const pass = 'pass'
-    
     
   }
 
@@ -400,7 +420,6 @@ export class DataViz4Component implements OnInit {
       console.log("nsadifhasfda")
       
       if (!this.isOnField[id]){
-        console.log("sup sup",this.selectedid)
         let playerOnField = this.matchingPosOnFieldPlayers()
         this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
         //Add effect for player to replace
@@ -548,10 +567,8 @@ export class DataViz4Component implements OnInit {
     for(let i =0; i < players.length; i++) {
       let currentClass = "classf_"+currentPos
       let playerID = players[i].id
-      let circle_tag = g_wrapper.attr("id")+"_"+i
-      let player_name = players[i].Name.split(" ", 2)
-      let firstname= player_name[0]
-      let lastname = player_name[1]
+      let circle_tag = g_wrapper.attr("id")+"_"+CIRCLE_ID
+
       if (players[i].salary > 10000000){
         r2 = 55
       } else if (players[i].salary > 1000000) {
@@ -629,7 +646,7 @@ export class DataViz4Component implements OnInit {
         .attr("cy", y)
         .attr("r", r)
         .attr("class",currentClass)
-        .attr("id",circle_tag)
+        .attr("id","def_"+CIRCLE_ID)
 
         g_wrapper.append("circle")
         .attr("cx", x)
@@ -638,7 +655,7 @@ export class DataViz4Component implements OnInit {
         .attr("class",currentClass)
         .attr("stroke",color)
         .attr("fill",color)
-        .attr("id",circle_tag)
+        .attr("id","inner_"+CIRCLE_ID)
 
         g_wrapper.append("circle")
         .attr("cx", x)
@@ -647,29 +664,22 @@ export class DataViz4Component implements OnInit {
         .attr("class",currentClass)
         .attr("stroke","color")
         .attr("fill",color)
-        .attr("id","e_"+circle_tag)
-        g_wrapper.append("text").
-        attr("x",x).attr("y",y+r+7)
-        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold").attr("id","firstname_"+i)
-        .text(firstname)
-        g_wrapper.append("text").
-        attr("x",x).attr("y",y+r+15)
-        .attr("text-anchor","middle").attr("style","font-size:9;").attr("font-weight", "bold").attr("id","lastname_"+i)
-        .attr("id","f_firstname_"+i)
-        .text(lastname)
+        .attr("id","e_"+CIRCLE_ID)
+
 
         g_wrapper.append("image")
         .attr('xlink:href', players[i].Img)
         .attr("clip-path",`url(#${defs.attr("id")})`)
         .attr("width",40)
         .attr("heigth",40)
-        .attr("x",x-r).attr("id","fieldImage_"+i)
-        .attr("id","f"+playerID)
+        .attr("class",currentClass)
+        .attr("x",x-r)
+        .attr("id","f_"+CIRCLE_ID)
         .attr("y",y-r)
 
         this.colorPlayerInLegend(playerID)
-
-
+        this.positionIdMap.set(CIRCLE_ID,playerID)
+        CIRCLE_ID++
 
       x += 60
     }
