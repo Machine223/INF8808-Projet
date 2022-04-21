@@ -745,12 +745,56 @@ export class DataViz4Component implements OnInit {
   }
 
   private pieInit(){
-    var fieldDiv:any = document.getElementById("pie");
-    let width = 450
-    let height = 450
-    let margin = 40
-    var radius = Math.min(width, height) / 2 - margin
+    var r = 90
 
+    var piechart = d3.select("#players").append('svg')
+    .attr('width', 400)
+    .attr('height', 200)
+    .append('g')
+    .attr('transform', `translate(${r}, ${r+20})`)
+
+    piechart.append('circle')
+    .attr('r', r)
+    .attr('transform', `translate(${2*r+40} , 0)`)
+    
+    
+    
+    var color = d3.scaleOrdinal(['green', 'red','orange','blue'])
+    // .domain(['GK','FW','MF','DF'])
+    // .range(['green', 'red','orange','blue'])
+    
+    
+    const salaries = [
+      {key:'MF',value: this.teamValue.MF},
+      {key:'GK',value: this.teamValue.GK},
+      {key:'FW',value: this.teamValue.FW},
+      {key:'DF',value: this.teamValue.DF},
+    ]
+    
+    var pie = d3.pie()
+    var data_ready = pie([1, 5, 6, 8])
+    var arc = d3.arc()
+    .innerRadius(100)         // This is the size of the donut hole
+    .outerRadius(r)
+
+    var arcs = piechart.selectAll('arc')
+      .data(data_ready)
+      .enter()
+      .append('g')
+
+    arcs.append('path')
+      .attr('fill', (d:any) => color(d.key))
+    console.log(data_ready)
+    
+    // piechart.append('g')
+    // .data(data_ready)
+    // .enter()
+    // .append('path')
+    // .attr('d', arc )
+    // .attr('fill', (d:any) => color(d.key))
+    // .attr("stroke", "black")
+    // .style("stroke-width", "2px")
+    // .style("opacity", 0.7)
     // var svg = d3.select("#pie")
     // .append("svg")
     //   .attr("width", width)
