@@ -18,11 +18,8 @@ export interface Player {
 }
 //sum up player value per position and total, this will be easier to generate pie graph
 export interface TotalValue {
-    value: number;
-    GK:number,
-    MF:number,
-    FW:number,
-    DF:number,
+    type: string;
+    value:number;
 }
 
 
