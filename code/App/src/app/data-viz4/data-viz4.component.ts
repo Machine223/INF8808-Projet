@@ -470,33 +470,28 @@ export class DataViz4Component implements OnInit {
         playerArray.forEach((player:any) => {
           newSalary+= player.salary
         });
-        this.onFieldValue.GK = newSalary
-
-
+        this.onFieldValue[0].value = newSalary
         break;
       case "DF":
         this.playerOnField.DF = playerArray
         playerArray.forEach((player:any) => {
           newSalary+= player.salary
         });
-        this.onFieldValue.DF = newSalary
-
+        this.onFieldValue[1].value = newSalary
         break;
       case "MF":
         this.playerOnField.MF = playerArray
         playerArray.forEach((player:any) => {
           newSalary+= player.salary
         });
-        this.onFieldValue.MF = newSalary
-
+        this.onFieldValue[2].value = newSalary
         break;
       case "FW":
         this.playerOnField.FW = playerArray
         playerArray.forEach((player:any) => {
           newSalary+= player.salary
         });
-        this.onFieldValue.FW = newSalary
-
+        this.onFieldValue[3].value = newSalary
         break;
       default:
         break;
@@ -504,45 +499,45 @@ export class DataViz4Component implements OnInit {
   }
 
 
-    //Activating player for potential
-    private activatingPlayer(elem: HTMLElement) {
-      // console.log("first activating palayer",this.selectedid)
-      // console.log(elem)
-      if (this.selectedid != null) {
-        this.greyingPlayerInLegend(this.selectedid as number)
-        let playerOnField = this.matchingPosOnFieldPlayers()
-        this.removeSelectionShadow(this.selectedid)
-
-        this.activateSwapablePlayers(playerOnField)
-        this.deactivateSwapablePlayers(playerOnField)
-      }
-
-      let id = Number(elem.id.substring(1))
-      this.removeFieldStroke()
-      this.selectedid = id
-      // console.log("second activating palayer",this.selectedid)
-      this.isSelecting = true
-
-      this.removeSelectionShadow(this.selectedid)
+  //Activating player for potential
+  private activatingPlayer(elem: HTMLElement) {
+    // console.log("first activating palayer",this.selectedid)
+    // console.log(elem)
+    if (this.selectedid != null) {
       this.greyingPlayerInLegend(this.selectedid as number)
+      let playerOnField = this.matchingPosOnFieldPlayers()
+      this.removeSelectionShadow(this.selectedid)
 
-      // console.log("nsadifhasfda")
+      this.activateSwapablePlayers(playerOnField)
+      this.deactivateSwapablePlayers(playerOnField)
+    }
 
-      if (!this.isOnField[id]){
-        let playerOnField = this.matchingPosOnFieldPlayers()
-        this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
-        //Add effect for player to replace
-        this.addStrokePlayerGroup(this.data[id].Pos.split(",",2)[0])
-        //On field player legend selection
+    let id = Number(elem.id.substring(1))
+    this.removeFieldStroke()
+    this.selectedid = id
+    // console.log("second activating palayer",this.selectedid)
+    this.isSelecting = true
 
-        this.activateSwapablePlayers(playerOnField)
+    this.removeSelectionShadow(this.selectedid)
+    this.greyingPlayerInLegend(this.selectedid as number)
 
-        }
+    // console.log("nsadifhasfda")
+
+    if (!this.isOnField[id]){
+      let playerOnField = this.matchingPosOnFieldPlayers()
+      this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
+      //Add effect for player to replace
+      this.addStrokePlayerGroup(this.data[id].Pos.split(",",2)[0])
+      //On field player legend selection
+
+      this.activateSwapablePlayers(playerOnField)
 
       }
-      //If the user want to select another player while in select mode
 
-    //Legend
+    }
+    //If the user want to select another player while in select mode
+
+  //Legend
   private matchingPosOnFieldPlayers() {
     // console.log(this.data[this.selectedid as number])
     //We will only consider the main position for the moment
@@ -636,8 +631,6 @@ export class DataViz4Component implements OnInit {
     .attr("stroke","black")
     .attr("stroke-width","0")
   }
-
-
 
   // Create SVG for player on field
   createSVGPlayerOnField()
@@ -776,8 +769,6 @@ export class DataViz4Component implements OnInit {
         .attr("id","e_"+CIRCLE_ID)
         // .on('mouseover', this.tip.show)
         // .on('mouseout', this.tip.hide)
-
-
 
         g_wrapper.append("image")
         .attr('xlink:href', players[i].Img)
