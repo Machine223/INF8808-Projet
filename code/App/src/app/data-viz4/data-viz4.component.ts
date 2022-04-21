@@ -69,9 +69,9 @@ export class DataViz4Component implements OnInit {
   .attr('class', 'd3-tip')
   .html( (event: any, d: any) => {
     let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
-    console.log(elem)
+    // console.log(elem)
     let playerId = this.positionIdMap.get(Number(elem.id.substring(2))) as number
-    console.log("player id",playerId)
+    // console.log("player id",playerId)
     return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${this.data[playerId]['Player']}</b></p>\
 <div class='tooltip-value'>Position : ${this.data[playerId]['Pos']}</div>\
 <div class='tooltip-value'>Nombre de <span class="tooltip-gls">salaire : ${this.data[playerId]['salaire']}</span></div>`;
@@ -92,9 +92,9 @@ export class DataViz4Component implements OnInit {
         this.createSVGPlayerOnField()
         this.createSalaryScale()
         this.listenClick()
-        console.log("team value", this.teamValue)
-        console.log("field value", this.onFieldValue)
-        console.log(this.positionIdMap)
+        // console.log("team value", this.teamValue)
+        // console.log("field value", this.onFieldValue)
+        // console.log(this.positionIdMap)
         this.pieInit()
 
       })
@@ -140,19 +140,19 @@ export class DataViz4Component implements OnInit {
             var circleid = this.getOnFieldCircleID(elem) as number
 
             var playerId= this.positionIdMap.get(circleid) as number
-            console.log("fieldCircleID",this.data[playerId].Pos.substring(0,2))
-            console.log("selected id positon:",this.data[this.selectedid].Pos.substring(0,2))
+            // console.log("fieldCircleID",this.data[playerId].Pos.substring(0,2))
+            // console.log("selected id positon:",this.data[this.selectedid].Pos.substring(0,2))
             if(this.data[playerId].Pos.substring(0,2) == this.data[this.selectedid].Pos.substring(0,2)){
               this.swapPlayers(this.selectedid,circleid)
             }
           }
           // Replace by active player in legend or on the field
-        } 
+        }
     });
   }
 
 
-  
+
   //Add player name to the right array
   private addPlayerInit(playerInfo: any) {
 
@@ -380,14 +380,14 @@ export class DataViz4Component implements OnInit {
       //compare positions from data
       if(this.selectedid != null){
         if(this.data[id].Pos.split(",",2)[0] == this.data[this.selectedid as number].Pos.split(",",2)[0]){
-          console.log("both player have the same position")
+          // console.log("both player have the same position")
           let circleID = -1
           this.positionIdMap.forEach((value,key) => {
             if (value == Number(elem.id.substring(1))){
               circleID = key
             }
           })
-          
+
           this.swapPlayers(this.selectedid as number,circleID)
 
         }
@@ -397,15 +397,15 @@ export class DataViz4Component implements OnInit {
 
 
   private getOnFieldCircleID(elem:HTMLElement){
-    
+
     return Number(elem.id.split("_",2)[1])
   }
   private swapPlayers(newPlayer:number,circleID:number){
     let oldPlayerID = this.positionIdMap.get(circleID) as number
     if (this.data[newPlayer].Pos.substring(0,2) ==this.data[oldPlayerID].Pos.substring(0,2)){
-      console.log("old player",this.data[oldPlayerID])
-      console.log("new player",this.data[newPlayer])
-      // logic for swapping element 
+      // console.log("old player",this.data[oldPlayerID])
+      // console.log("new player",this.data[newPlayer])
+      // logic for swapping element
       //replacing player image
       let playerdataToReplace = this.data[newPlayer]
       playerdataToReplace.id = newPlayer
@@ -416,9 +416,9 @@ export class DataViz4Component implements OnInit {
       let newSalary = playerdataToReplace.salary
       this.positionIdMap.set(circleID,newPlayer)
       let position =this.data[oldPlayerID].Pos.substring(0,2)
-      console.log(this.playerOnField)
+      // console.log(this.playerOnField)
       let playerArray = this.getProperty(this.playerOnField,position)
-      console.log(playerArray)
+      // console.log(playerArray)
       let index = 0
       for(; index<playerArray.length;index++) {
         if (playerArray[index].id == oldPlayerID){
@@ -426,9 +426,9 @@ export class DataViz4Component implements OnInit {
         }
       }
       playerArray[index] = playerdataToReplace
-      console.log(playerArray)
+      // console.log(playerArray)
       this.updatePlayerOnFieldArray(playerArray,position)
-      
+
       this.newRadius(circleID,newSalary)
       //Update salaries
 
@@ -441,7 +441,7 @@ export class DataViz4Component implements OnInit {
       this.activateSwapablePlayers(playerOnField)
       this.deactivateSwapablePlayers(playerOnField)
       this.removeFieldStroke()
-      console.log(this.onFieldValue.FW)
+      // console.log(this.onFieldValue.FW)
       this.selectedid = null
 
     }
@@ -464,7 +464,7 @@ export class DataViz4Component implements OnInit {
   }
   private updatePlayerOnFieldArray(playerArray:any,position:any){
     let newSalary = 0
-    
+
     switch (position) {
       case "GK":
         this.playerOnField.GK = playerArray
@@ -472,8 +472,8 @@ export class DataViz4Component implements OnInit {
           newSalary+= player.salary
         });
         this.onFieldValue.GK = newSalary
-        
-        
+
+
         break;
       case "DF":
         this.playerOnField.DF = playerArray
@@ -481,7 +481,7 @@ export class DataViz4Component implements OnInit {
           newSalary+= player.salary
         });
         this.onFieldValue.DF = newSalary
-        
+
         break;
       case "MF":
         this.playerOnField.MF = playerArray
@@ -489,7 +489,7 @@ export class DataViz4Component implements OnInit {
           newSalary+= player.salary
         });
         this.onFieldValue.MF = newSalary
-        
+
         break;
       case "FW":
         this.playerOnField.FW = playerArray
@@ -497,8 +497,8 @@ export class DataViz4Component implements OnInit {
           newSalary+= player.salary
         });
         this.onFieldValue.FW = newSalary
-        
-        break;        
+
+        break;
       default:
         break;
     }
@@ -775,9 +775,9 @@ export class DataViz4Component implements OnInit {
         .attr("stroke","color")
         .attr("fill",color)
         .attr("id","e_"+CIRCLE_ID)
-        .on('mouseover', this.tip.show)
-        .on('mouseout', this.tip.hide)
-        
+        // .on('mouseover', this.tip.show)
+        // .on('mouseout', this.tip.hide)
+
 
 
         g_wrapper.append("image")
