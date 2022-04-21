@@ -104,8 +104,8 @@ export class DataViz4Component implements OnInit {
   }
 
   private listenClick() {
-    console.log("listen click")
-    console.log("this.selectedid 1:",this.selectedid)
+    // console.log("listen click")
+    // console.log("this.selectedid 1:",this.selectedid)
     let self = this
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
@@ -508,14 +508,14 @@ export class DataViz4Component implements OnInit {
       let id = Number(elem.id.substring(1))
       this.removeFieldStroke()
       this.selectedid = id
-      console.log("second activating palayer",this.selectedid)
+      // console.log("second activating palayer",this.selectedid)
       this.isSelecting = true
 
       this.removeSelectionShadow(this.selectedid)
       this.greyingPlayerInLegend(this.selectedid as number)
 
-      console.log("nsadifhasfda")
-      
+      // console.log("nsadifhasfda")
+
       if (!this.isOnField[id]){
         let playerOnField = this.matchingPosOnFieldPlayers()
         this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
