@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { strings } from '@material/select';
 import * as d3 from 'd3';
-import { select, stratify } from 'd3';
-import { BehaviorSubject } from 'rxjs';
-import {PlayerByPosition,Player,TotalValue, PieData} from "./viz4_interface";
+import {PlayerByPosition,Player,TotalValue} from "./viz4_interface";
 //@ts-ignore
 import d3Tip from 'd3-tip';
 
@@ -23,7 +20,6 @@ var cur_DF =0
 var cur_MF =0
 var cur_FW =0
 
-
 let LEGEND_MAP = new Map<string, string>([
   ["GK_legend", "Gardien de but:"],
   ["DF_legend", "Défenseur:"],
@@ -37,8 +33,6 @@ let COLOR_MAP  = new Map<string, string>([
   ["FW", "#FF0000"],
   ["MF", "#FAD616"],
 ]);
-
-
 
 
 @Component({
@@ -151,11 +145,8 @@ export class DataViz4Component implements OnInit {
     });
   }
 
-
-
   //Add player name to the right array
   private addPlayerInit(playerInfo: any) {
-
 
     let pos: string[] = playerInfo.Pos.split(",",2)
     let player:Player = {Name:playerInfo.Player, Img:playerInfo.Img ,Pos:pos,Age:playerInfo.Age,salary:playerInfo.salary,OnField: false,id:playerInfo.id}
@@ -905,48 +896,47 @@ export class DataViz4Component implements OnInit {
   }
 
   private pieInit(){
-    var fieldDiv:any = document.getElementById("pie");
-    let width = 450
-    let height = 450
-    let margin = 40
-    var radius = Math.min(width, height) / 2 - margin
+    var r = 90
 
-    // var svg = d3.select("#pie")
-    // .append("svg")
-    //   .attr("width", width)
-    //   .attr("height", height)
-    // .append("g")
-    //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    var piechart = d3.select("#players").append('svg')
+    .attr('width', 400)
+    .attr('height', 200)
+    .append('g')
+    .attr('transform', `translate(${r}, ${r+20})`)
 
-    //   // Create dummy data
+    piechart.append('circle')
+    .attr('r', r)
+    .attr('transform', `translate(${2*r+40} , 0)`)
 
-    //   // set the color scale
-    //   let data:PieData[] = [{position:"Gardien",value: this.teamValue.GK.toString()}
-    //   , {position:"Défense", value: this.teamValue.DF.toString()},
-    //   {position:"Attaque", value: this.teamValue.FW.toString()},
-    //   {position:"Milieu de terrain", value: this.teamValue.DF.toString()}]
-    //   console.log(data)
 
-    //   // let pie:PieData[] = d3.pie().sort(null).value(function(d: any){return d.number;}(data))
-    //   // console.log(pie)
 
-    //   // var segments = d3.arc().innerRadius(100).outerRadius(200).padAngle(0.05).padRadius(50)
+    var color = d3.scaleOrdinal(['green', 'red','orange','blue'])
+    // .domain(['GK','FW','MF','DF'])
+    // .range(['green', 'red','orange','blue'])
 
-    //   // var sections = svg.append("g").attr("transform","translate(250,250)").selectAll("path").data(pie)
+
+    const salaries = [
+      {key:'MF',value: this.teamValue.MF},
+      {key:'GK',value: this.teamValue.GK},
+      {key:'FW',value: this.teamValue.FW},
+      {key:'DF',value: this.teamValue.DF},
+    ]
+
+    var pie = d3.pie()
+    var data_ready = pie([1, 5, 6, 8])
+    var arc = d3.arc()
+    .innerRadius(100)         // This is the size of the donut hole
+    .outerRadius(r)
+
+    var arcs = piechart.selectAll('arc')
+      .data(data_ready)
+      .enter()
+      .append('g')
+
+    arcs.append('path')
+      .attr('fill', (d:any) => color(d.key))
 
   }
-
-  private selectingPlayer() {
-    const pass = 'pass'
-  }
-
-
-
-
-
-  // private swapPlayer(player_id_on_field, player_id_to_swap) {
-
-  // }
 
 }
 
