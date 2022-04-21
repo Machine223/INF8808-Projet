@@ -445,10 +445,35 @@ export class DataViz4Component implements OnInit {
       // console.log(this.onFieldValue.FW)
       this.selectedid = null
       
-
+      this.updatePieChart()
     }
     //update piechart
     //onFieldPlayer pieChart
+  }
+
+  private updatePieChart() {
+    const resultsTeamValue: number[] = this.teamValue.map(
+      r => r.value
+      
+    );
+    const resultsOnFieldValue: number[] = this.onFieldValue.map(
+      r => r.value
+    );
+    let totalTeamValue = Object.values(resultsTeamValue).reduce((acc, val) => acc + val, 0);
+    let totalOnFieldValue = Object.values(resultsOnFieldValue).reduce((acc, val) => acc + val, 0);
+
+    totalTeamValue = +(totalTeamValue/1000000).toFixed(1)
+    totalOnFieldValue = +(totalOnFieldValue /1000000).toFixed(1)
+    console.log(totalTeamValue)
+    console.log(totalOnFieldValue)
+
+
+    d3.select("#teamValuePieNumber")
+    .text(totalTeamValue +" M$")
+    
+    d3.select("#FieldValuePieNumber")
+    .text(totalOnFieldValue +" M$")
+
   }
   private newRadius(circleID:number,newSalary:number){
     let r2 = 0
@@ -618,21 +643,26 @@ export class DataViz4Component implements OnInit {
     // console.log(pos)
     d3.selectAll(".classf_"+pos)
     .attr("stroke","black")
-    .attr("stroke-width","4")
+    .attr("stroke-width","2")
+    .style("filter","url(#selection-shadow)")
   }
   private removeFieldStroke(){
     d3.selectAll(".classf_GK")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_FW")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_MF")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_DF")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
   }
 
   // Create SVG for player on field
@@ -770,6 +800,7 @@ export class DataViz4Component implements OnInit {
         .attr("stroke","color")
         .attr("fill",color)
         .attr("id","e_"+CIRCLE_ID)
+        .style("filter","url(#active-shadow)")
         // .on('mouseover', this.tip.show)
         // .on('mouseout', this.tip.hide)
 
@@ -970,7 +1001,7 @@ export class DataViz4Component implements OnInit {
     // TODO append text et LEGENDE
 
     d3.select("#teamValuePie").append("text")
-    .attr("id","teamValuePie").attr("text-anchor","middle")
+    .attr("id","teamValuePieNumber").attr("text-anchor","middle")
     .attr("font-weight","bold")
     .style("font-family","IBM Plex Sans")
     .style("color","#263238")
@@ -979,7 +1010,7 @@ export class DataViz4Component implements OnInit {
     .text(totalTeamValue +" M$")
     
     d3.select("#FieldValuePie").append("text")
-    .attr("id","FieldValuePieText").attr("text-anchor","middle")
+    .attr("id","FieldValuePieNumber").attr("text-anchor","middle")
     .attr("font-weight","bold")
     .style("font-family","IBM Plex Sans")
     .style("text-shadow","0.5px 0.5px 1.5px #000000")
@@ -987,7 +1018,7 @@ export class DataViz4Component implements OnInit {
     .text(totalOnFieldValue +" M$")
     
     d3.select("#teamValuePie").append("text")
-    .attr("id","teamValuePie").attr("text-anchor","middle")
+    .attr("id","teamValuePieText").attr("text-anchor","middle")
     .attr("y",10)
     .attr("font-weight","bold")
     .style("font-family","IBM Plex Sans")
@@ -1005,11 +1036,6 @@ export class DataViz4Component implements OnInit {
     .style("font-size","10")
     .style("color","#263238")
     .text("Joueur sur le terrain")
-
-    
-
-    
-    
 
   }
 
