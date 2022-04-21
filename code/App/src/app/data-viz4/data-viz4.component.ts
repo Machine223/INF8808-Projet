@@ -452,6 +452,10 @@ export class DataViz4Component implements OnInit {
   }
 
   private updatePieChart() {
+    const width = 900
+    const height = 500
+
+    const arc = d3.arc().innerRadius(0.20 * height/2).outerRadius(0.30 * height/2)
     const resultsTeamValue: number[] = this.teamValue.map(
       r => r.value
       
@@ -467,9 +471,19 @@ export class DataViz4Component implements OnInit {
     console.log(totalTeamValue)
     console.log(totalOnFieldValue)
 
+    const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
+    const data_Field = pieChart(resultsOnFieldValue)
 
-    d3.select("#teamValuePieNumber")
-    .text(totalTeamValue +" M$")
+    const arcs2 = d3.select("#FieldValuePie")
+    .selectAll('path')
+    .data(data_Field).enter()
+
+    arcs2.selectAll('path')
+    .attr('d',<any>arc)
+    .attr('fill', (d,i) =>this.color[i])
+    .style('stroke', 'black')
+    .style('stroke-width', 1)
+    .style("opacity", 0.9)
     
     d3.select("#FieldValuePieNumber")
     .text(totalOnFieldValue +" M$")
@@ -939,6 +953,8 @@ export class DataViz4Component implements OnInit {
     .attr('id', 'donut-container').attr('class','donut-container')
     .attr('transform', `translate(${r}, ${r+20})`)
 
+    
+
     // TODO Ref circle a enlever a la fin juste pour avoir un repere
  
     const width = 900
@@ -971,7 +987,7 @@ export class DataViz4Component implements OnInit {
       .selectAll('path')
       .data(data_Team).enter()
 
-
+      
 
     // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
     arcs1.append('path')
@@ -1036,6 +1052,55 @@ export class DataViz4Component implements OnInit {
     .style("font-size","10")
     .style("color","#263238")
     .text("Joueur sur le terrain")
+    let legend = d3.select("#piechart").append("g")
+    
+    legend.append("rect").attr("fill",COLOR_MAP.get("GK") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",10)
+    .attr("y",200)
+    legend.append("text").
+    attr("x",25).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Gardien")
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("GK") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",10)
+    .attr("y",200)
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("DF") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",100)
+    .attr("y",200)
+
+    legend.append("text").
+    attr("x",115).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Défense")
+    
+    legend.append("rect").attr("fill",COLOR_MAP.get("MF") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",200)
+    .attr("y",200)
+
+    legend.append("text").
+    attr("x",215).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Milieu de terrain")
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("FW") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",300)
+    .attr("y",200)
+
+    legend.append("text").
+    attr("x",315).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Attaque")
+
+
+
 
   }
 
