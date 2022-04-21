@@ -1,4 +1,4 @@
-//Allow duplicate data structure to store 
+//Allow duplicate data structure to store
 export interface PlayerByPosition {
     GK:Player[],
     FW:Player[],
@@ -18,11 +18,11 @@ export interface Player {
 }
 //sum up player value per position and total, this will be easier to generate pie graph
 export interface TotalValue {
+    value: number;
     GK:number,
     MF:number,
     FW:number,
     DF:number,
-    total:number
 }
 
 
@@ -30,5 +30,5 @@ export interface PieData {
     position: string;
     value: string;
   }
-  
+
 

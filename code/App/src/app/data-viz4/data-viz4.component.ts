@@ -49,9 +49,18 @@ export class DataViz4Component implements OnInit {
   //This will store player on field.
   private playerOnField: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   //We use these fields for Pie Chart:
-  private teamValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0}
-  private onFieldValue: TotalValue = {GK:0,FW:0,MF:0,DF:0,total:0}
-
+  private teamValue = [
+    { type: 'GK', value: 0 },
+    { type: 'DF', value: 0 },
+    { type: 'MF', value: 0 },
+    { type: 'FW', value: 0 }
+  ]
+  private onFieldValue = [
+    { type: 'GK', value: 0 },
+    { type: 'DF', value: 0 },
+    { type: 'MF', value: 0 },
+    { type: 'FW', value: 0 }
+  ]
   private positionIdMap: Map<number,number> = new Map()
   private isOnField: boolean[] = []
 
@@ -157,42 +166,41 @@ export class DataViz4Component implements OnInit {
             //Todo: Verifier si la reference du joueur change lorsqu'on ajoute sur le terrain
             //We suppose that the first position is the main player position
             if(i == 0){
-              this.teamValue.GK += player.salary
+              this.teamValue[0].value += player.salary
               this.playerMainPosition.GK.push(player)
             }
             this.playerByPosition.GK.push(player)
             break;
+          case "DF":
+            if(i == 0){
+              this.teamValue[1].value += player.salary
+              this.playerMainPosition.DF.push(player)
+            }
+            this.playerByPosition.DF.push(player)
+            break
           case "MF":
             if(i == 0){
-              this.teamValue.MF += player.salary
+              this.teamValue[2].value += player.salary
               this.playerMainPosition.MF.push(player)
             }
             this.playerByPosition.MF.push(player)
             break
           case "FW":
             if(i == 0){
-              this.teamValue.FW += player.salary
+              this.teamValue[3].value += player.salary
               this.playerMainPosition.FW.push(player)
             }
             this.playerByPosition.FW.push(player)
+            break
 
-            break
-          case "DF":
-            if(i == 0){
-              this.teamValue.DF += player.salary
-              this.playerMainPosition.DF.push(player)
-            }
-            this.playerByPosition.DF.push(player)
-            break
           default:
             throw new Error("Unexpected value, verify data integrity");
-
         }
       } catch(e) {
         console.error(e)
       }
     }
-    this.teamValue.total += player.salary
+    // this.teamValue.total += player.salary
     this.addPlayerOnFieldInit(player)
   }
   //Adding default player on the field only considering [0]
@@ -206,44 +214,43 @@ export class DataViz4Component implements OnInit {
         player.OnField = true
         cur_GK +=1
         this.playerOnField.GK.push(player)
-        this.onFieldValue.GK += player.salary
-        this.onFieldValue.total += player.salary
+        this.onFieldValue[0].value += player.salary
+        // this.onFieldValue.total += player.salary
 
       }
-      //Front wing
-      else if (player.Pos[0] == "FW" && cur_FW < MAX_FW) {
-        player.OnField = true
-        this.isOnField[i] = true
-
-        cur_FW+=1
-        this.playerOnField.FW.push(player)
-        this.onFieldValue.FW += player.salary
-        this.onFieldValue.total += player.salary
-
-
         //defense
-      } else if (player.Pos[0] == "DF" && cur_DF < MAX_DF){
+      else if (player.Pos[0] == "DF" && cur_DF < MAX_DF){
 
         cur_DF+=1
         player.OnField = true
         this.isOnField[i] = true
 
         this.playerOnField.DF.push(player)
-        this.onFieldValue.DF += player.salary
-        this.onFieldValue.total += player.salary
+        this.onFieldValue[1].value += player.salary
+        // this.onFieldValue.total += player.salary
 
         //MidField
-      } else if  (player.Pos[0] == "MF" && cur_MF < MAX_MF){
-          cur_MF+=1
-          this.isOnField[i] = true
-          player.OnField = true
-          this.playerOnField.MF.push(player)
-          this.onFieldValue.MF += player.salary
-          this.onFieldValue.total += player.salary
+      }
+      else if  (player.Pos[0] == "MF" && cur_MF < MAX_MF){
+        cur_MF+=1
+        this.isOnField[i] = true
+        player.OnField = true
+        this.playerOnField.MF.push(player)
+        this.onFieldValue[2].value += player.salary
+        // this.onFieldValue.total += player.salary
 
       }
-    }
+      //Front Field
+      else if (player.Pos[0] == "FW" && cur_FW < MAX_FW) {
+        player.OnField = true
+        this.isOnField[i] = true
 
+        cur_FW+=1
+        this.playerOnField.FW.push(player)
+        this.onFieldValue[3].value += player.salary
+        // this.onFieldValue.total += player.salary
+      }
+    }
   }
 
   private createBaseTemplate() {
@@ -901,42 +908,52 @@ export class DataViz4Component implements OnInit {
     var piechart = d3.select("#players").append('svg')
     .attr('width', 400)
     .attr('height', 200)
+    .attr('id', 'piechart').attr('class','piechart')
     .append('g')
+    .attr('id', 'donut-container').attr('class','donut-container')
     .attr('transform', `translate(${r}, ${r+20})`)
 
     piechart.append('circle')
     .attr('r', r)
+    .attr('id', 'valeur-total').attr('class','valeur-total')
     .attr('transform', `translate(${2*r+40} , 0)`)
 
-
-
+    console.log('teamValue', this.teamValue)
+    console.log('onFieldValue',this.onFieldValue)
     var color = d3.scaleOrdinal(['green', 'red','orange','blue'])
-    // .domain(['GK','FW','MF','DF'])
-    // .range(['green', 'red','orange','blue'])
 
-
-    const salaries = [
-      {key:'MF',value: this.teamValue.MF},
-      {key:'GK',value: this.teamValue.GK},
-      {key:'FW',value: this.teamValue.FW},
-      {key:'DF',value: this.teamValue.DF},
+    // const data = this.teamValue
+    const width = 900
+    const height = 500
+    const USData = [
+      { type: 'Poultry', value: 48.9954 },
+      { type: 'Beef', value: 25.9887 },
+      { type: 'Pig', value: 22.9373 },
+      { type: 'Sheep', value: 50.4869 }
     ]
+    const colors = [ '#976393', '#685489', '#43457f', '#ff9b83' ]
 
-    var pie = d3.pie()
-    var data_ready = pie([1, 5, 6, 8])
-    var arc = d3.arc()
-    .innerRadius(100)         // This is the size of the donut hole
-    .outerRadius(r)
+    const arc = d3.arc().innerRadius(0.5 * height/2).outerRadius(0.85 * height/2)
+    // console.log(arc)
+    // const pie = d3.pie().value(function(d) { return d3.value }).sort(null)
+    const labelArcs = d3.arc().innerRadius( 0.95 * height /2 ).outerRadius( 0.95 * height / 2 )
 
-    var arcs = piechart.selectAll('arc')
-      .data(data_ready)
-      .enter()
-      .append('g')
-
-    arcs.append('path')
-      .attr('fill', (d:any) => color(d.key))
+    // const pieArcs = pie(USData)
+    console.log(USData)
 
   }
+
+  // private selectingPlayer() {
+  //   const pass = 'pass'
+  // }
+
+
+
+
+
+  // private swapPlayer(player_id_on_field, player_id_to_swap) {
+
+  // }
 
 }
 
