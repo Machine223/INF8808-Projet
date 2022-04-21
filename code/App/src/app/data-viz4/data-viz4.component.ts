@@ -51,18 +51,20 @@ export class DataViz4Component implements OnInit {
   //This will store player on field.
   private playerOnField: PlayerByPosition = {GK:[],FW:[],MF:[],DF:[]}
   //We use these fields for Pie Chart:
-  private teamValue = [
+  private teamValue:TotalValue[] = [
     { type: 'GK', value: 0 },
     { type: 'DF', value: 0 },
     { type: 'MF', value: 0 },
     { type: 'FW', value: 0 }
   ]
-  private onFieldValue = [
+  private onFieldValue:TotalValue[] = [
     { type: 'GK', value: 0 },
     { type: 'DF', value: 0 },
     { type: 'MF', value: 0 },
     { type: 'FW', value: 0 }
   ]
+  color = ['#42FF00', '#1C4686','#FAD616', '#FF0000'];
+
   private isOnField: boolean[] = []
 
   private isSelecting: boolean = false
@@ -757,53 +759,66 @@ export class DataViz4Component implements OnInit {
 
     var piechart = d3.select("#players").append('svg')
     .attr('width', 400)
-    .attr('height', 200)
+    .attr('height', 250)
     .attr('id', 'piechart').attr('class','piechart')
     .append('g')
     .attr('id', 'donut-container').attr('class','donut-container')
     .attr('transform', `translate(${r}, ${r+20})`)
 
+    // TODO Ref circle a enlever a la fin juste pour avoir un repere
     piechart.append('circle')
     .attr('r', r)
     .attr('id', 'valeur-total').attr('class','valeur-total')
-    .attr('transform', `translate(${2*r+40} , 0)`)
+    .attr('transform', `translate(${2*r+40} , 0)`).attr('fill', '#C4C4C4')
 
-    console.log('teamValue', this.teamValue)
-    console.log('onFieldValue',this.onFieldValue)
-    var color = d3.scaleOrdinal(['green', 'red','orange','blue'])
-
-    // const data = this.teamValue
     const width = 900
     const height = 500
-    const USData = [
-      { type: 'Poultry', value: 48.9954 },
-      { type: 'Beef', value: 25.9887 },
-      { type: 'Pig', value: 22.9373 },
-      { type: 'Sheep', value: 50.4869 }
-    ]
-    const colors = [ '#976393', '#685489', '#43457f', '#ff9b83' ]
 
-    const arc = d3.arc().innerRadius(0.5 * height/2).outerRadius(0.85 * height/2)
-    // console.log(arc)
-    // const pie = d3.pie().value(function(d) { return d3.value }).sort(null)
-    const labelArcs = d3.arc().innerRadius( 0.95 * height /2 ).outerRadius( 0.95 * height / 2 )
+    const arc = d3.arc().innerRadius(0.20 * height/2).outerRadius(0.30 * height/2)
+    console.log(this.teamValue)
+    const resultsTeamValue: number[] = this.teamValue.map(
+      r => r.value
+    );
+    const resultsOnFieldValue: number[] = this.onFieldValue.map(
+      r => r.value
+    );
+    const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
+    const data_Team = pieChart(resultsTeamValue)
+    const data_Field = pieChart(resultsOnFieldValue)
 
-    // const pieArcs = pie(USData)
-    console.log(USData)
+
+    const arcs1 = piechart.append('g')
+      .attr('class', 'donut')
+      .attr('transform', `translate(220, 0)` )
+      .selectAll('path')
+      .data(data_Team).enter()
+
+    // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
+    arcs1.append('path')
+    .attr('d',<any>arc)
+    .attr('fill', (d,i) =>this.color[i])
+    .style('stroke', 'black')
+    .style('stroke-width', 1)
+    .style("opacity", 0.9)
+
+
+    const arcs2 = piechart.append('g')
+      .attr('class', 'donut')
+      .attr('transform', `translate(0, 0)` )
+      .selectAll('path')
+      .data(data_Field).enter()
+
+    // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
+    arcs2.append('path')
+    .attr('d',<any>arc)
+    .attr('fill', (d,i) =>this.color[i])
+    .style('stroke', 'black')
+    .style('stroke-width', 1)
+    .style("opacity", 0.9)
+
+    // TODO append text et LEGENDE
 
   }
-
-  // private selectingPlayer() {
-  //   const pass = 'pass'
-  // }
-
-
-
-
-
-  // private swapPlayer(player_id_on_field, player_id_to_swap) {
-
-  // }
 
 }
 
