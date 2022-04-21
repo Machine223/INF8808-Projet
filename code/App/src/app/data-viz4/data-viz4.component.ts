@@ -96,15 +96,15 @@ export class DataViz4Component implements OnInit {
   }
 
   private listenClick() {
-    console.log("listen click")
-    console.log("this.selectedid 1:",this.selectedid)
+    // console.log("listen click")
+    // console.log("this.selectedid 1:",this.selectedid)
     let self = this
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
-      console.log("this.selectedid 2:",this.selectedid)
+      // console.log("this.selectedid 2:",this.selectedid)
       //Potential bug with svg circle
       if ((elem.tagName =="image" || elem.tagName == "circle")){
-        console.log("is an image")
+        // console.log("is an image")
         // Replace by active player in legend or on the field
 
 
@@ -116,7 +116,7 @@ export class DataViz4Component implements OnInit {
           this.deactivateSwapablePlayers(players)
           this.removeSelectionShadow(this.selectedid as number)
           this.greyingPlayerInLegend(this.selectedid as number)
-          this.selectedid = null     
+          this.selectedid = null
       }
     });
   }
@@ -342,17 +342,17 @@ export class DataViz4Component implements OnInit {
     }
     else {
       //We will need to verify if the user select two person from the same position
-      console.log("next player to swap",this.data[Number(this.selectedid)],"with",
-      this.data[Number(elem.id.substring(1))])
-      console.log("player already on field")
+      // console.log("next player to swap",this.data[Number(this.selectedid)],"with",
+      this.data[Number(elem.id.substring(1))]
+      // console.log("player already on field")
       //compare positions from data
-      if(this.data[id].Pos.split(",",2)[0] 
+      if(this.data[id].Pos.split(",",2)[0]
       == this.data[this.selectedid as number].Pos.split(",",2)[0]){
-        console.log("both player have the same position")
+        // console.log("both player have the same position")
         //swap here
         // this.swapPlayers(this.selectedid)
       } else{
-        console.log("not the same postion ")
+        // console.log("not the same postion ")
       }
     }
     let parentid = (elem.parentNode as HTMLElement).id
@@ -360,19 +360,19 @@ export class DataViz4Component implements OnInit {
 
   private swapPlayers(newPlayer:number,oldPlayer:number){
     let onFieldBubbleId = this.findPlayerOnField()
-    // logic for swapping element 
+    // logic for swapping element
     this.replacePlayer()
     //update piechart
 
-    
+
   }
   private findPlayerOnField(){
     const pass = 'pass'
   }
   private replacePlayer(){
     const pass = 'pass'
-    
-    
+
+
   }
 
     //Activating player for potential
@@ -391,16 +391,16 @@ export class DataViz4Component implements OnInit {
       let id = Number(elem.id.substring(1))
       this.removeFieldStroke()
       this.selectedid = id
-      console.log("second activating palayer",this.selectedid)
+      // console.log("second activating palayer",this.selectedid)
       this.isSelecting = true
 
       this.removeSelectionShadow(this.selectedid)
       this.greyingPlayerInLegend(this.selectedid as number)
 
-      console.log("nsadifhasfda")
-      
+      // console.log("nsadifhasfda")
+
       if (!this.isOnField[id]){
-        console.log("sup sup",this.selectedid)
+        // console.log("sup sup",this.selectedid)
         let playerOnField = this.matchingPosOnFieldPlayers()
         this.colorPlayerInLegendSelection(Number(elem.id.substring(1) as string))
         //Add effect for player to replace
