@@ -109,28 +109,32 @@ export class DataViz4Component implements OnInit {
     let self = this
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
-      console.log("this.selectedid 2:",this.selectedid)
+      if ((elem.tagName !="image" && elem.tagName != "circle" && this.selectedid !== null)){
+        this.removeFieldStroke()
+        let players = this.matchingPosOnFieldPlayers()
+        this.deactivateSwapablePlayers(players)
+        this.removeSelectionShadow(this.selectedid as number)
+        this.greyingPlayerInLegend(this.selectedid as number)
+        this.selectedid = null
+        this.isSelecting =false
+      }
       //Potential bug with svg circle
       var elemClassName = elem.className as any
-      if ((elem.tagName =="image" || elem.tagName == "circle") && elemClassName instanceof SVGAnimatedString){
-        if (elemClassName.baseVal.split("_",1)[0] == "classf" && this.selectedid !=null) {
-          var circleid = this.getOnFieldCircleID(elem)
-          this.swapPlayers(this.selectedid,circleid)
-        } else if(elemClassName.baseVal =="swap" && this.selectedid !=null) {
-          console.log("here")
-          
-        }
-        // Replace by active player in legend or on the field
+      // if (this.isSelecting) {
+        if ((elem.tagName =="image" || elem.tagName == "circle") && elemClassName instanceof SVGAnimatedString){
+          if (elemClassName.baseVal.split("_",1)[0] == "classf" && this.selectedid !=null) {
 
-      } else {
-          //If we don't want to select a player
-          this.removeFieldStroke()
-          let players = this.matchingPosOnFieldPlayers()
-          this.deactivateSwapablePlayers(players)
-          this.removeSelectionShadow(this.selectedid as number)
-          this.greyingPlayerInLegend(this.selectedid as number)
-          this.selectedid = null
-      }
+            var circleid = this.getOnFieldCircleID(elem) as number
+
+            var playerId= this.positionIdMap.get(circleid) as number
+            console.log("fieldCircleID",this.data[playerId].Pos.substring(0,2))
+            console.log("selected id positon:",this.data[this.selectedid].Pos.substring(0,2))
+            if(this.data[playerId].Pos.substring(0,2) == this.data[this.selectedid].Pos.substring(0,2)){
+              this.swapPlayers(this.selectedid,circleid)
+            }
+          }
+          // Replace by active player in legend or on the field
+        } 
     });
   }
 
@@ -353,24 +357,29 @@ export class DataViz4Component implements OnInit {
   public startingNewPlayerSelection(event:any) {
     let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
     let id = Number(elem.id.substring(1))
+
     if (!this.isOnField[Number(elem.id.substring(1))]) {
       this.activatingPlayer(elem)
     }
     else {
       //We will need to verify if the user select two person from the same position
-      console.log("next player to swap",this.data[Number(this.selectedid)],"with",
-      this.data[Number(elem.id.substring(1))])
-      console.log("player already on field")
-      //compare positions from data
-      if(this.data[id].Pos.split(",",2)[0] 
-      == this.data[this.selectedid as number].Pos.split(",",2)[0]){
-        console.log("both player have the same position")
 
-      } else{
-        console.log("not the same postion ")
+      //compare positions from data
+      if(this.selectedid != null){
+        if(this.data[id].Pos.split(",",2)[0] == this.data[this.selectedid as number].Pos.split(",",2)[0]){
+          console.log("both player have the same position")
+          let circleID = -1
+          this.positionIdMap.forEach((value,key) => {
+            if (value == Number(elem.id.substring(1))){
+              circleID = key
+            }
+          })
+          
+          this.swapPlayers(this.selectedid as number,circleID)
+
+        }
       }
     }
-    let parentid = (elem.parentNode as HTMLElement).id
   }
 
 
@@ -380,20 +389,108 @@ export class DataViz4Component implements OnInit {
   }
   private swapPlayers(newPlayer:number,circleID:number){
     let oldPlayerID = this.positionIdMap.get(circleID) as number
-    console.log("old player",this.data[oldPlayerID])
-    console.log("new player",this.data[newPlayer])
-    // logic for swapping element 
-    this.replacePlayer()
+    if (this.data[newPlayer].Pos.substring(0,2) ==this.data[oldPlayerID].Pos.substring(0,2)){
+      console.log("old player",this.data[oldPlayerID])
+      console.log("new player",this.data[newPlayer])
+      // logic for swapping element 
+      //replacing player image
+      let playerdataToReplace = this.data[newPlayer]
+      playerdataToReplace.id = newPlayer
+      d3.selectAll("#f_"+circleID).attr("href",this.data[newPlayer].Img)
+
+      this.isOnField[oldPlayerID] = false
+      this.isOnField[newPlayer] = true
+      let newSalary = playerdataToReplace.salary
+      this.positionIdMap.set(circleID,newPlayer)
+      let position =this.data[oldPlayerID].Pos.substring(0,2)
+      console.log(this.playerOnField)
+      let playerArray = this.getProperty(this.playerOnField,position)
+      console.log(playerArray)
+      let index = 0
+      for(; index<playerArray.length;index++) {
+        if (playerArray[index].id == oldPlayerID){
+          break
+        }
+      }
+      playerArray[index] = playerdataToReplace
+      console.log(playerArray)
+      this.updatePlayerOnFieldArray(playerArray,position)
+      
+      this.newRadius(circleID,newSalary)
+      //Update salaries
+
+
+
+      //deactivating button
+      this.greyingPlayerInLegend(oldPlayerID as number)
+      let playerOnField = this.matchingPosOnFieldPlayers()
+      this.removeSelectionShadow(newPlayer as number)
+      this.activateSwapablePlayers(playerOnField)
+      this.deactivateSwapablePlayers(playerOnField)
+      this.removeFieldStroke()
+      console.log(this.onFieldValue.FW)
+      this.selectedid = null
+
+    }
     //update piechart
     //onFieldPlayer pieChart
+  }
+  private newRadius(circleID:number,newSalary:number){
+    let r2 = 0
+    if (newSalary > 10000000){
+      r2 = 55
+    } else if (newSalary > 1000000) {
+      r2= 30
+    } else {
+      r2 = 5
+    }
+    d3.select("#e_"+circleID).attr("r", r2+40)
   }
   private findPlayerOnField(){
     const pass = 'pass'
   }
-  private replacePlayer(){
-    const pass = 'pass'
+  private updatePlayerOnFieldArray(playerArray:any,position:any){
+    let newSalary = 0
     
+    switch (position) {
+      case "GK":
+        this.playerOnField.GK = playerArray
+        playerArray.forEach((player:any) => {
+          newSalary+= player.salary
+        });
+        this.onFieldValue.GK = newSalary
+        
+        
+        break;
+      case "DF":
+        this.playerOnField.DF = playerArray
+        playerArray.forEach((player:any) => {
+          newSalary+= player.salary
+        });
+        this.onFieldValue.DF = newSalary
+        
+        break;
+      case "MF":
+        this.playerOnField.MF = playerArray
+        playerArray.forEach((player:any) => {
+          newSalary+= player.salary
+        });
+        this.onFieldValue.MF = newSalary
+        
+        break;
+      case "FW":
+        this.playerOnField.FW = playerArray
+        playerArray.forEach((player:any) => {
+          newSalary+= player.salary
+        });
+        this.onFieldValue.FW = newSalary
+        
+        break;        
+      default:
+        break;
+    }
   }
+
 
     //Activating player for potential
     private activatingPlayer(elem: HTMLElement) {
