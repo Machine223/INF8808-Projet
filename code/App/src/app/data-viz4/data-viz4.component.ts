@@ -1,10 +1,11 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { strings } from '@material/select';
 import * as d3 from 'd3';
 import { select, stratify } from 'd3';
 import { BehaviorSubject } from 'rxjs';
 import {PlayerByPosition,Player,TotalValue, PieData} from "./viz4_interface";
+//@ts-ignore
+import d3Tip from 'd3-tip';
 
 const MAX_GK =1
 const MAX_DF =2
@@ -64,7 +65,19 @@ export class DataViz4Component implements OnInit {
   //The player currently selected
   private selectedid: number|null = null
 
-  constructor() { }
+  tip = d3Tip()
+  .attr('class', 'd3-tip')
+  .html( (event: any, d: any) => {
+    let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
+    console.log(elem)
+    let playerId = this.positionIdMap.get(Number(elem.id.substring(2))) as number
+    console.log("player id",playerId)
+    return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${this.data[playerId]['Player']}</b></p>\
+<div class='tooltip-value'>Position : ${this.data[playerId]['Pos']}</div>\
+<div class='tooltip-value'>Nombre de <span class="tooltip-gls">salaire : ${this.data[playerId]['salaire']}</span></div>`;
+  });
+
+    constructor() { }
 
   ngOnInit(): void {
     d3.json('../../assets/data_viz4.json')
@@ -762,6 +775,9 @@ export class DataViz4Component implements OnInit {
         .attr("stroke","color")
         .attr("fill",color)
         .attr("id","e_"+CIRCLE_ID)
+        .on('mouseover', this.tip.show)
+        .on('mouseout', this.tip.hide)
+        
 
 
         g_wrapper.append("image")
