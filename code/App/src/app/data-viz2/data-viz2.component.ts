@@ -220,11 +220,13 @@ export class DataViz2Component implements OnInit {
   private generateLegend() {
     this.legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend');
     // Handmade legend
-    this.legend.append('rect').attr('x', 0).attr('y', 0).attr('width', 25).attr('height', 25).style('fill', '#4381B6');
-    this.legend.append('rect').attr('x', 0).attr('y', 40).attr('width', 25).attr('height', 25).style('fill', '#97B3CB');
-    this.legend.append('text').attr('x', 40).attr('y', 12).text('Nombre de but').style('font-size', '15px').attr('alignment-baseline', 'middle');
-    this.legend.append('text').attr('x', 40).attr('y', 52).text('Nombre d’assists').style('font-size', '15px').attr('alignment-baseline', 'middle');
-    this.legend.append('text').attr('x', 0).attr('y', -24).text('Légende').style('font-size', '17px').attr('alignment-baseline', 'middle');
+    this.legend.append('rect').attr('x', 0).attr('y', 0).attr('width', 25).attr('height', 25).style('fill', '#4381B6').style('stroke', 'black')
+    .style('stroke-width', 1);
+    this.legend.append('rect').attr('x', 0).attr('y', 40).attr('width', 25).attr('height', 25).style('fill', '#97B3CB').style('stroke', 'black')
+    .style('stroke-width', 1);
+    this.legend.append('text').attr('x', 40).attr('y', 12).text('Nombre de but').style('font-size', '15px').attr('alignment-baseline', 'middle').style('fill', '#263238');
+    this.legend.append('text').attr('x', 40).attr('y', 52).text('Nombre d’assists').style('font-size', '15px').attr('alignment-baseline', 'middle').style('fill', '#263238');
+    this.legend.append('text').attr('x', 0).attr('y', -24).text('Légende').style('font-size', '17px').attr('alignment-baseline', 'middle').style('fill', '#263238');
     this.legend.attr('transform', `translate(600,650)`);
   }
 
