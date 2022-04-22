@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { PlayerByPosition, Player, TotalValue } from './viz4_interface';
 //@ts-ignore
 import d3Tip from 'd3-tip';
+import { index } from 'd3';
 
 const MAX_GK = 1;
 const MAX_DF = 2;
@@ -33,6 +34,7 @@ let COLOR_MAP = new Map<string, string>([
   ['FW', '#FF0000'],
   ['MF', '#FAD616'],
 ]);
+let mapPosCanada = ["de l'attaque"," des millieu de terrain", "des gardiens", " de la défense"]
 
 @Component({
   selector: 'app-data-viz4',
@@ -72,6 +74,14 @@ export class DataViz4Component implements OnInit {
   color = ['#42FF00', '#1C4686', '#FAD616', '#FF0000'];
   totalTeamValue:number | undefined;
   totalOnFieldValue:number | undefined;
+
+  tipValueTeam = d3Tip()
+  .attr('class', 'd3-tip')
+  .html(function (_e: any, d: any) {
+      return `<p class='tooltip-title' style="margin-top: 0px">Canada</p>\
+    <div class='tooltip-value'>Valeur ${mapPosCanada[d['index']]}: ${Number(d['data']).toLocaleString('fr')} $</div>`;
+  });
+
   private positionIdMap: Map<number, number> = new Map();
   private isOnField: boolean[] = [];
 
@@ -322,6 +332,7 @@ export class DataViz4Component implements OnInit {
       .attr('height', parentDiv.clientHeight);
     //
     svg.call(this.tip);
+    svg.call(this.tipValueTeam);
     let defs = svg
       .append('defs')
       .append('clipPath')
@@ -546,8 +557,6 @@ export class DataViz4Component implements OnInit {
 
     this.totalTeamValue = +(this.totalTeamValue / 1000000).toFixed(1);
     this.totalOnFieldValue = +(this.totalOnFieldValue / 1000000).toFixed(1);
-    console.log(this.totalTeamValue);
-    console.log(this.totalOnFieldValue);
 
     const pieChart = d3
       .pie()
@@ -1109,6 +1118,9 @@ export class DataViz4Component implements OnInit {
     arcs1
       .append('path')
       .attr('d', <any>arc)
+      .on('mouseover', this.tipValueTeam.show)
+      .on('mouseout', this.tipValueTeam.hide)
+      .on('mouseleave', this.tipValueTeam.leave)
       .attr('fill', (d, i) => this.color[i])
       .style('stroke', 'black')
       .style('stroke-width', 1)
@@ -1130,6 +1142,9 @@ export class DataViz4Component implements OnInit {
       .append('path')
       .attr('class', 'slice')
       .attr('d', <any>arc)
+      .on('mouseover', this.tipValueTeam.show)
+      .on('mouseout', this.tipValueTeam.hide)
+      .on('mouseleave', this.tipValueTeam.leave)
       .attr('fill', (d, i) => this.color[i])
       .style('stroke', 'black')
       .style('stroke-width', 1)
