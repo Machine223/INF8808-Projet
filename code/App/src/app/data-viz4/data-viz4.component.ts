@@ -1096,8 +1096,7 @@ export class DataViz4Component implements OnInit {
 
     this.totalTeamValue = +(this.totalTeamValue / 1000000).toFixed(1);
     this.totalOnFieldValue = +(this.totalOnFieldValue / 1000000).toFixed(1);
-    console.log(this.totalTeamValue);
-    console.log(this.totalOnFieldValue);
+
     const pieChart = d3
       .pie()
       .startAngle(0 * (Math.PI / 90))
