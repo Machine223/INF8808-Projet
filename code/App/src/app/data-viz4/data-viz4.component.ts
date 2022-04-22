@@ -1060,13 +1060,13 @@ export class DataViz4Component implements OnInit {
       .select('#players')
       .append('svg')
       .attr('width', 400)
-      .attr('height', 250)
+      .attr('height', 290)
       .attr('id', 'piechart')
       .attr('class', 'piechart')
       .append('g')
       .attr('id', 'donut-container')
       .attr('class', 'donut-container')
-      .attr('transform', `translate(${r}, ${r})`);
+      .attr('transform', `translate(${r}, 110)`);
 
     const height = 500;
     const arc = d3
@@ -1233,6 +1233,7 @@ export class DataViz4Component implements OnInit {
       .append('text')
       .attr('id', 'teamValuePieNumber')
       .attr('text-anchor', 'middle')
+      .attr('y', 10)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '26')
@@ -1243,6 +1244,7 @@ export class DataViz4Component implements OnInit {
       .append('text')
       .attr('id', 'FieldValuePieNumber')
       .attr('text-anchor', 'middle')
+      .attr('y', 10)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '26')
@@ -1253,21 +1255,21 @@ export class DataViz4Component implements OnInit {
       .append('text')
       .attr('id', 'teamValuePieText')
       .attr('text-anchor', 'middle')
-      .attr('y', 13)
+      .attr('y', -90)
       .style('font-weight', 'bold')
-      .style('font-family', 'IBM Plex Sans')
+
       .style('fill', '#263238')
-      .style('font-size', '10')
+      .style('font-size', '20')
       .text("Valeur de l'équipe");
 
     d3.select('#FieldSalaryContainer')
       .append('text')
       .attr('id', 'FieldValuePieText')
       .attr('text-anchor', 'middle')
-      .attr('y', 13)
+      .attr('y', -90)
       .style('font-weight', 'bold')
-      .style('font-family', 'IBM Plex Sans')
-      .style('font-size', '10')
+
+      .style('font-size', '20')
       .style('fill', '#263238')
       .text('Joueur sur le terrain');
   }
@@ -1282,11 +1284,11 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 20)
-      .attr('y', 180);
+      .attr('y', 195);
     legend
       .append('text')
       .attr('x', 40)
-      .attr('y', 191)
+      .attr('y', 206)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
@@ -1301,12 +1303,12 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 100)
-      .attr('y', 180);
+      .attr('y', 195);
 
     legend
       .append('text')
       .attr('x', 120)
-      .attr('y', 191)
+      .attr('y', 206)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
@@ -1321,12 +1323,12 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 185)
-      .attr('y', 180);
+      .attr('y', 195);
 
     legend
       .append('text')
       .attr('x', 205)
-      .attr('y', 191)
+      .attr('y', 206)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
@@ -1341,12 +1343,12 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 310)
-      .attr('y', 180);
+      .attr('y', 195);
 
     legend
       .append('text')
       .attr('x', 330)
-      .attr('y', 191)
+      .attr('y', 206)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
