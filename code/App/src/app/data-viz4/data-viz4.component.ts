@@ -1257,19 +1257,24 @@ export class DataViz4Component implements OnInit {
       .style('font-size', '10')
       .style('color', '#263238')
       .text('Joueur sur le terrain');
-    let legend = d3.select('#piechart').append('g');
 
+    this.generateLegend()
+
+  }
+
+  private generateLegend(){
+    let legend = d3.select('#piechart').append('g');
     legend
       .append('rect')
       .attr('fill', COLOR_MAP.get('GK') as string)
-      .attr('width', 10)
-      .attr('height', 10)
-      .attr('x', 10)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('x', 20)
       .attr('y', 200);
     legend
       .append('text')
-      .attr('x', 25)
-      .attr('y', 207)
+      .attr('x', 40)
+      .attr('y', 211)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1277,24 +1282,16 @@ export class DataViz4Component implements OnInit {
 
     legend
       .append('rect')
-      .attr('fill', COLOR_MAP.get('GK') as string)
-      .attr('width', 10)
-      .attr('height', 10)
-      .attr('x', 10)
-      .attr('y', 200);
-
-    legend
-      .append('rect')
       .attr('fill', COLOR_MAP.get('DF') as string)
-      .attr('width', 10)
-      .attr('height', 10)
+      .attr('width', 15)
+      .attr('height', 15)
       .attr('x', 100)
       .attr('y', 200);
 
     legend
       .append('text')
-      .attr('x', 115)
-      .attr('y', 207)
+      .attr('x', 120)
+      .attr('y', 211)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1303,15 +1300,15 @@ export class DataViz4Component implements OnInit {
     legend
       .append('rect')
       .attr('fill', COLOR_MAP.get('MF') as string)
-      .attr('width', 10)
-      .attr('height', 10)
+      .attr('width', 15)
+      .attr('height', 15)
       .attr('x', 200)
       .attr('y', 200);
 
     legend
       .append('text')
-      .attr('x', 215)
-      .attr('y', 207)
+      .attr('x', 220)
+      .attr('y', 211)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1320,15 +1317,15 @@ export class DataViz4Component implements OnInit {
     legend
       .append('rect')
       .attr('fill', COLOR_MAP.get('FW') as string)
-      .attr('width', 10)
-      .attr('height', 10)
-      .attr('x', 300)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('x', 320)
       .attr('y', 200);
 
     legend
       .append('text')
-      .attr('x', 315)
-      .attr('y', 207)
+      .attr('x', 340)
+      .attr('y', 211)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
