@@ -11,6 +11,7 @@ body {
 text {
   font-size: 1.5em;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  fill: '#263238';
 }
 
 .title-viz2{

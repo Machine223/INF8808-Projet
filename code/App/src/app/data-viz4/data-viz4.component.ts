@@ -1056,6 +1056,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('<1M');
     svg
       .append('text')
@@ -1064,6 +1065,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('1-10M');
     svg
       .append('text')
@@ -1072,6 +1074,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('>10M');
 
     svg
@@ -1081,7 +1084,9 @@ export class DataViz4Component implements OnInit {
       .attr('r', 95)
       .attr('stroke', 'black')
       .attr('stroke-width', 3)
-      .attr('fill', 'none')
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
       .style('');
 
     svg
@@ -1091,7 +1096,9 @@ export class DataViz4Component implements OnInit {
       .attr('r', 45)
       .attr('stroke', 'black')
       .attr('stroke-width', 3)
-      .attr('fill', 'none')
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
       .style('');
 
     svg
@@ -1101,15 +1108,18 @@ export class DataViz4Component implements OnInit {
       .attr('r', 70)
       .attr('stroke', 'black')
       .attr('stroke-width', 3)
-      .attr('fill', 'none')
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
       .style('');
     svg
       .append('text')
       .attr('x', 0)
-      .attr('y', 12)
+      .attr('y', 15)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:15;')
+      .attr('style', 'font-size:18;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('Légende:');
   }
   //Make the outerEdge of the rectangle
@@ -1136,13 +1146,9 @@ export class DataViz4Component implements OnInit {
       .append('g')
       .attr('id', 'donut-container')
       .attr('class', 'donut-container')
-      .attr('transform', `translate(${r}, ${r + 20})`);
+      .attr('transform', `translate(${r}, ${r})`);
 
-    // TODO Ref circle a enlever a la fin juste pour avoir un repere
-
-    const width = 900;
     const height = 500;
-
     const arc = d3
       .arc()
       .innerRadius((0.2 * height) / 2)
@@ -1174,7 +1180,7 @@ export class DataViz4Component implements OnInit {
       .append('g')
       .attr('id', 'teamValuePie')
       .attr('class', 'donut')
-      .attr('transform', `translate(220, 0)`)
+      .attr('transform', `translate(200, 0)`)
       .selectAll('path')
       .data(data_Team)
       .enter();
@@ -1270,11 +1276,11 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 20)
-      .attr('y', 200);
+      .attr('y', 180);
     legend
       .append('text')
       .attr('x', 40)
-      .attr('y', 211)
+      .attr('y', 191)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1288,13 +1294,13 @@ export class DataViz4Component implements OnInit {
       .attr('height', 15)
       .style('stroke', 'black')
       .style('stroke-width', 1)
-      .attr('x', 100)
-      .attr('y', 200);
+      .attr('x', 110)
+      .attr('y', 180);
 
     legend
       .append('text')
-      .attr('x', 120)
-      .attr('y', 211)
+      .attr('x', 130)
+      .attr('y', 191)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1309,12 +1315,12 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 200)
-      .attr('y', 200);
+      .attr('y', 180);
 
     legend
       .append('text')
       .attr('x', 220)
-      .attr('y', 211)
+      .attr('y', 191)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
@@ -1329,12 +1335,12 @@ export class DataViz4Component implements OnInit {
       .style('stroke', 'black')
       .style('stroke-width', 1)
       .attr('x', 320)
-      .attr('y', 200);
+      .attr('y', 180);
 
     legend
       .append('text')
       .attr('x', 340)
-      .attr('y', 211)
+      .attr('y', 191)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
