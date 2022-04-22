@@ -1225,9 +1225,9 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
+      .style('font-size', '26')
       .style('color', '#263238')
-      .style('color', '#263238')
-      .text(this.totalTeamValue + ' M$');
+      .text(this.totalTeamValue + 'M$');
 
     d3.select('#FieldSalaryContainer')
       .append('text')
@@ -1235,14 +1235,15 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
+      .style('font-size', '26')
       .style('color', '#263238')
-      .text(this.totalOnFieldValue + ' M$');
+      .text(this.totalOnFieldValue + 'M$');
 
     d3.select('#teamValuePie')
       .append('text')
       .attr('id', 'teamValuePieText')
       .attr('text-anchor', 'middle')
-      .attr('y', 10)
+      .attr('y', 13)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('color', '#263238')
@@ -1253,7 +1254,7 @@ export class DataViz4Component implements OnInit {
       .append('text')
       .attr('id', 'FieldValuePieText')
       .attr('text-anchor', 'middle')
-      .attr('y', 10)
+      .attr('y', 13)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '10')
