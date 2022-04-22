@@ -15,8 +15,9 @@ export class DataViz3Component implements OnInit {
     window.innerWidth - window.innerWidth / 4,
     1000
   );
-  private legendPos: Object = {};
-  private height: number = window.innerHeight;
+  private legendId: String = '#vis3-legend-rect-ex';
+  private widthPadding: number = 10;
+  private height: number = Math.max(window.innerHeight, 900);
   private imSize: number = 30;
   private areaOutputRange: number = 70;
   private rows: number = 6;
@@ -140,7 +141,7 @@ export class DataViz3Component implements OnInit {
     const x: any = d3
       .scaleLinear()
       .domain([0, this.cols])
-      .range([0, this.width]);
+      .range([this.widthPadding, this.width - this.widthPadding]);
     return x(index);
   }
   private yScale(index: number): any {
@@ -149,6 +150,18 @@ export class DataViz3Component implements OnInit {
       .domain([0, this.rows])
       .range([0, this.height]);
     return y(index);
+  }
+
+  private showTip(e: any, d: any, id: String): void {
+    if (id !== this.legendId) {
+      d3.select('#vis3-svg')
+        .selectAll(`.${d['Player'].replace(' ', '')}`)
+        .attr('stroke-width', 3)
+        .attr('stroke', 'black');
+    }
+  }
+  private hideTip(e: any, d: any): void {
+    d3.selectAll(`.${d['Player'].replace(' ', '')}`).attr('stroke-width', 0);
   }
 
   private createMainSvg(): void {
@@ -166,8 +179,101 @@ export class DataViz3Component implements OnInit {
   private createLegend(): void {
     d3.select('#vis3-legend-rect')
       .append('g')
-      .attr('id', 'vis3-legend-rect-ex')
+      .attr('id', this.legendId.toString().replace('#', ''))
       .attr('transform', 'translate(40,20)');
+  }
+
+  private modifyLegend(): void {
+    d3.select(this.legendId.toString())
+      .call(svg =>
+        svg
+          .append('text')
+          .text('Classement')
+          .attr('x', () => {
+            return this.areaOutputRange;
+          })
+          .attr('y', () => {
+            return this.areaOutputRange + this.imSize + this.imSize / 8;
+          })
+      )
+      .call(svg =>
+        svg
+          .append('text')
+          .text(this.categories[0].viewValue)
+          .attr('x', () => {
+            return -this.imSize;
+          })
+          .attr('y', () => {
+            return this.imSize / 4;
+          })
+      )
+      .call(svg =>
+        svg
+          .append('text')
+          .text(this.categories[1].viewValue)
+          .attr('x', () => {
+            return this.imSize * 2.5;
+          })
+          .attr('y', () => {
+            return this.imSize / 4;
+          })
+      )
+      .call(svg =>
+        svg
+          .append('text')
+          .text(this.categories[2].viewValue)
+          .attr('x', () => {
+            return -this.imSize;
+          })
+          .attr('y', () => {
+            return this.areaOutputRange * 2 + this.imSize / 2;
+          })
+      );
+
+    for (let i = 0; i < this.legendSizes.length; i++) {
+      d3.select(this.legendId.toString())
+        .call(svg =>
+          svg
+            .append('rect')
+            .attr('x', this.areaOutputRange * 3 + this.imSize)
+            .attr(
+              'y',
+              this.areaOutputRange * 2 - this.areaScale(this.legendSizes[i])
+            )
+            .attr('width', this.areaScale(this.legendSizes[i]))
+            .attr('height', this.areaScale(this.legendSizes[i]))
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+        )
+        .call(svg =>
+          svg
+            .append('text')
+            .text(this.legendSizes[i])
+            .attr('x', this.areaOutputRange * 3 + this.imSize + this.imSize / 8)
+            .attr(
+              'y',
+              this.areaOutputRange * 2 -
+                this.areaScale(this.legendSizes[i]) -
+                this.imSize / 8
+            )
+        );
+    }
+    d3.select(this.legendId.toString())
+      .append('text')
+      .text('Échelle de grandeur')
+      .attr('x', this.areaOutputRange * 3)
+      .attr('y', this.imSize / 4);
+
+    d3.select(this.legendId.toString())
+      .selectAll('svg')
+      .selectChildren()
+      .on('mouseover', () => {});
+    d3.select(this.legendId.toString())
+      .select('.face')
+      .selectChildren()
+      .selectChildren()
+      .on('mouseover', () => {});
   }
 
   private xSquareTranslation(
@@ -230,34 +336,43 @@ export class DataViz3Component implements OnInit {
       .attr('y', (d: any) => {
         return this.ySquareTranslation(d, i);
       })
-      .attr('class', this.categories[i].value);
+      .attr(
+        'class',
+        (d: any) =>
+          this.categories[i].value + ' ' + d['Player'].replace(' ', '')
+      );
   }
 
   private createSquares(id: String): void {
-    const data: any =
-      id === '#vis3-legend-rect-ex' ? this.legendData : this.data;
+    const data: any = id === this.legendId ? this.legendData : this.data;
     for (let i = 0; i < this.categories.length; i++) {
       d3.select('#vis3')
         .select(`${id}`)
         .selectAll('g')
         .data(data)
         .enter()
+        .append('svg')
+        .on('mouseover', (e: any, d: any) => this.showTip(e, d, id))
+        .on('mouseout', (e: any, d: any) => this.hideTip(e, d))
         .append('rect')
+        .attr('class', (d: any) => d['Player'])
+        .on('mouseover', this.tip.show)
+        .on('mouseout', this.tip.hide)
         .call(svg => this.modifySquares(svg, i, id));
     }
   }
 
   private createCircles(id: String): void {
-    const data: any =
-      id === '#vis3-legend-rect-ex' ? this.legendData : this.data;
+    const data: any = id === this.legendId ? this.legendData : this.data;
     d3.select(`${id}`)
       .selectAll('g')
       .data(data)
       .enter()
+      .append('g')
+      .on('mouseover', (e: any, d: any) => this.showTip(e, d, id))
+      .on('mouseout', (e: any, d: any) => this.hideTip(e, d))
       .append('svg')
       .attr('class', 'face')
-      .on('mouseover', this.tip.show)
-      .on('mouseout', this.tip.hide)
       .attr('overflow', 'visible')
       .attr('x', (d: any) => {
         let xValue: number = 0;
@@ -322,6 +437,8 @@ export class DataViz3Component implements OnInit {
           .attr('src', (d: any) => d['Img'])
           .attr('width', this.imSize)
           .attr('height', this.imSize)
+          .on('mouseover', this.tip.show)
+          .on('mouseout', this.tip.hide)
       )
       .call(svg =>
         svg
@@ -360,67 +477,10 @@ export class DataViz3Component implements OnInit {
   private createSvg(): void {
     this.createMainSvg();
     this.createLegend();
-    this.createSquares('#vis3-legend-rect-ex');
-    this.createCircles('#vis3-legend-rect-ex');
+    this.createSquares(this.legendId);
+    this.createCircles(this.legendId);
     this.createSquares('#vis3-svg');
     this.createCircles('#vis3-svg');
-    for (let i = 0; i < this.categories.length; i++) {
-      d3.select('#vis3-legend-rect-ex')
-        .selectAll('g')
-        .data(this.legendData)
-        .enter()
-        .append('text')
-        .text(`${this.categories[i].viewValue}`)
-        .attr('x', (d: any) => {
-          return this.xSquareTranslation('#vis3-legend-rect-ex', d, i, true);
-        })
-        .attr('y', (d: any) => {
-          return this.ySquareTranslation(d, i, true);
-        });
-    }
-    d3.select('#vis3-legend-rect-ex')
-      .append('text')
-      .text('Classement')
-      .attr('x', () => {
-        return this.areaOutputRange;
-      })
-      .attr('y', () => {
-        return this.areaOutputRange + this.imSize + this.imSize / 8;
-      });
-
-    for (let i = 0; i < this.legendSizes.length; i++) {
-      d3.select('#vis3-legend-rect-ex')
-        .call(svg =>
-          svg
-            .append('rect')
-            .attr('x', this.areaOutputRange * 3 + this.imSize)
-            .attr(
-              'y',
-              this.areaOutputRange * 2 - this.areaScale(this.legendSizes[i])
-            )
-            .attr('width', this.areaScale(this.legendSizes[i]))
-            .attr('height', this.areaScale(this.legendSizes[i]))
-            .attr('fill', 'none')
-            .attr('stroke', 'black')
-            .attr('stroke-width', 2)
-        )
-        .call(svg =>
-          svg
-            .append('text')
-            .text(this.legendSizes[i])
-            .attr('x', this.areaOutputRange * 3 + this.imSize + this.imSize / 8)
-            .attr(
-              'y',
-              this.areaOutputRange * 2 -
-                this.areaScale(this.legendSizes[i]) -
-                this.imSize / 8
-            )
-        );
-    }
-    d3.select('#vis3-legend-rect-ex')
-      .append('text')
-      .text('Échelle de grandeur')
-      .attr('x', this.areaOutputRange * 3)
-      .attr('y', this.imSize / 4);
+    this.modifyLegend();
   }
 }
