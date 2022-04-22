@@ -587,9 +587,7 @@ export class DataViz4Component implements OnInit {
     }
     d3.select('#e_' + circleID).attr('r', r2 + 40);
   }
-  private findPlayerOnField() {
-    const pass = 'pass';
-  }
+
   private updatePlayerOnFieldArray(playerArray: any, position: any) {
     let newSalary = 0;
 
@@ -1226,7 +1224,7 @@ export class DataViz4Component implements OnInit {
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '26')
-      .style('color', '#263238')
+      .style('fill', '#263238')
       .text(this.totalTeamValue + 'M$');
 
     d3.select('#FieldSalaryContainer')
@@ -1236,7 +1234,7 @@ export class DataViz4Component implements OnInit {
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '26')
-      .style('color', '#263238')
+      .style('fill', '#263238')
       .text(this.totalOnFieldValue + 'M$');
 
     d3.select('#teamValuePie')
@@ -1246,7 +1244,7 @@ export class DataViz4Component implements OnInit {
       .attr('y', 13)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
-      .style('color', '#263238')
+      .style('fill', '#263238')
       .style('font-size', '10')
       .text("Valeur de l'équipe");
 
@@ -1258,7 +1256,7 @@ export class DataViz4Component implements OnInit {
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '10')
-      .style('color', '#263238')
+      .style('fill', '#263238')
       .text('Joueur sur le terrain');
   }
 
@@ -1269,6 +1267,8 @@ export class DataViz4Component implements OnInit {
       .attr('fill', COLOR_MAP.get('GK') as string)
       .attr('width', 15)
       .attr('height', 15)
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
       .attr('x', 20)
       .attr('y', 200);
     legend
@@ -1278,6 +1278,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('Gardien');
 
     legend
@@ -1285,6 +1286,8 @@ export class DataViz4Component implements OnInit {
       .attr('fill', COLOR_MAP.get('DF') as string)
       .attr('width', 15)
       .attr('height', 15)
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
       .attr('x', 100)
       .attr('y', 200);
 
@@ -1295,6 +1298,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('Défense');
 
     legend
@@ -1302,6 +1306,8 @@ export class DataViz4Component implements OnInit {
       .attr('fill', COLOR_MAP.get('MF') as string)
       .attr('width', 15)
       .attr('height', 15)
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
       .attr('x', 200)
       .attr('y', 200);
 
@@ -1312,6 +1318,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('Milieu de terrain');
 
     legend
@@ -1319,6 +1326,8 @@ export class DataViz4Component implements OnInit {
       .attr('fill', COLOR_MAP.get('FW') as string)
       .attr('width', 15)
       .attr('height', 15)
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
       .attr('x', 320)
       .attr('y', 200);
 
@@ -1329,6 +1338,7 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text('Attaque');
   }
 }
