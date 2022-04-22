@@ -473,17 +473,22 @@ export class DataViz4Component implements OnInit {
 
     const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
     const data_Field = pieChart(resultsOnFieldValue)
+    d3.selectAll("#FieldValuePie").remove()
 
-    const arcs2 = d3.selectAll("#FieldValuePie").data(data_Field).enter()
-    arcs2.append('g').attr("id","#FieldValuePie")
-    console.log(arcs2)
+    const arcs2 = d3.select("#FieldSalaryContainer").append('g')
+    .attr("id","FieldValuePie")
+    .attr('class', 'donut')
+    .attr('transform', `translate(0, 0)`)
+    .selectAll('path')
+    .data(data_Field).enter()
+
     arcs2.append('path')
-    .attr('d',<any>arc)
-    .attr('fill', (d,i) =>this.color[i])
-    .style('stroke', 'black')
-    .style('stroke-width', 1)
-    .style("opacity", 0.9)
-    arcs2.exit().remove()
+      .attr("class","slice")
+      .attr('d',<any>arc)
+      .attr('fill', (d,i) =>this.color[i])
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
+      .style("opacity", 0.9)
     
     d3.select("#FieldValuePieNumber")
     .text(totalOnFieldValue +" M$")
@@ -998,7 +1003,8 @@ export class DataViz4Component implements OnInit {
     .style("opacity", 0.9)
 
     
-    const arcs2 = piechart.append('g')
+    const arcs2 = piechart.append("g").attr("id","FieldSalaryContainer")
+      .append('g')
       .attr("id","FieldValuePie")
       .attr('class', 'donut')
       .attr('transform', `translate(0, 0)`)
@@ -1007,6 +1013,7 @@ export class DataViz4Component implements OnInit {
 
     // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
     arcs2.append('path')
+    .attr("class","slice")
     .attr('d',<any>arc)
     .attr('fill', (d,i) =>this.color[i])
     .style('stroke', 'black')
@@ -1025,7 +1032,7 @@ export class DataViz4Component implements OnInit {
     .style("color","#263238")
     .text(totalTeamValue +" M$")
     
-    d3.select("#FieldValuePie").append("text")
+    d3.select("#FieldSalaryContainer").append("text")
     .attr("id","FieldValuePieNumber").attr("text-anchor","middle")
     .attr("font-weight","bold")
     .style("font-family","IBM Plex Sans")
@@ -1043,7 +1050,7 @@ export class DataViz4Component implements OnInit {
     .style("text-shadow","0.5px 0.5px 1.5px #000000")
     .text("Valeur de l'équipe")
     
-    d3.select("#FieldValuePie").append("text")
+    d3.select("#FieldSalaryContainer").append("text")
     .attr("id","FieldValuePieText").attr("text-anchor","middle")
     .attr("y",10)
     .attr("font-weight","bold")
@@ -1095,8 +1102,8 @@ export class DataViz4Component implements OnInit {
     .attr("x",300)
     .attr("y",200)
 
-    legend.append("text").
-    attr("x",315).attr("y",207)
+    legend.append("text")
+    .attr("x",315).attr("y",207)
     .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Attaque")
 
 
