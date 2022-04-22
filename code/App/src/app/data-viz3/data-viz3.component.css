@@ -117,3 +117,7 @@
   stroke-dasharray: 2;
   opacity: 0.5;
 }
+
+#salary-tooltip {
+  color:darkgoldenrod;
+}

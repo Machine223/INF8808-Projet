@@ -27,11 +27,6 @@
   object-fit: cover;
 }
 
-#outer {
-  /* border: 2px solid;
-  border-radius: 25px; */
-}
-
 .field {
   grid-area: field;
   width: 100%;
@@ -102,3 +97,4 @@
   top: 0;
   left: 0;
 }
+
