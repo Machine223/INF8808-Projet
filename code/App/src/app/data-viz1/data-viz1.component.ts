@@ -89,7 +89,7 @@ export class DataViz1Component implements OnInit {
     // });
   }
 
-  
+
 
   private getToolTipHTML(_e:any, d:any):string {
     return `<p class='tooltip-title' style="margin-top: 0px">Équipe : <b>${d['Squad']}</b></p>\
@@ -147,7 +147,7 @@ export class DataViz1Component implements OnInit {
       }
       return d[this.selectedGradientCategory];
     }
-    
+
     const yValue = (d:any) => d.Squad;
 
     const minColor = d3.min(this.data as number[], colorValue);
@@ -213,7 +213,7 @@ export class DataViz1Component implements OnInit {
     .attr('width', (d:any) => innerWidth - xScale(xValue(d)))
     .attr('height', (d:any) => yScale.bandwidth())
     .attr('fill',(d:any) => colorScale(colorValue(d)))
-    
+
     if (this.selectedGradientCategory != 'noOp'){
       bars.on('mouseover', this.toolTip.show)
       .on('mouseout',this.toolTip.hide)
@@ -272,12 +272,15 @@ export class DataViz1Component implements OnInit {
     //   .attr('style', `font-size: ${this.fontSize}px;`)
     //   .text(maxColor);
 
-      g.append('rect')
-      .attr('width', this.legendWidth)
-      .attr('height', this.legendHeight)
-      .attr('y', legendy)
-      .attr('x', legendx)
-      .attr('fill', 'url(#legend)');
+    g.append('rect')
+    .attr('width', this.legendWidth)
+    .attr('height', this.legendHeight)
+    .attr('y', legendy)
+    .attr('x', legendx)
+    .attr('fill', 'url(#legend)')
+    .style('stroke', 'black')
+    .style('stroke-width', 1)
+    .style('opacity', 0.9);;
 
     var yTextOffset = (this.legendHeight + 10)/2;
     g.append('text')
@@ -302,7 +305,6 @@ export class DataViz1Component implements OnInit {
     .text(`Légende (${this.units[this.selectedGradientCategory]})`);
 
     text.attr('x', legendx + this.legendWidth/2 - text.node().getBoundingClientRect().width/2)
-
   }
 
   getGradientViewValue(key:string):string {
