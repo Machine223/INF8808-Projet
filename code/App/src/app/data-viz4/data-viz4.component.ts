@@ -474,16 +474,16 @@ export class DataViz4Component implements OnInit {
     const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
     const data_Field = pieChart(resultsOnFieldValue)
 
-    const arcs2 = d3.select("#FieldValuePie")
-    .selectAll('path')
-    .data(data_Field).enter()
-
-    arcs2.selectAll('path')
+    const arcs2 = d3.selectAll("#FieldValuePie").data(data_Field).enter()
+    arcs2.append('g').attr("id","#FieldValuePie")
+    console.log(arcs2)
+    arcs2.append('path')
     .attr('d',<any>arc)
     .attr('fill', (d,i) =>this.color[i])
     .style('stroke', 'black')
     .style('stroke-width', 1)
     .style("opacity", 0.9)
+    arcs2.exit().remove()
     
     d3.select("#FieldValuePieNumber")
     .text(totalOnFieldValue +" M$")
