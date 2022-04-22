@@ -117,12 +117,12 @@ export class DataViz4Component implements OnInit {
     this.data.forEach(player => {
       this.addPlayerInit(player);
     })
-    // console.log("onfield:",this.onFieldValue)
+    
+
   }
 
   private listenClick() {
-    // console.log("listen click")
-    // console.log("this.selectedid 1:",this.selectedid)
+
     let self = this
     d3.select("#outer").on('click', (event) => {
       let elem = (document.elementFromPoint(event.x,event.y) as HTMLElement);
@@ -152,6 +152,8 @@ export class DataViz4Component implements OnInit {
           }
           // Replace by active player in legend or on the field
         }
+        console.log("onfield:",this.playerOnField)
+        console.log("onfield salary:",this.onFieldValue)
     });
   }
 
@@ -442,10 +444,55 @@ export class DataViz4Component implements OnInit {
       this.removeFieldStroke()
       // console.log(this.onFieldValue.FW)
       this.selectedid = null
-
+      
+      this.updatePieChart()
     }
     //update piechart
     //onFieldPlayer pieChart
+  }
+
+  private updatePieChart() {
+    const width = 900
+    const height = 500
+
+    const arc = d3.arc().innerRadius(0.20 * height/2).outerRadius(0.30 * height/2)
+    const resultsTeamValue: number[] = this.teamValue.map(
+      r => r.value
+      
+    );
+    const resultsOnFieldValue: number[] = this.onFieldValue.map(
+      r => r.value
+    );
+    let totalTeamValue = Object.values(resultsTeamValue).reduce((acc, val) => acc + val, 0);
+    let totalOnFieldValue = Object.values(resultsOnFieldValue).reduce((acc, val) => acc + val, 0);
+
+    totalTeamValue = +(totalTeamValue/1000000).toFixed(1)
+    totalOnFieldValue = +(totalOnFieldValue /1000000).toFixed(1)
+    console.log(totalTeamValue)
+    console.log(totalOnFieldValue)
+
+    const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
+    const data_Field = pieChart(resultsOnFieldValue)
+    d3.selectAll("#FieldValuePie").remove()
+
+    const arcs2 = d3.select("#FieldSalaryContainer").append('g')
+    .attr("id","FieldValuePie")
+    .attr('class', 'donut')
+    .attr('transform', `translate(0, 0)`)
+    .selectAll('path')
+    .data(data_Field).enter()
+
+    arcs2.append('path')
+      .attr("class","slice")
+      .attr('d',<any>arc)
+      .attr('fill', (d,i) =>this.color[i])
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
+      .style("opacity", 0.9)
+    
+    d3.select("#FieldValuePieNumber")
+    .text(totalOnFieldValue +" M$")
+
   }
   private newRadius(circleID:number,newSalary:number){
     let r2 = 0
@@ -615,21 +662,26 @@ export class DataViz4Component implements OnInit {
     // console.log(pos)
     d3.selectAll(".classf_"+pos)
     .attr("stroke","black")
-    .attr("stroke-width","4")
+    .attr("stroke-width","2")
+    .style("filter","url(#selection-shadow)")
   }
   private removeFieldStroke(){
     d3.selectAll(".classf_GK")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_FW")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_MF")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
     d3.selectAll(".classf_DF")
     .attr("stroke","black")
     .attr("stroke-width","0")
+    .style("filter","url(#active-shadow)")
   }
 
   // Create SVG for player on field
@@ -643,7 +695,7 @@ export class DataViz4Component implements OnInit {
     //Create SVG
     var svg = d3.select(fieldDiv).append("svg")
     .attr("height",818)
-    .attr("id",id+"_svg").attr("width", 516)
+    .attr("id",id+"_svg").attr("width", 550)
     svg.style("position","absolute").attr("background-image", "url('../../assets/soccerField.png")
     .style("left","0px")
     .style("top","0px")
@@ -767,6 +819,7 @@ export class DataViz4Component implements OnInit {
         .attr("stroke","color")
         .attr("fill",color)
         .attr("id","e_"+CIRCLE_ID)
+        .style("filter","url(#active-shadow)")
         // .on('mouseover', this.tip.show)
         // .on('mouseout', this.tip.hide)
 
@@ -905,12 +958,10 @@ export class DataViz4Component implements OnInit {
     .attr('id', 'donut-container').attr('class','donut-container')
     .attr('transform', `translate(${r}, ${r+20})`)
 
-    // TODO Ref circle a enlever a la fin juste pour avoir un repere
-    piechart.append('circle')
-    .attr('r', r)
-    .attr('id', 'valeur-total').attr('class','valeur-total')
-    .attr('transform', `translate(${2*r+40} , 0)`).attr('fill', '#C4C4C4')
+    
 
+    // TODO Ref circle a enlever a la fin juste pour avoir un repere
+ 
     const width = 900
     const height = 500
 
@@ -918,20 +969,30 @@ export class DataViz4Component implements OnInit {
     // console.log(this.teamValue)
     const resultsTeamValue: number[] = this.teamValue.map(
       r => r.value
+      
     );
     const resultsOnFieldValue: number[] = this.onFieldValue.map(
       r => r.value
     );
+    let totalTeamValue = Object.values(resultsTeamValue).reduce((acc, val) => acc + val, 0);
+    let totalOnFieldValue = Object.values(resultsOnFieldValue).reduce((acc, val) => acc + val, 0);
+
+    totalTeamValue = +(totalTeamValue/1000000).toFixed(1)
+    totalOnFieldValue = +(totalOnFieldValue /1000000).toFixed(1)
+    console.log(totalTeamValue)
+    console.log(totalOnFieldValue)
     const pieChart = d3.pie().startAngle(0 * (Math.PI / 90)).endAngle(180 * (Math.PI / 90));
     const data_Team = pieChart(resultsTeamValue)
     const data_Field = pieChart(resultsOnFieldValue)
 
-
-    const arcs1 = piechart.append('g')
+    
+    const arcs1 = piechart.append('g').attr("id","teamValuePie")
       .attr('class', 'donut')
       .attr('transform', `translate(220, 0)` )
       .selectAll('path')
       .data(data_Team).enter()
+
+      
 
     // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
     arcs1.append('path')
@@ -941,22 +1002,112 @@ export class DataViz4Component implements OnInit {
     .style('stroke-width', 1)
     .style("opacity", 0.9)
 
-
-    const arcs2 = piechart.append('g')
+    
+    const arcs2 = piechart.append("g").attr("id","FieldSalaryContainer")
+      .append('g')
+      .attr("id","FieldValuePie")
       .attr('class', 'donut')
-      .attr('transform', `translate(0, 0)` )
+      .attr('transform', `translate(0, 0)`)
       .selectAll('path')
       .data(data_Field).enter()
 
     // SOURCE https://stackoverflow.com/questions/35413072/compilation-errors-when-drawing-a-piechart-using-d3-js-typescript-and-angular/38021825
     arcs2.append('path')
+    .attr("class","slice")
     .attr('d',<any>arc)
     .attr('fill', (d,i) =>this.color[i])
     .style('stroke', 'black')
     .style('stroke-width', 1)
     .style("opacity", 0.9)
 
+
     // TODO append text et LEGENDE
+
+    d3.select("#teamValuePie").append("text")
+    .attr("id","teamValuePieNumber").attr("text-anchor","middle")
+    .attr("font-weight","bold")
+    .style("font-family","IBM Plex Sans")
+    .style("color","#263238")
+    .style("text-shadow","0.5px 0.5px 1.5px #000000")
+    .style("color","#263238")
+    .text(totalTeamValue +" M$")
+    
+    d3.select("#FieldSalaryContainer").append("text")
+    .attr("id","FieldValuePieNumber").attr("text-anchor","middle")
+    .attr("font-weight","bold")
+    .style("font-family","IBM Plex Sans")
+    .style("text-shadow","0.5px 0.5px 1.5px #000000")
+    .style("color","#263238")
+    .text(totalOnFieldValue +" M$")
+    
+    d3.select("#teamValuePie").append("text")
+    .attr("id","teamValuePieText").attr("text-anchor","middle")
+    .attr("y",10)
+    .attr("font-weight","bold")
+    .style("font-family","IBM Plex Sans")
+    .style("color","#263238")
+    .style("font-size","10")
+    .style("text-shadow","0.5px 0.5px 1.5px #000000")
+    .text("Valeur de l'équipe")
+    
+    d3.select("#FieldSalaryContainer").append("text")
+    .attr("id","FieldValuePieText").attr("text-anchor","middle")
+    .attr("y",10)
+    .attr("font-weight","bold")
+    .style("font-family","IBM Plex Sans")
+    .style("text-shadow","0.5px 0.5px 1.5px #000000")
+    .style("font-size","10")
+    .style("color","#263238")
+    .text("Joueur sur le terrain")
+    let legend = d3.select("#piechart").append("g")
+    
+    legend.append("rect").attr("fill",COLOR_MAP.get("GK") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",10)
+    .attr("y",200)
+    legend.append("text").
+    attr("x",25).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Gardien")
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("GK") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",10)
+    .attr("y",200)
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("DF") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",100)
+    .attr("y",200)
+
+    legend.append("text").
+    attr("x",115).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Défense")
+    
+    legend.append("rect").attr("fill",COLOR_MAP.get("MF") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",200)
+    .attr("y",200)
+
+    legend.append("text").
+    attr("x",215).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Milieu de terrain")
+
+    legend.append("rect").attr("fill",COLOR_MAP.get("FW") as string)
+    .attr("width",10)
+    .attr("height",10)
+    .attr("x",300)
+    .attr("y",200)
+
+    legend.append("text")
+    .attr("x",315).attr("y",207)
+    .attr("text-anchor","start").attr("style","font-size:9;").attr("font-weight", "bold").text("Attaque")
+
+
+
 
   }
 
