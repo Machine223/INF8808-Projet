@@ -1226,7 +1226,6 @@ export class DataViz4Component implements OnInit {
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('color', '#263238')
-      .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .style('color', '#263238')
       .text(this.totalTeamValue + ' M$');
 
@@ -1236,7 +1235,6 @@ export class DataViz4Component implements OnInit {
       .attr('text-anchor', 'middle')
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
-      .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .style('color', '#263238')
       .text(this.totalOnFieldValue + ' M$');
 
@@ -1249,7 +1247,6 @@ export class DataViz4Component implements OnInit {
       .style('font-family', 'IBM Plex Sans')
       .style('color', '#263238')
       .style('font-size', '10')
-      .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .text("Valeur de l'équipe");
 
     d3.select('#FieldSalaryContainer')
@@ -1259,7 +1256,6 @@ export class DataViz4Component implements OnInit {
       .attr('y', 10)
       .attr('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
-      .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .style('font-size', '10')
       .style('color', '#263238')
       .text('Joueur sur le terrain');
