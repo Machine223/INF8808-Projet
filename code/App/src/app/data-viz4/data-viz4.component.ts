@@ -317,7 +317,7 @@ export class DataViz4Component implements OnInit {
     var svg = d3
       .select(parentDiv)
       .append('svg')
-      .attr('width', parentDiv.clientWidth)
+      .attr('width', 400)
       .attr('id', id + '_svg')
       .attr('height', parentDiv.clientHeight);
     //
@@ -337,8 +337,9 @@ export class DataViz4Component implements OnInit {
       .attr('x', 0)
       .attr('y', 10)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:9;')
+      .attr('style', 'font-size:10;')
       .attr('font-weight', 'bold')
+      .style('fill', '#263238')
       .text(svgSectionTitle);
 
     let currentPos = id.split('_', 1)[0] as keyof PlayerByPosition;
@@ -378,7 +379,7 @@ export class DataViz4Component implements OnInit {
       //Adding circle
       if (x + r * 2 > current_svg_width) {
         x = 35;
-        y += 60;
+        y += 70;
       }
 
       defs
@@ -403,7 +404,7 @@ export class DataViz4Component implements OnInit {
       g_wrapper
         .append('text')
         .attr('x', x)
-        .attr('y', y + r + 7)
+        .attr('y', y + r + 12)
         .attr('text-anchor', 'middle')
         .attr('style', 'font-size:9;')
         .attr('font-weight', 'bold')
@@ -411,7 +412,7 @@ export class DataViz4Component implements OnInit {
       g_wrapper
         .append('text')
         .attr('x', x)
-        .attr('y', y + r + 15)
+        .attr('y', y + r + 22)
         .attr('text-anchor', 'middle')
         .attr('style', 'font-size:9;')
         .attr('font-weight', 'bold')
@@ -949,6 +950,8 @@ export class DataViz4Component implements OnInit {
       .attr('height', 225)
       .attr('id', 'scale');
     let defs = svg.append('defs');
+
+    // Create effect for field circle and shadow reponsive effect
     let linearGradient = defs
       .append('linearGradient')
       .attr('id', 'Gradient-1')
@@ -1037,90 +1040,7 @@ export class DataViz4Component implements OnInit {
     feMerge3.append('feMergeNode');
     feMerge3.append('feMergeNode').attr('in', 'SourceGraphic');
 
-    svg
-      .append('circle')
-      .attr('cx', '50%')
-      .attr('cy', '50%')
-      .attr('r', 20)
-      .attr('stroke', 'black')
-      .attr('stroke-width', 3)
-      .attr('fill', 'none')
-      .attr('stroke-dasharray', '5,5')
-      .style('');
-    //Create filters drop shadow Defs for all players
-
-    svg
-      .append('text')
-      .attr('x', 190)
-      .attr('y', 150)
-      .attr('text-anchor', 'middle')
-      .attr('style', 'font-size:12;')
-      .attr('font-weight', 'bold')
-      .style('fill', '#263238')
-      .text('<1M');
-    svg
-      .append('text')
-      .attr('x', 190)
-      .attr('y', 175)
-      .attr('text-anchor', 'middle')
-      .attr('style', 'font-size:12;')
-      .attr('font-weight', 'bold')
-      .style('fill', '#263238')
-      .text('1-10M');
-    svg
-      .append('text')
-      .attr('x', 190)
-      .attr('y', 200)
-      .attr('text-anchor', 'middle')
-      .attr('style', 'font-size:12;')
-      .attr('font-weight', 'bold')
-      .style('fill', '#263238')
-      .text('>10M');
-
-    svg
-      .append('circle')
-      .attr('cx', '50%')
-      .attr('cy', '50%')
-      .attr('r', 95)
-      .attr('stroke', 'black')
-      .attr('stroke-width', 3)
-      .style('stroke-opacity', 0.9)
-      .style('fill', '#263238')
-      .style('opacity', 0.1)
-      .style('');
-
-    svg
-      .append('circle')
-      .attr('cx', '50%')
-      .attr('cy', '50%')
-      .attr('r', 45)
-      .attr('stroke', 'black')
-      .attr('stroke-width', 3)
-      .style('stroke-opacity', 0.9)
-      .style('fill', '#263238')
-      .style('opacity', 0.1)
-      .style('');
-
-    svg
-      .append('circle')
-      .attr('cx', '50%')
-      .attr('cy', '50%')
-      .attr('r', 70)
-      .attr('stroke', 'black')
-      .attr('stroke-width', 3)
-      .style('stroke-opacity', 0.9)
-      .style('fill', '#263238')
-      .style('opacity', 0.1)
-      .style('');
-    svg
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 15)
-      .attr('text-anchor', 'start')
-      .attr('style', 'font-size:18;')
-      .attr('font-weight', 'bold')
-      .style('fill', '#263238')
-      .text('Légende:');
+    this.generateLegendField(svg)
   }
   //Make the outerEdge of the rectangle
   private outerEdge() {
@@ -1220,6 +1140,92 @@ export class DataViz4Component implements OnInit {
 
     this.generateLegend()
 
+  }
+  private generateLegendField(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>){
+    svg
+      .append('circle')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', 20)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .attr('fill', 'none')
+      .attr('stroke-dasharray', '5,5')
+      .style('');
+
+    svg
+      .append('circle')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', 95)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
+      .style('');
+
+    svg
+      .append('circle')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', 45)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
+      .style('');
+
+    svg
+      .append('circle')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', 70)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .style('stroke-opacity', 0.9)
+      .style('fill', '#263238')
+      .style('opacity', 0.1)
+      .style('');
+
+    svg
+      .append('text')
+      .attr('x', 190)
+      .attr('y', 150)
+      .attr('text-anchor', 'middle')
+      .attr('style', 'font-size:12;')
+      .attr('font-weight', 'bold')
+      .style('fill', '#263238')
+      .text('<1M');
+    svg
+      .append('text')
+      .attr('x', 190)
+      .attr('y', 175)
+      .attr('text-anchor', 'middle')
+      .attr('style', 'font-size:12;')
+      .attr('font-weight', 'bold')
+      .style('fill', '#263238')
+      .text('1-10M');
+    svg
+      .append('text')
+      .attr('x', 190)
+      .attr('y', 200)
+      .attr('text-anchor', 'middle')
+      .attr('style', 'font-size:12;')
+      .attr('font-weight', 'bold')
+      .style('fill', '#263238')
+      .text('>10M');
+
+    svg
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 15)
+      .attr('text-anchor', 'start')
+      .attr('style', 'font-size:18;')
+      .attr('font-weight', 'bold')
+      .style('fill', '#263238')
+      .text('Légende:');
   }
 
   private generateTextSalary(){
@@ -1334,12 +1340,12 @@ export class DataViz4Component implements OnInit {
       .attr('height', 15)
       .style('stroke', 'black')
       .style('stroke-width', 1)
-      .attr('x', 320)
+      .attr('x', 310)
       .attr('y', 180);
 
     legend
       .append('text')
-      .attr('x', 340)
+      .attr('x', 330)
       .attr('y', 191)
       .attr('text-anchor', 'start')
       .attr('style', 'font-size:9;')
