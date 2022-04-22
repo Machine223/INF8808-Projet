@@ -153,10 +153,10 @@ export class DataViz4Component implements OnInit {
   }
 
   private hideTip() {
-    d3.selectAll('.classf_DF').attr('stroke-width', 0);
-    d3.selectAll('.classf_GK').attr('stroke-width', 0);
-    d3.selectAll('.classf_MF').attr('stroke-width', 0);
-    d3.selectAll('.classf_FW').attr('stroke-width', 0);
+    d3.selectAll('.classf_DF').attr('stroke-width', 1);
+    d3.selectAll('.classf_GK').attr('stroke-width', 1);
+    d3.selectAll('.classf_MF').attr('stroke-width', 1);
+    d3.selectAll('.classf_FW').attr('stroke-width', 1);
   }
 
   private listenClick() {
@@ -747,6 +747,7 @@ export class DataViz4Component implements OnInit {
     d3.select('#cl_' + id)
       .style('stroke', COLOR_MAP.get(pos.substring(0, 2)) as string)
       .style('filter', 'url(#active-shadow)')
+      .style("stroke-width","4")
       .style('fill', COLOR_MAP.get(pos.substring(0, 2)) as string);
   }
   private addStrokePlayerGroup(pos: string) {
@@ -897,23 +898,18 @@ export class DataViz4Component implements OnInit {
           break;
         }
       }
-      defs
-        .append('circle')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', r)
-        .attr('class', currentClass)
-        .attr('id', 'def_' + CIRCLE_ID);
 
-      g_wrapper
-        .append('circle')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', r + 1)
-        .attr('class', currentClass)
-        .attr('stroke', color)
-        .attr('fill', color)
-        .attr('id', 'inner_' + CIRCLE_ID);
+      defs
+      .append('circle')
+      .attr('cx', x)
+      .attr('cy', y)
+      .attr('r', r)
+      .attr('fill', '#232311')
+      .attr('stroke', '#232323')
+      .attr('stroke-width', '3')
+      .attr('class', currentClass)
+      .attr('id', 'def_' + CIRCLE_ID);
+
 
       g_wrapper
         .on('mouseover', (e: any) => this.showTip(e))
@@ -929,6 +925,17 @@ export class DataViz4Component implements OnInit {
         .style('filter', 'url(#active-shadow)')
         .on('mouseover', this.tip.show)
         .on('mouseout', this.tip.hide);
+
+      g_wrapper
+        .append('circle')
+        .attr('cx', x)
+        .attr('cy', y)
+        .attr('r', r + 1)
+        .attr('class', currentClass)
+        .attr('fill', 'white')
+        .attr('stroke', '#232323')
+        .attr('stroke-width', '1')
+        .attr('id', 'inner_' + CIRCLE_ID);
 
       g_wrapper
         .append('image')
