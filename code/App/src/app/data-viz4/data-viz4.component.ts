@@ -825,14 +825,14 @@ export class DataViz4Component implements OnInit {
       //Adding circle with absolute position hardcoded
       if (currentPos == 'GK') {
         x = 300;
-        y = 100;
+        y = 90;
       } else if (currentPos == 'DF') {
         if (i == 0) {
-          x = 130;
-          y = 90;
+          x = 145;
+          y = 170;
         } else if (i == 1) {
-          x = 400;
-          y = 200;
+          x = 430;
+          y = 180;
         }
         if (i >= cur_DF) {
           break;
@@ -840,24 +840,24 @@ export class DataViz4Component implements OnInit {
       } else if (currentPos == 'MF') {
         switch (i) {
           case 0:
-            x = 125;
-            y = 325;
+            x = 145;
+            y = 320;
             break;
           case 1:
-            x = 125;
+            x = 130;
             y = 470;
             break;
           case 2:
-            x = 270;
-            y = 400;
+            x = 290;
+            y = 380;
             break;
           case 3:
-            x = 430;
+            x = 440;
             y = 470;
             break;
           case 4:
             x = 430;
-            y = 325;
+            y = 320;
             break;
 
           default:
@@ -873,11 +873,11 @@ export class DataViz4Component implements OnInit {
             y = 650;
             break;
           case 1:
-            x = 430;
+            x = 440;
             y = 650;
             break;
           case 2:
-            x = 270;
+            x = 280;
             y = 600;
             break;
         }
