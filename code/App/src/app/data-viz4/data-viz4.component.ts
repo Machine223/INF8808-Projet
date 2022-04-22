@@ -1254,7 +1254,7 @@ export class DataViz4Component implements OnInit {
       .attr('id', 'teamValuePieText')
       .attr('text-anchor', 'middle')
       .attr('y', 13)
-      .attr('font-weight', 'bold')
+      .style('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('fill', '#263238')
       .style('font-size', '10')
@@ -1265,7 +1265,7 @@ export class DataViz4Component implements OnInit {
       .attr('id', 'FieldValuePieText')
       .attr('text-anchor', 'middle')
       .attr('y', 13)
-      .attr('font-weight', 'bold')
+      .style('font-weight', 'bold')
       .style('font-family', 'IBM Plex Sans')
       .style('font-size', '10')
       .style('fill', '#263238')
@@ -1288,7 +1288,7 @@ export class DataViz4Component implements OnInit {
       .attr('x', 40)
       .attr('y', 191)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:9;')
+      .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
       .style('fill', '#263238')
       .text('Gardien');
@@ -1300,15 +1300,15 @@ export class DataViz4Component implements OnInit {
       .attr('height', 15)
       .style('stroke', 'black')
       .style('stroke-width', 1)
-      .attr('x', 110)
+      .attr('x', 100)
       .attr('y', 180);
 
     legend
       .append('text')
-      .attr('x', 130)
+      .attr('x', 120)
       .attr('y', 191)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:9;')
+      .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
       .style('fill', '#263238')
       .text('Défense');
@@ -1320,15 +1320,15 @@ export class DataViz4Component implements OnInit {
       .attr('height', 15)
       .style('stroke', 'black')
       .style('stroke-width', 1)
-      .attr('x', 200)
+      .attr('x', 185)
       .attr('y', 180);
 
     legend
       .append('text')
-      .attr('x', 220)
+      .attr('x', 205)
       .attr('y', 191)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:9;')
+      .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
       .style('fill', '#263238')
       .text('Milieu de terrain');
@@ -1348,7 +1348,7 @@ export class DataViz4Component implements OnInit {
       .attr('x', 330)
       .attr('y', 191)
       .attr('text-anchor', 'start')
-      .attr('style', 'font-size:9;')
+      .attr('style', 'font-size:12;')
       .attr('font-weight', 'bold')
       .style('fill', '#263238')
       .text('Attaque');
