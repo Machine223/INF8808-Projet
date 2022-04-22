@@ -70,6 +70,8 @@ export class DataViz4Component implements OnInit {
     { type: 'FW', value: 0 },
   ];
   color = ['#42FF00', '#1C4686', '#FAD616', '#FF0000'];
+  totalTeamValue:number | undefined;
+  totalOnFieldValue:number | undefined;
   private positionIdMap: Map<number, number> = new Map();
   private isOnField: boolean[] = [];
 
@@ -189,8 +191,6 @@ export class DataViz4Component implements OnInit {
         }
         // Replace by active player in legend or on the field
       }
-      console.log('onfield:', this.playerOnField);
-      console.log('onfield salary:', this.onFieldValue);
     });
   }
 
@@ -534,19 +534,19 @@ export class DataViz4Component implements OnInit {
       .outerRadius((0.3 * height) / 2);
     const resultsTeamValue: number[] = this.teamValue.map(r => r.value);
     const resultsOnFieldValue: number[] = this.onFieldValue.map(r => r.value);
-    let totalTeamValue = Object.values(resultsTeamValue).reduce(
+    this.totalTeamValue = Object.values(resultsTeamValue).reduce(
       (acc, val) => acc + val,
       0
     );
-    let totalOnFieldValue = Object.values(resultsOnFieldValue).reduce(
+    this.totalOnFieldValue = Object.values(resultsOnFieldValue).reduce(
       (acc, val) => acc + val,
       0
     );
 
-    totalTeamValue = +(totalTeamValue / 1000000).toFixed(1);
-    totalOnFieldValue = +(totalOnFieldValue / 1000000).toFixed(1);
-    console.log(totalTeamValue);
-    console.log(totalOnFieldValue);
+    this.totalTeamValue = +(this.totalTeamValue / 1000000).toFixed(1);
+    this.totalOnFieldValue = +(this.totalOnFieldValue / 1000000).toFixed(1);
+    console.log(this.totalTeamValue);
+    console.log(this.totalOnFieldValue);
 
     const pieChart = d3
       .pie()
@@ -574,7 +574,7 @@ export class DataViz4Component implements OnInit {
       .style('stroke-width', 1)
       .style('opacity', 0.9);
 
-    d3.select('#FieldValuePieNumber').text(totalOnFieldValue + ' M$');
+    d3.select('#FieldValuePieNumber').text(this.totalOnFieldValue + ' M$');
   }
   private newRadius(circleID: number, newSalary: number) {
     let r2 = 0;
@@ -1152,19 +1152,19 @@ export class DataViz4Component implements OnInit {
     // console.log(this.teamValue)
     const resultsTeamValue: number[] = this.teamValue.map(r => r.value);
     const resultsOnFieldValue: number[] = this.onFieldValue.map(r => r.value);
-    let totalTeamValue = Object.values(resultsTeamValue).reduce(
+    this.totalTeamValue = Object.values(resultsTeamValue).reduce(
       (acc, val) => acc + val,
       0
     );
-    let totalOnFieldValue = Object.values(resultsOnFieldValue).reduce(
+    this.totalOnFieldValue = Object.values(resultsOnFieldValue).reduce(
       (acc, val) => acc + val,
       0
     );
 
-    totalTeamValue = +(totalTeamValue / 1000000).toFixed(1);
-    totalOnFieldValue = +(totalOnFieldValue / 1000000).toFixed(1);
-    console.log(totalTeamValue);
-    console.log(totalOnFieldValue);
+    this.totalTeamValue = +(this.totalTeamValue / 1000000).toFixed(1);
+    this.totalOnFieldValue = +(this.totalOnFieldValue / 1000000).toFixed(1);
+    console.log(this.totalTeamValue);
+    console.log(this.totalOnFieldValue);
     const pieChart = d3
       .pie()
       .startAngle(0 * (Math.PI / 90))
@@ -1211,8 +1211,14 @@ export class DataViz4Component implements OnInit {
       .style('stroke-width', 1)
       .style('opacity', 0.9);
 
-    // TODO append text et LEGENDE
+    // Generate and append text for salary total and on the field
+    this.generateTextSalary()
 
+    this.generateLegend()
+
+  }
+
+  private generateTextSalary(){
     d3.select('#teamValuePie')
       .append('text')
       .attr('id', 'teamValuePieNumber')
@@ -1222,7 +1228,7 @@ export class DataViz4Component implements OnInit {
       .style('color', '#263238')
       .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .style('color', '#263238')
-      .text(totalTeamValue + ' M$');
+      .text(this.totalTeamValue + ' M$');
 
     d3.select('#FieldSalaryContainer')
       .append('text')
@@ -1232,7 +1238,7 @@ export class DataViz4Component implements OnInit {
       .style('font-family', 'IBM Plex Sans')
       .style('text-shadow', '0.5px 0.5px 1.5px #000000')
       .style('color', '#263238')
-      .text(totalOnFieldValue + ' M$');
+      .text(this.totalOnFieldValue + ' M$');
 
     d3.select('#teamValuePie')
       .append('text')
@@ -1257,9 +1263,6 @@ export class DataViz4Component implements OnInit {
       .style('font-size', '10')
       .style('color', '#263238')
       .text('Joueur sur le terrain');
-
-    this.generateLegend()
-
   }
 
   private generateLegend(){
