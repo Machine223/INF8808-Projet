@@ -1,14 +1,6 @@
 <div id=vis1>
 
-    <!-- <mat-form-field appearance="fill">
-        <mat-label>Ordering</mat-label>
-        <mat-select [(value)]="selectedOrderingCategory" (selectionChange)="onSelectOrdering()">
-            <mat-option *ngFor="let cat1 of orderingCategories" [value]="cat1.value">
-                {{cat1.viewValue}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field> -->
-    <p id="vis1-desc">Dans cette visualisation, il est possible pour un analyste d’avoir une vue d’ensemble des résultats des performances des différentes équipes de la Concacaf. Les barcharts sont ordonnées du plus grand au plus petit en partant d’en haut en fonction de la donnée affichée respectivement. La coloration des bandes encode une données secondaire qui peut être selectionnée parmi les options.</p>
+    <p id="vis1-desc">Dans cette visualisation, il est possible pour un analyste d’avoir une vue d’ensemble des résultats des performances des différentes équipes de la Concacaf. Les barcharts sont ordonnés du plus grand au plus petit en partant d’en haut en fonction de la donnée affichée respectivement. La coloration des bandes encode une donnée secondaire qui peut être selectionnée parmi les options.</p>
     <mat-form-field appearance="fill">
         <mat-label>Coloration</mat-label>
         <mat-select [(value)]="selectedGradientCategory" (selectionChange)="onSelectGradient()">

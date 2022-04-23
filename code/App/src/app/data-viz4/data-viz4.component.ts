@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 import { PlayerByPosition, Player, TotalValue } from './viz4_interface';
 //@ts-ignore
 import d3Tip from 'd3-tip';
-import { index } from 'd3';
 
 const MAX_GK = 1;
 const MAX_DF = 2;
@@ -34,7 +33,12 @@ let COLOR_MAP = new Map<string, string>([
   ['FW', '#FF0000'],
   ['MF', '#FAD616'],
 ]);
-let mapPosCanada = ["de l'attaque"," des millieu de terrain", "des gardiens", " de la défense"]
+let mapPosCanada = [
+  "de l'attaque",
+  ' des millieu de terrain',
+  'des gardiens',
+  ' de la défense',
+];
 
 @Component({
   selector: 'app-data-viz4',
@@ -72,15 +76,17 @@ export class DataViz4Component implements OnInit {
     { type: 'FW', value: 0 },
   ];
   color = ['#42FF00', '#1C4686', '#FAD616', '#FF0000'];
-  totalTeamValue:number | undefined;
-  totalOnFieldValue:number | undefined;
+  totalTeamValue: number | undefined;
+  totalOnFieldValue: number | undefined;
 
   tipValueTeam = d3Tip()
-  .attr('class', 'd3-tip')
-  .html(function (_e: any, d: any) {
+    .attr('class', 'd3-tip')
+    .html(function (_e: any, d: any) {
       return `<p class='tooltip-title' style="margin-top: 0px">Canada</p>\
-    <div class='tooltip-value'>Valeur ${mapPosCanada[d['index']]}: ${Number(d['data']).toLocaleString('fr')} $</div>`;
-  });
+    <div class='tooltip-value'>Valeur ${
+      mapPosCanada[d['index']]
+    }: <span id="salary-tooltip">${Number(d['data'] / 1000000).toFixed(3)} M$</span></div>`;
+    });
 
   private positionIdMap: Map<number, number> = new Map();
   private isOnField: boolean[] = [];
@@ -93,18 +99,18 @@ export class DataViz4Component implements OnInit {
     .attr('class', 'd3-tip')
     .html((event: any, d: any) => {
       let elem = document.elementFromPoint(event.x, event.y) as HTMLElement;
-      // console.log(elem)
       let playerId = this.positionIdMap.get(
         Number(elem.id.substring(2))
       ) as number;
-      // console.log("player id",playerId)
       return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${
         this.data[playerId]['Player']
       }</b></p>\
-<div class='tooltip-value'>Position : ${this.data[playerId]['Pos']}</div>\
-<div class='tooltip-value'>Salaire : <span id="salary-tooltip">${
+<div class='tooltip-value'>Position : ${this.data[playerId]['Pos']
+        .toString()
+        .replace(',', '/')}</div>\
+<div class='tooltip-value'>Salaire : <span id="salary-tooltip">${Number(
         this.data[playerId]['salary'] / 1000000
-      }M$</span></div>`;
+      ).toFixed(3)}M$</span></div>`;
     });
 
   constructor() {}
@@ -112,23 +118,17 @@ export class DataViz4Component implements OnInit {
   ngOnInit(): void {
     d3.json('../../assets/data_viz4.json')
       .then((data: any) => {
-        // console.log("Init")
         this.data = data;
 
         this.playerByPositionMapping();
       })
       .then(() => {
-        this.outerEdge();
         this.createBaseTemplate();
         this.createSVGPlayerOnField();
         this.createSalaryScale();
         this.listenClick();
-        // console.log("team value", this.teamValue)
-        // console.log("field value", this.onFieldValue)
-        // console.log(this.positionIdMap)
         this.pieInit();
       });
-    // console.log("onfield,",this.playerOnField)
   }
 
   // Fill the player map to enumerate player by position later on.
@@ -147,9 +147,12 @@ export class DataViz4Component implements OnInit {
 
   private showTip(e: any) {
     let elem = document.elementFromPoint(e.x, e.y) as HTMLElement;
-    d3.select(`#${elem.getAttribute('id')}`)
-      .attr('stroke-width', 3)
-      .attr('stroke', 'black');
+    const actualID = elem.getAttribute('id');
+    if (actualID) {
+      const index = actualID.indexOf('_');
+      const id = actualID.substring(index + 1);
+      d3.select(`#e_${id}`).attr('stroke-width', 3).attr('stroke', 'black');
+    }
   }
 
   private hideTip() {
@@ -160,7 +163,6 @@ export class DataViz4Component implements OnInit {
   }
 
   private listenClick() {
-    let self = this;
     d3.select('#outer').on('click', event => {
       let elem = document.elementFromPoint(event.x, event.y) as HTMLElement;
       if (
@@ -190,8 +192,6 @@ export class DataViz4Component implements OnInit {
           var circleid = this.getOnFieldCircleID(elem) as number;
 
           var playerId = this.positionIdMap.get(circleid) as number;
-          // console.log("fieldCircleID",this.data[playerId].Pos.substring(0,2))
-          // console.log("selected id positon:",this.data[this.selectedid].Pos.substring(0,2))
           if (
             this.data[playerId].Pos.substring(0, 2) ==
             this.data[this.selectedid].Pos.substring(0, 2)
@@ -379,7 +379,6 @@ export class DataViz4Component implements OnInit {
     let r = 20;
     let color = COLOR_MAP.get(currentPos) as string;
     let current_svg_width = Number(svg.attr('width'));
-    // console.log("createPlayerCircle")
 
     for (let i = 0; i < players.length; i++) {
       let playerID = players[i].id;
@@ -441,11 +440,8 @@ export class DataViz4Component implements OnInit {
         .attr('id', 'i' + playerID)
         .attr('y', y - r)
         .on('click', datum => {
-          // console.log(datum); // the datum for the clicked circle
-          // console.log("image clicked")
           self.startingNewPlayerSelection(datum);
         });
-      //.style("filter","grayscale(100)")
 
       x += 60;
     }
@@ -468,7 +464,6 @@ export class DataViz4Component implements OnInit {
           this.data[id].Pos.split(',', 2)[0] ==
           this.data[this.selectedid as number].Pos.split(',', 2)[0]
         ) {
-          // console.log("both player have the same position")
           let circleID = -1;
           this.positionIdMap.forEach((value, key) => {
             if (value == Number(elem.id.substring(1))) {
@@ -491,8 +486,6 @@ export class DataViz4Component implements OnInit {
       this.data[newPlayer].Pos.substring(0, 2) ==
       this.data[oldPlayerID].Pos.substring(0, 2)
     ) {
-      // console.log("old player",this.data[oldPlayerID])
-      // console.log("new player",this.data[newPlayer])
       // logic for swapping element
       //replacing player image
       let playerdataToReplace = this.data[newPlayer];
@@ -504,9 +497,7 @@ export class DataViz4Component implements OnInit {
       let newSalary = playerdataToReplace.salary;
       this.positionIdMap.set(circleID, newPlayer);
       let position = this.data[oldPlayerID].Pos.substring(0, 2);
-      // console.log(this.playerOnField)
       let playerArray = this.getProperty(this.playerOnField, position);
-      // console.log(playerArray)
       let index = 0;
       for (; index < playerArray.length; index++) {
         if (playerArray[index].id == oldPlayerID) {
@@ -514,7 +505,6 @@ export class DataViz4Component implements OnInit {
         }
       }
       playerArray[index] = playerdataToReplace;
-      // console.log(playerArray)
       this.updatePlayerOnFieldArray(playerArray, position);
 
       this.newRadius(circleID, newSalary);
@@ -527,7 +517,6 @@ export class DataViz4Component implements OnInit {
       this.activateSwapablePlayers(playerOnField);
       this.deactivateSwapablePlayers(playerOnField);
       this.removeFieldStroke();
-      // console.log(this.onFieldValue.FW)
       this.selectedid = null;
 
       this.updatePieChart();
@@ -537,7 +526,6 @@ export class DataViz4Component implements OnInit {
   }
 
   private updatePieChart() {
-    const width = 900;
     const height = 500;
 
     const arc = d3
@@ -640,8 +628,6 @@ export class DataViz4Component implements OnInit {
 
   //Activating player for potential
   private activatingPlayer(elem: HTMLElement) {
-    // console.log("first activating palayer",this.selectedid)
-    // console.log(elem)
     if (this.selectedid != null) {
       this.greyingPlayerInLegend(this.selectedid as number);
       let playerOnField = this.matchingPosOnFieldPlayers();
@@ -654,13 +640,10 @@ export class DataViz4Component implements OnInit {
     let id = Number(elem.id.substring(1));
     this.removeFieldStroke();
     this.selectedid = id;
-    // console.log("second activating palayer",this.selectedid)
     this.isSelecting = true;
 
     this.removeSelectionShadow(this.selectedid);
     this.greyingPlayerInLegend(this.selectedid as number);
-
-    // console.log("nsadifhasfda")
 
     if (!this.isOnField[id]) {
       let playerOnField = this.matchingPosOnFieldPlayers();
@@ -676,7 +659,6 @@ export class DataViz4Component implements OnInit {
 
   //Legend
   private matchingPosOnFieldPlayers() {
-    // console.log(this.data[this.selectedid as number])
     //We will only consider the main position for the moment
     let pos: any = this.data[this.selectedid as number].Pos.split(',', 2)[0];
     return this.getProperty(this.playerOnField, pos);
@@ -694,10 +676,8 @@ export class DataViz4Component implements OnInit {
   //setting up different shadows
   private removeSelectionShadow(id: number) {
     if (this.isOnField[id]) {
-      // console.log("removeSelectionShadow", id)
       d3.selectAll('#cl_' + id).style('filter', 'url(#active-shadow)');
     } else {
-      // console.log("removeSelectionShadow", id)
       d3.selectAll('#cl_' + id).style('filter', 'url(#inactive-shadow)');
     }
   }
@@ -711,7 +691,6 @@ export class DataViz4Component implements OnInit {
   // grey only the image
   private deactivateSwapablePlayers(players: Player[]) {
     for (let i = 0; i < players.length; i++) {
-      // this.greyLegendImageOnly(players[i].id)
       this.removeSelectionShadow(players[i].id);
     }
   }
@@ -732,7 +711,6 @@ export class DataViz4Component implements OnInit {
   private colorPlayerInLegendSelection(id: number) {
     let pos: string = this.data[id].Pos;
     d3.select('#i' + id).style('filter', 'grayscale(0)');
-    // console.log(COLOR_MAP.get(pos.substring(0,2)))
     d3.select('#cl_' + id)
       .style('stroke', COLOR_MAP.get(pos.substring(0, 2)) as string)
       .style('filter', 'url(#active-shadow)')
@@ -743,15 +721,13 @@ export class DataViz4Component implements OnInit {
   private colorPlayerInLegend(id: number) {
     let pos: string = this.data[id].Pos;
     d3.select('#i' + id).style('filter', 'grayscale(0)');
-    // console.log(COLOR_MAP.get(pos.substring(0,2)))
     d3.select('#cl_' + id)
       .style('stroke', COLOR_MAP.get(pos.substring(0, 2)) as string)
       .style('filter', 'url(#active-shadow)')
-      .style("stroke-width","4")
+      .style('stroke-width', '4')
       .style('fill', COLOR_MAP.get(pos.substring(0, 2)) as string);
   }
   private addStrokePlayerGroup(pos: string) {
-    // console.log(pos)
     d3.selectAll('.classf_' + pos)
       .attr('stroke', 'black')
       .attr('stroke-width', '2')
@@ -816,7 +792,6 @@ export class DataViz4Component implements OnInit {
   ) {
     let g_wrapper = svg.append('g').attr('id', 'field' + currentPos);
 
-    let self = this;
     let x = 270;
     let y = 35;
     let r = 20;
@@ -900,16 +875,15 @@ export class DataViz4Component implements OnInit {
       }
 
       defs
-      .append('circle')
-      .attr('cx', x)
-      .attr('cy', y)
-      .attr('r', r)
-      .attr('fill', '#232311')
-      .attr('stroke', '#232323')
-      .attr('stroke-width', '3')
-      .attr('class', currentClass)
-      .attr('id', 'def_' + CIRCLE_ID);
-
+        .append('circle')
+        .attr('cx', x)
+        .attr('cy', y)
+        .attr('r', r)
+        .attr('fill', '#232311')
+        .attr('stroke', '#232323')
+        .attr('stroke-width', '3')
+        .attr('class', currentClass)
+        .attr('id', 'def_' + CIRCLE_ID);
 
       g_wrapper
         .on('mouseover', (e: any) => this.showTip(e))
@@ -923,7 +897,7 @@ export class DataViz4Component implements OnInit {
         .attr('fill', color)
         .attr('id', 'e_' + CIRCLE_ID)
         .style('filter', 'url(#active-shadow)')
-        .on('mouseover', this.tip.show)
+        .on('mouseenter', this.tip.show)
         .on('mouseout', this.tip.hide);
 
       g_wrapper
@@ -1059,17 +1033,7 @@ export class DataViz4Component implements OnInit {
     feMerge3.append('feMergeNode');
     feMerge3.append('feMergeNode').attr('in', 'SourceGraphic');
 
-    this.generateLegendField(svg)
-  }
-  //Make the outerEdge of the rectangle
-  private outerEdge() {
-    // var fieldDiv:any = document.getElementById("start");
-    // d3.select(fieldDiv).append("svg")
-    // .attr("id","curved_rec")
-    // .attr("width",1000)
-    // .attr("height",1000)
-    // .append("rect")
-    // .attr("stroke","black")
+    this.generateLegendField(svg);
   }
 
   private pieInit() {
@@ -1092,7 +1056,6 @@ export class DataViz4Component implements OnInit {
       .arc()
       .innerRadius((0.2 * height) / 2)
       .outerRadius((0.3 * height) / 2);
-    // console.log(this.teamValue)
     const resultsTeamValue: number[] = this.teamValue.map(r => r.value);
     const resultsOnFieldValue: number[] = this.onFieldValue.map(r => r.value);
     this.totalTeamValue = Object.values(resultsTeamValue).reduce(
@@ -1160,12 +1123,13 @@ export class DataViz4Component implements OnInit {
       .style('opacity', 0.9);
 
     // Generate and append text for salary total and on the field
-    this.generateTextSalary()
+    this.generateTextSalary();
 
-    this.generateLegend()
-
+    this.generateLegend();
   }
-  private generateLegendField(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>){
+  private generateLegendField(
+    svg: d3.Selection<SVGSVGElement, unknown, null, undefined>
+  ) {
     svg
       .append('circle')
       .attr('cx', '50%')
@@ -1252,7 +1216,7 @@ export class DataViz4Component implements OnInit {
       .text('Légende:');
   }
 
-  private generateTextSalary(){
+  private generateTextSalary() {
     d3.select('#teamValuePie')
       .append('text')
       .attr('id', 'teamValuePieNumber')
@@ -1295,10 +1259,10 @@ export class DataViz4Component implements OnInit {
 
       .style('font-size', '20')
       .style('fill', '#263238')
-      .text('Joueur sur le terrain');
+      .text('Joueurs sur le terrain');
   }
 
-  private generateLegend(){
+  private generateLegend() {
     let legend = d3.select('#piechart').append('g');
     legend
       .append('rect')

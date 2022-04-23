@@ -16,14 +16,14 @@ export class DataViz2Component implements OnInit {
   private width: number = 900;
   private height: number = 800;
   // SVG margin for scale axis
-  innerWidth:any;
-  innerHeight:any
+  innerWidth: any;
+  innerHeight: any;
   categories: any[] = [
-    { value: 'concacaf', viewValue: 'Joueur de la Concacaf' },
-    { value: 'canada', viewValue: 'Joueur Canadien' },
+    { value: 'concacaf', viewValue: 'Joueurs de la Concacaf' },
+    { value: 'canada', viewValue: 'Joueurs canadiens' },
   ];
   actualCat: any;
-  headers: string[] = ['Joueur de la Concacaf', 'Joueur Canadien'];
+  headers: string[] = ['Joueurs de la Concacaf', 'Joueurs canadiens'];
   // List of subgroups = header of the data files
   subgroups = ['Gls', 'Ast'];
   // get data attribute from data file
@@ -42,8 +42,8 @@ export class DataViz2Component implements OnInit {
     .html(function (_e: any, d: any) {
       return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${d['data']['Player']}</b></p>\
       <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
-      <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
-      <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-g-v2">buts : ${d['data']['Gls']}</span></div>\
+      <div class='tooltip-value'>Nombre de <span class="tooltip-a-v2">passes décisives : ${d['data']['Ast']}</span></div>\
       <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
       <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>
       <div class='tooltip-value'>Club actuel : ${d['data']['Club']}</span></div>
@@ -54,8 +54,8 @@ export class DataViz2Component implements OnInit {
     .html(function (_e: any, d: any) {
       return `<p class='tooltip-title' style="margin-top: 0px">Joueur : <b>${d['data']['Player']}</b></p>\
     <div class='tooltip-value'>Position : ${d['data']['Pos']}</div>\
-    <div class='tooltip-value'>Nombre de <span class="tooltip-gls">buts : ${d['data']['Gls']}</span></div>\
-    <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['data']['Ast']}</span></div>\
+    <div class='tooltip-value'>Nombre de <span class="tooltip-g-v2">buts : ${d['data']['Gls']}</span></div>\
+    <div class='tooltip-value'>Nombre de <span class="tooltip-a-v2">passes décisives : ${d['data']['Ast']}</span></div>\
     <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['data']['MP']}</span></div>
     <div class='tooltip-value'>Équipe : ${d['data']['Squad']}</span></div>`;
     });
@@ -131,7 +131,7 @@ export class DataViz2Component implements OnInit {
   private createSvg(): void {
     // set the dimensions and margins of the graph
     const margin = { top: 70, right: 20, bottom: 20, left: 180 };
-    this.innerWidth = this.width- margin.left - margin.right;
+    this.innerWidth = this.width - margin.left - margin.right;
     this.innerHeight = this.height - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
@@ -195,22 +195,21 @@ export class DataViz2Component implements OnInit {
   }
 
   private setAxis() {
-    // let stringArrayData = JSON.parse(JSON.stringify(this.data))
-    // console.log('data',this.data)
-    // console.log('stringArrayData',stringArrayData)
     this.xScale = scaleLinear()
       .domain([0, max(this.data, d => d.Gls + d.Ast)])
       .range([0, this.innerWidth]);
     this.yScale = scaleBand()
-      .domain(this.data.map((e,i)=>{
-        return e.Player = i+1 + ' - \t'+ e.Player;
-      }))
+      .domain(
+        this.data.map((e, i) => {
+          return (e.Player = i + 1 + ' - \t' + e.Player);
+        })
+      )
       .range([0, this.innerHeight])
       .padding(0.4);
 
     // Custom axis X and Y
     this.xAxis = axisTop(this.xScale).tickSize(-this.innerHeight);
-    this.yAxis = axisRight(this.yScale).tickPadding(-180)
+    this.yAxis = axisRight(this.yScale).tickPadding(-180);
   }
 
   private formatStackData() {
@@ -220,13 +219,48 @@ export class DataViz2Component implements OnInit {
   private generateLegend() {
     this.legend = d3.select('#vis2-g').append('g').attr('id', 'vis2-legend');
     // Handmade legend
-    this.legend.append('rect').attr('x', 0).attr('y', 0).attr('width', 25).attr('height', 25).style('fill', '#4381B6').style('stroke', 'black')
-    .style('stroke-width', 1);
-    this.legend.append('rect').attr('x', 0).attr('y', 40).attr('width', 25).attr('height', 25).style('fill', '#97B3CB').style('stroke', 'black')
-    .style('stroke-width', 1);
-    this.legend.append('text').attr('x', 40).attr('y', 12).text('Nombre de but').style('font-size', '15px').attr('alignment-baseline', 'middle').style('fill', '#263238');
-    this.legend.append('text').attr('x', 40).attr('y', 52).text('Nombre d’assists').style('font-size', '15px').attr('alignment-baseline', 'middle').style('fill', '#263238');
-    this.legend.append('text').attr('x', 0).attr('y', -24).text('Légende').style('font-size', '17px').attr('alignment-baseline', 'middle').style('fill', '#263238');
+    this.legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 25)
+      .attr('height', 25)
+      .style('fill', '#4381B6')
+      .style('stroke', 'black')
+      .style('stroke-width', 1);
+    this.legend
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', 40)
+      .attr('width', 25)
+      .attr('height', 25)
+      .style('fill', '#97B3CB')
+      .style('stroke', 'black')
+      .style('stroke-width', 1);
+    this.legend
+      .append('text')
+      .attr('x', 40)
+      .attr('y', 12)
+      .text('Nombre de buts')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle')
+      .style('fill', '#263238');
+    this.legend
+      .append('text')
+      .attr('x', 40)
+      .attr('y', 52)
+      .text('Nombre de passes décisives')
+      .style('font-size', '15px')
+      .attr('alignment-baseline', 'middle')
+      .style('fill', '#263238');
+    this.legend
+      .append('text')
+      .attr('x', 0)
+      .attr('y', -24)
+      .text('Légende')
+      .style('font-size', '17px')
+      .attr('alignment-baseline', 'middle')
+      .style('fill', '#263238');
     this.legend.attr('transform', `translate(600,650)`);
   }
 
@@ -359,6 +393,14 @@ function selectTicks(name: any, element: any) {
 
 function unselectTicks() {
   // Reset feedback
-  d3.select('#vis2-g').select('.yAxis').selectAll('.tick').selectAll('text').style('font-weight', 'normal');
-  d3.select('#vis2-g').select('.stacked').selectAll('.bar').selectAll('.rect-container').attr('stroke-width', '0');
+  d3.select('#vis2-g')
+    .select('.yAxis')
+    .selectAll('.tick')
+    .selectAll('text')
+    .style('font-weight', 'normal');
+  d3.select('#vis2-g')
+    .select('.stacked')
+    .selectAll('.bar')
+    .selectAll('.rect-container')
+    .attr('stroke-width', '0');
 }

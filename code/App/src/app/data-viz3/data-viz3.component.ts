@@ -10,6 +10,7 @@ import d3Tip from 'd3-tip';
   encapsulation: ViewEncapsulation.None,
 })
 export class DataViz3Component implements OnInit {
+  //Private variables to be used by the vis
   private svg: any;
   private width: number = Math.min(
     window.innerWidth - window.innerWidth / 4,
@@ -26,6 +27,7 @@ export class DataViz3Component implements OnInit {
   private legendData: any[] = [];
   private legendSizes: number[] = [1, 5, 15];
   private colors: any[] = ['#df3251', ' #5cbbf0', '#8ae89f'];
+  //Tooltip for the players
   tip = d3Tip()
     .attr('class', 'd3-tip')
     .html(function (e: any, d: any) {
@@ -35,6 +37,8 @@ export class DataViz3Component implements OnInit {
   <div class='tooltip-value'>Nombre de <span class="tooltip-ast">passes décisives : ${d['Ast']}</span></div>\
   <div class='tooltip-value'>Nombre de <span class="tooltip-mp">parties jouées : ${d['MP']}</span></div>`;
     });
+
+  //Categories to show in the selector
   categories: any[] = [
     { value: 'Gls', viewValue: 'Buts marqués' },
     { value: 'Ast', viewValue: 'Passes décisives' },
@@ -44,6 +48,7 @@ export class DataViz3Component implements OnInit {
 
   constructor() {}
 
+  //Function to update the vis when the user selects a category
   onSelect(): any {
     this.sortPlayers(this.selectedCategory);
     for (let i = 0; i < this.categories.length; i++) {
@@ -92,6 +97,7 @@ export class DataViz3Component implements OnInit {
       );
   }
 
+  //Create the vis when loading the page
   ngOnInit(): void {
     d3.json('../../assets/data_vis3.json')
       .then((data: any) => {
@@ -106,6 +112,7 @@ export class DataViz3Component implements OnInit {
       });
   }
 
+  //Sort players in order of the selected category
   private sortPlayers(category: any): void {
     let newData = this.data.map(d => d);
     newData = newData.sort(function (
@@ -124,6 +131,7 @@ export class DataViz3Component implements OnInit {
     });
   }
 
+  //Scale for the area of the squares
   private areaScale(value: number): any {
     const area = d3
       .scaleSqrt()
@@ -137,6 +145,7 @@ export class DataViz3Component implements OnInit {
     return area(value);
   }
 
+  //Scale for the x position of the squares
   private xScale(index: number): any {
     const x: any = d3
       .scaleLinear()
@@ -144,6 +153,8 @@ export class DataViz3Component implements OnInit {
       .range([this.widthPadding, this.width - this.widthPadding]);
     return x(index);
   }
+
+  //Scale for the y position of the squares
   private yScale(index: number): any {
     const y: any = d3
       .scaleLinear()
@@ -152,6 +163,7 @@ export class DataViz3Component implements OnInit {
     return y(index);
   }
 
+  //Function to highlight the squares when showing the tooltip
   private showTip(e: any, d: any, id: String): void {
     if (id !== this.legendId) {
       d3.select('#vis3-svg')
@@ -160,10 +172,13 @@ export class DataViz3Component implements OnInit {
         .attr('stroke', 'black');
     }
   }
+
+  //Function to erase the highlight of the squares when leaving element
   private hideTip(e: any, d: any): void {
     d3.selectAll(`.${d['Player'].replace(' ', '')}`).attr('stroke-width', 0);
   }
 
+  //Function to create the vis
   private createMainSvg(): void {
     this.svg = d3
       .select('#vis3')
@@ -176,6 +191,7 @@ export class DataViz3Component implements OnInit {
     this.svg.call(this.tip);
   }
 
+  //Function to create de legend
   private createLegend(): void {
     d3.select('#vis3-legend-rect')
       .append('g')
@@ -183,6 +199,7 @@ export class DataViz3Component implements OnInit {
       .attr('transform', 'translate(40,20)');
   }
 
+  //Function to place the different elements of the legend
   private modifyLegend(): void {
     d3.select(this.legendId.toString())
       .call(svg =>
@@ -276,6 +293,7 @@ export class DataViz3Component implements OnInit {
       .on('mouseover', () => {});
   }
 
+  //Function to translate de squares horizontally in respect to their size
   private xSquareTranslation(
     id: String,
     d: any,
@@ -301,6 +319,7 @@ export class DataViz3Component implements OnInit {
     return xValue;
   }
 
+  //Function to translate de squares vertically in respect to their size
   private ySquareTranslation(d: any, i: number, isText = false): number {
     let yValue: number = 0;
     if (i !== 2) {
@@ -321,6 +340,7 @@ export class DataViz3Component implements OnInit {
     return yValue;
   }
 
+  //Function to replace the squares when transitionning between categories
   private modifySquares(svg: any, i: number, id: String) {
     svg
       .attr('width', (d: any) => {
@@ -343,6 +363,7 @@ export class DataViz3Component implements OnInit {
       );
   }
 
+  //Function to create the initial squares
   private createSquares(id: String): void {
     const data: any = id === this.legendId ? this.legendData : this.data;
     for (let i = 0; i < this.categories.length; i++) {
@@ -362,6 +383,8 @@ export class DataViz3Component implements OnInit {
     }
   }
 
+  //Function to create the initial circles with the image of the player
+  //and with their ranking
   private createCircles(id: String): void {
     const data: any = id === this.legendId ? this.legendData : this.data;
     d3.select(`${id}`)
@@ -474,6 +497,7 @@ export class DataViz3Component implements OnInit {
       );
   }
 
+  //Function to create the vis
   private createSvg(): void {
     this.createMainSvg();
     this.createLegend();
