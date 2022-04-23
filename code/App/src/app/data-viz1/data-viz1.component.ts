@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { axisBottom, axisLeft, timeHours } from 'd3';
+import { axisBottom, axisLeft } from 'd3';
 //@ts-ignore
 import d3Tip from 'd3-tip';
 
@@ -82,10 +82,6 @@ export class DataViz1Component implements OnInit {
       }
     });
     return newData.slice(0, this.topTeams);
-    // newData.map((d:any, i: number) => {
-    //   const index = this.data.findIndex((x:any) => x.Squad === d.Squad);
-    //   this.data[index]['Index'] = i;
-    // });
   }
 
   private getToolTipHTML(_e: any, d: any): string {
@@ -94,9 +90,7 @@ export class DataViz1Component implements OnInit {
     }</b></p>\
     <div class='tooltip-value'>${this.getGradientViewValue(
       this.selectedGradientCategory
-    )} : ${d[this.selectedGradientCategory]} ${
-      this.units[this.selectedGradientCategory]
-    }</div>`;
+    )} : ${d[this.selectedGradientCategory]}</div>`;
   }
   coordinates(index: number): any {
     const x = this.chartGroupWidth * (index % this.numCols);
@@ -119,17 +113,10 @@ export class DataViz1Component implements OnInit {
 
     this.createLegend();
     for (var i = 0; i < this.orderingCategories.length; i++) {
-      // g.append('rect')
-      //   .attr('width', this.chartWidth - this.chartMargin.right)
-      //   .attr('height', this.chartHeight - this.chartMargin.bottom)
-      //   .attr('x', coord.x + this.chartMargin.left)
-      //   .attr('y', coord.y + this.chartMargin.top)
       const coord = this.coordinates(i);
       var chartData = this.sortOrdering(this.orderingCategories[i].value);
       this.render(this.orderingCategories[i], coord, chartData);
     }
-
-    // this.render(category);
   }
 
   render(category: any, coord: any, chartData: any) {
@@ -262,8 +249,6 @@ export class DataViz1Component implements OnInit {
       .attr('id', 'legend')
       .attr('x1', '0%')
       .attr('x2', '100%');
-    // .attr('y1', '0%')
-    // .attr('y2', '100%')
 
     gradient
       .append('stop')
@@ -281,13 +266,6 @@ export class DataViz1Component implements OnInit {
 
     var legendx = (this.width + this.margin.left) / 2 - this.legendWidth / 2;
     var legendy = 40;
-    // g.append('g')
-    //   .attr('id', 'legendText')
-    //   .attr('class', 'legendTitleContainer')
-    //   .append('text')
-    //   .attr('fill', 'black')
-    //   .attr('style', `font-size: ${this.fontSize}px;`)
-    //   .text(maxColor);
 
     g.append('rect')
       .attr('width', this.legendWidth)

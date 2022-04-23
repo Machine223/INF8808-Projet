@@ -180,7 +180,6 @@ export class DataViz4Component implements OnInit {
       }
       //Potential bug with svg circle
       var elemClassName = elem.className as any;
-      // if (this.isSelecting) {
       if (
         (elem.tagName == 'image' || elem.tagName == 'circle') &&
         elemClassName instanceof SVGAnimatedString
@@ -220,7 +219,6 @@ export class DataViz4Component implements OnInit {
       try {
         switch (pos[i]) {
           case 'GK':
-            //Todo: Verifier si la reference du joueur change lorsqu'on ajoute sur le terrain
             //We suppose that the first position is the main player position
             if (i == 0) {
               this.teamValue[0].value += player.salary;
@@ -257,7 +255,6 @@ export class DataViz4Component implements OnInit {
         console.error(e);
       }
     }
-    // this.teamValue.total += player.salary
     this.addPlayerOnFieldInit(player);
   }
   //Adding default player on the field only considering [0]
@@ -272,7 +269,6 @@ export class DataViz4Component implements OnInit {
         cur_GK += 1;
         this.playerOnField.GK.push(player);
         this.onFieldValue[0].value += player.salary;
-        // this.onFieldValue.total += player.salary
       }
       //defense
       else if (player.Pos[0] == 'DF' && cur_DF < MAX_DF) {
@@ -282,7 +278,6 @@ export class DataViz4Component implements OnInit {
 
         this.playerOnField.DF.push(player);
         this.onFieldValue[1].value += player.salary;
-        // this.onFieldValue.total += player.salary
 
         //MidField
       } else if (player.Pos[0] == 'MF' && cur_MF < MAX_MF) {
@@ -291,7 +286,6 @@ export class DataViz4Component implements OnInit {
         player.OnField = true;
         this.playerOnField.MF.push(player);
         this.onFieldValue[2].value += player.salary;
-        // this.onFieldValue.total += player.salary
       }
       //Front Field
       else if (player.Pos[0] == 'FW' && cur_FW < MAX_FW) {
@@ -301,7 +295,6 @@ export class DataViz4Component implements OnInit {
         cur_FW += 1;
         this.playerOnField.FW.push(player);
         this.onFieldValue[3].value += player.salary;
-        // this.onFieldValue.total += player.salary
       }
     }
   }
@@ -330,7 +323,6 @@ export class DataViz4Component implements OnInit {
       .attr('width', 400)
       .attr('id', id + '_svg')
       .attr('height', parentDiv.clientHeight);
-    //
     svg.call(this.tip);
     svg.call(this.tipValueTeam);
     let defs = svg
@@ -771,7 +763,6 @@ export class DataViz4Component implements OnInit {
       .attr('background-image', "url('../../assets/soccerField.png")
       .style('left', '0px')
       .style('top', '0px');
-    //
     let defs = svg
       .append('defs')
       .append('clipPath')
